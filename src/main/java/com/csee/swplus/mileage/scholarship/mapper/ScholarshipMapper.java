@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Mapper
 public interface ScholarshipMapper {
-    int createApplication(@Param("studentId") Long studentId,
+    int createApplication(@Param("studentId") int studentId,
                           @Param("applyDate") LocalDateTime applyDate,
                           @Param("isChecked") int isChecked);
 }
