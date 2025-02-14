@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csee.swplus.mileage.etcSubitem.mapper.EtcSubitemMapper">
+
+<!--    <select id="findAllStudentInputSubitems" resultType="list">-->
+<!--        SELECT mS.id, cname, subitem_name, mS.semester-->
+<!--			FROM _sw_mileage_subitem AS mS INNER JOIN _sw_mileage_category AS mC-->
+<!--			ON category_id = mC.id AND mS.student_input = 'Y'-->
+<!--		WHERE mS.semester = '$searchSemester'-->
+<!--			ORDER BY mS.regdate;-->
+<!--    </select>-->
+
+</mapper>
