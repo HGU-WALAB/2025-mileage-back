@@ -7,7 +7,6 @@ import com.csee.swplus.mileage.util.dto.MessageResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController // 이 class 가 REST API 관련 class 라는 것을 스프링에게 명시
