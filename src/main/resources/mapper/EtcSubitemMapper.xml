@@ -4,12 +4,16 @@
 
 <mapper namespace="com.csee.swplus.mileage.etcSubitem.mapper.EtcSubitemMapper">
 
-<!--    <select id="findAllStudentInputSubitems" resultType="list">-->
-<!--        SELECT mS.id, cname, subitem_name, mS.semester-->
-<!--			FROM _sw_mileage_subitem AS mS INNER JOIN _sw_mileage_category AS mC-->
-<!--			ON category_id = mC.id AND mS.student_input = 'Y'-->
-<!--		WHERE mS.semester = '$searchSemester'-->
-<!--			ORDER BY mS.regdate;-->
-<!--    </select>-->
+    <select id="findAllStudentInputSubitems" parameterType="string" resultType="com.csee.swplus.mileage.etcSubitem.dto.EtcSubitemResponseDto">
+        SELECT mS.id AS subitemId,
+               cname AS categoryName,
+               mC.id AS categoryId,
+               subitem_name AS subitemName,
+               mS.semester AS semester
+			FROM _sw_mileage_subitem AS mS INNER JOIN _sw_mileage_category AS mC
+			ON mS.category_id = mC.id AND mS.student_input = 'Y'
+		WHERE mS.semester = #{currentSemester}
+			ORDER BY mS.regdate;
+    </select>
 
 </mapper>

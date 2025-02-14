@@ -20,6 +20,8 @@ public class EtcSubitemController {
 //    public ResponseEntity<?> getStudentInputSubitems () {
 //        try {
 //            List<EtcSubitemResponseDto> res = etcSubitemService.getStudentInputSubitems();
+//        } catch () {
+//
 //        }
 //    }
 }
