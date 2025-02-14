@@ -10,10 +10,34 @@
                mC.id AS categoryId,
                subitem_name AS subitemName,
                mS.semester AS semester
-			FROM _sw_mileage_subitem AS mS INNER JOIN _sw_mileage_category AS mC
-			ON mS.category_id = mC.id AND mS.student_input = 'Y'
+		FROM _sw_mileage_subitem AS mS
+		    INNER JOIN _sw_mileage_category AS mC
+                ON mS.category_id = mC.id AND mS.student_input = 'Y'
 		WHERE mS.semester = #{currentSemester}
-			ORDER BY mS.regdate;
+		ORDER BY mS.regdate;
+    </select>
+
+    <select id="findAllRequestedEtcSubitems" parameterType="map" resultType="com.csee.swplus.mileage.etcSubitem.dto.RequestedEtcSubitemResponseDto">
+        SELECT mR.subitem_id AS subitemId,
+               mR.category_id AS categoryId,
+               mS.subitem_name AS subitemName,
+               mR.semester AS semester,
+               mR.description1 AS description1,
+               mR.description2 AS description2,
+               mR.regdate AS regDate,
+               mR.moddate AS modDate
+        FROM _sw_mileage_record AS mR
+            INNER JOIN _sw_mileage_student mSt
+                ON mR.snum =mSt.num
+            INNER JOIN _sw_mileage_subitem AS mS
+                ON mR.subitem_id = mS.subitem_id
+            INNER JOIN category AS mC
+                ON mS.category_id = mC.category_id
+        WHERE mR.semester = #{currentSemester}  -- 학기 조건
+          AND mSt.studentId = #{studentId}  -- 특정 학생 조건
+          AND mR.category_id = '240'  -- subitem과 category 연결
+          AND mS.student_input = 'Y'  -- student_input 조건
+        ORDER BY r.regdate;
     </select>
 
 </mapper>

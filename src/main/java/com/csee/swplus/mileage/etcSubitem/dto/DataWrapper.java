@@ -8,5 +8,5 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class DataWrapper {
-    private List<EtcSubitemResponseDto> data;
+    private List<?> data;
 }
