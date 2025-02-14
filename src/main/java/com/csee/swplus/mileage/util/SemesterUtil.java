@@ -10,6 +10,6 @@ public class SemesterUtil {
         Month month = now.getMonth();
 
         String semester = (month.getValue() <= 6) ? "01" : "02";
-        return semester + " " + year;
+        return year + "-" + semester;
     }
 }

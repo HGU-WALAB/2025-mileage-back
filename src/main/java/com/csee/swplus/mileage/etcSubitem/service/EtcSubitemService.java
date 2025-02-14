@@ -30,6 +30,7 @@ public class EtcSubitemService {
     @Transactional
     public DataWrapper getRequestedEtcSubitems(int studentId) {
         String currentSemester = SemesterUtil.getCurrentSemester();
+        log.info("📝 getCurrentSemester 결과 - current semester: " + currentSemester);
         List<RequestedEtcSubitemResponseDto> res = etcSubitemMapper.findAllRequestedEtcSubitems(studentId, currentSemester);
         log.info("📝 getRequestedEtcSubitems 결과 - res: {}", res);
         return new DataWrapper(res);
