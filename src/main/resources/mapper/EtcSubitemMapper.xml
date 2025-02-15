@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csee.swplus.mileage.etcSubitem.mapper.EtcSubitemMapper">
+
+    <select id="findAllStudentInputSubitems" parameterType="string" resultType="com.csee.swplus.mileage.etcSubitem.dto.EtcSubitemResponseDto">
+        SELECT mS.id AS subitemId,
+               cname AS categoryName,
+               mC.id AS categoryId,
+               subitem_name AS subitemName,
+               mS.semester AS semester
+		FROM _sw_mileage_subitem AS mS
+		    INNER JOIN _sw_mileage_category AS mC
+                ON mS.category_id = mC.id AND mS.student_input = 'Y'
+		WHERE mS.semester = #{currentSemester}
+		ORDER BY mS.regdate;
+    </select>
+
+    <select id="findAllRequestedEtcSubitems" resultType="com.csee.swplus.mileage.etcSubitem.dto.RequestedEtcSubitemResponseDto">
+        SELECT mR.subitem_id AS subitemId,
+               mS.subitem_name AS subitemName,
+               mR.semester AS semester,
+               mR.description1 AS description1,
+               mR.description2 AS description2,
+               mR.regdate AS regDate,
+               mR.moddate AS modDate,
+               mR.id AS recordId
+        FROM _sw_mileage_record AS mR
+            INNER JOIN _sw_student AS mSt
+                ON mR.snum = mSt.snum
+            INNER JOIN _sw_mileage_subitem AS mS
+                ON mR.subitem_id = mS.id
+            INNER JOIN _sw_mileage_category AS mC
+                ON mS.category_id = mC.id
+        WHERE mR.semester = #{currentSemester}  -- 학기 조건
+          AND mSt.id = #{studentId}  -- 특정 학생 조건
+          AND mR.category_id = '240'  -- subitem과 category 연결
+          AND mS.student_input = 'Y'  -- student_input 조건
+        ORDER BY mR.regdate;
+    </select>
+
+</mapper>
