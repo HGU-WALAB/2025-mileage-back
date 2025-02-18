@@ -56,4 +56,11 @@ public class EtcSubitemController {
                 etcSubitemService.postEtcSubitems(studentId, semester, description1, description2, subitemId, snum, sname, file)
         );
     }
+
+//    @PatchMapping(value = "/{studentId}/{recordId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<MessageResponseDto> patchEtcSubitems (
+//            @PathVariable int studentId,
+//            @PathVariable int recordId,
+//            @RequestParam
+//    )
 }
