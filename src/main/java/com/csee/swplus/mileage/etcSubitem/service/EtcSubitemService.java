@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -88,8 +89,8 @@ public class EtcSubitemService {
 //            3. 성공 메세지 반환
             return new MessageResponseDto("기타 항목이 등록되었습니다.");
         } catch (Exception e) {
-            log.error("⚠️ 마일리지 신청 중 오류 발생: ", e);
-            throw new RuntimeException("기타 항목 신청 처리 도중 오류가 발생했습니다.");
+            log.error("⚠️ 기타 항목 등록 중 오류 발생: ", e);
+            throw new RuntimeException("기타 항목 등록 중 오류가 발생했습니다.");
         }
     }
 
@@ -126,13 +127,30 @@ public class EtcSubitemService {
                 fileRepository.save(newFile);
             }
 
-            return new MessageResponseDto("항목이 성공적으로 수정되었습니다.");
+            return new MessageResponseDto("기타 항목이 수정되었습니다.");
         } catch (Exception e) {
-            log.error("⚠️ 항목 수정 중 오류 발생: ", e);
-            throw new RuntimeException("항목 수정 중 오류가 발생했습니다.");
+            log.error("⚠️ 기타 항목 수정 중 오류 발생: ", e);
+            throw new RuntimeException("기타 항목 수정 중 오류가 발생했습니다.");
         }
     }
 
-//    delete
+    @Transactional
+    public MessageResponseDto deleteEtcSubitem(int studentId, int recordId) {
+        try {
+//            1. 파일 삭제
+            List<EtcSubitemFile> files = fileRepository.findByRecordId(recordId);
+            for (EtcSubitemFile file : files) {
+                fileService.deleteFile(file.getFilename());
+            }
+            fileRepository.deleteByRecordId(recordId);
 
+//            2. 항목 삭제
+            etcSubitemRepository.deleteById(recordId);
+
+            return new MessageResponseDto("기타 항목이 삭제되었습니다.");
+        } catch(Exception e) {
+            log.error("⚠️ 기타 항목 삭제 중 오류 발생: ", e);
+            throw new RuntimeException("기타 항목 삭제 중 오류가 발생했습니다.");
+        }
+    }
 }

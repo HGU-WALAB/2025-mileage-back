@@ -38,7 +38,7 @@ public class EtcSubitemController {
 //    }
 
     @PostMapping(value = "/{studentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<MessageResponseDto> postEtcSubitems (
+    public ResponseEntity<MessageResponseDto> postEtcSubitem (
             @PathVariable int studentId,
             @RequestParam("semester") String semester,
             @RequestParam(value = "description1", required = false) String description1,
@@ -58,7 +58,7 @@ public class EtcSubitemController {
     }
 
     @PatchMapping(value = "/{studentId}/{recordId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<MessageResponseDto> patchEtcSubitems (
+    public ResponseEntity<MessageResponseDto> patchEtcSubitem (
             @PathVariable int studentId,
             @PathVariable int recordId,
             @RequestParam(value = "description1", required = false) String description1,
@@ -72,6 +72,16 @@ public class EtcSubitemController {
 
         return ResponseEntity.ok(
                 etcSubitemService.patchEtcSubitem(studentId, recordId, description1, description2, subitemId, file)
+        );
+    }
+
+    @DeleteMapping("/{studentId}/{recordId}")
+    public ResponseEntity<MessageResponseDto> deleteEtcSubitem(
+            @PathVariable int studentId,
+            @PathVariable int recordId
+    ) {
+        return ResponseEntity.ok(
+                etcSubitemService.deleteEtcSubitem(studentId, recordId)
         );
     }
 }
