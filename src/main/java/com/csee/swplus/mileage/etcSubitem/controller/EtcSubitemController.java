@@ -1,6 +1,6 @@
 package com.csee.swplus.mileage.etcSubitem.controller;
 
-import com.csee.swplus.mileage.etcSubitem.dto.DataWrapper;
+import com.csee.swplus.mileage.util.DataWrapper;
 import com.csee.swplus.mileage.etcSubitem.service.EtcSubitemService;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import lombok.RequiredArgsConstructor;

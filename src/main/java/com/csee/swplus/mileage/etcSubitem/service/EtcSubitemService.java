@@ -1,13 +1,13 @@
 package com.csee.swplus.mileage.etcSubitem.service;
 
 import com.csee.swplus.mileage.etcSubitem.domain.EtcSubitem;
-import com.csee.swplus.mileage.etcSubitem.dto.DataWrapper;
+import com.csee.swplus.mileage.util.DataWrapper;
 import com.csee.swplus.mileage.etcSubitem.dto.StudentInputSubitemResponseDto;
 import com.csee.swplus.mileage.etcSubitem.dto.EtcSubitemResponseDto;
 import com.csee.swplus.mileage.etcSubitem.mapper.EtcSubitemMapper;
 import com.csee.swplus.mileage.etcSubitem.repository.EtcSubitemRepository;
 import com.csee.swplus.mileage.util.SemesterUtil;
-import com.csee.swplus.mileage.util.file.FileService;
+import com.csee.swplus.mileage.etcSubitem.file.FileService;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -63,13 +63,13 @@ public class EtcSubitemService {
             etcSubitem.setMPoint(mPoint);
 
 //            2. 파일 처리
-//            FileService fileService = new FileService();
-//            String fileUrl = fileService.saveFile(file);
-//            etcSubitem.setDescription2(fileUrl);
+            FileService fileService = new FileService();
+            String fileUrl = fileService.saveFile(file);
+            etcSubitem.setDescription2(fileUrl);
 
 //            3. DB에 저장
             etcSubitemRepository.save(etcSubitem);
-            
+
 //            4. 성공 메세지 반환
             return new MessageResponseDto("기타 항목이 등록되었습니다.");
         } catch (Exception e) {
