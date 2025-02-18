@@ -3,15 +3,18 @@ package com.csee.swplus.mileage.etcSubitem.dto;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class EtcSubitemResponseDto {    // 관리자가 신청 받기를 허용한 (subitem 테이블의 student_input = 'Y') 기타 항목 (subitem) 전용 DTO
+public class EtcSubitemResponseDto {   // 학생이 신청한 기타 항목 record 전용 DTO
     private int subitemId;
     private String subitemName;
-    private int categoryId;
-    private String categoryName;
     private String semester;
+    private String description1;    // 등록 상세 정보
+    private String description2;    // 추가 설명 (선택)
+    private LocalDateTime regDate;  // 기타 항목 신청 일자
+    private LocalDateTime modDate;  // 수정 일자
+    private int recordId;
 }
 

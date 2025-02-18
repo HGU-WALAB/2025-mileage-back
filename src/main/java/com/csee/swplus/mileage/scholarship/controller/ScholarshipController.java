@@ -1,11 +1,10 @@
 package com.csee.swplus.mileage.scholarship.controller;
 
 import com.csee.swplus.mileage.scholarship.dto.ScholarshipRequestDto;
-import com.csee.swplus.mileage.util.dto.MessageResponseDto;
+import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import com.csee.swplus.mileage.scholarship.service.ScholarshipService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.bridge.Message;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

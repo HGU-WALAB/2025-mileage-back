@@ -4,7 +4,7 @@
 
 <mapper namespace="com.csee.swplus.mileage.etcSubitem.mapper.EtcSubitemMapper">
 
-    <select id="findAllStudentInputSubitems" parameterType="string" resultType="com.csee.swplus.mileage.etcSubitem.dto.EtcSubitemResponseDto">
+    <select id="findAllStudentInputSubitems" resultType="com.csee.swplus.mileage.etcSubitem.dto.StudentInputSubitemResponseDto">
         SELECT mS.id AS subitemId,
                cname AS categoryName,
                mC.id AS categoryId,
@@ -17,7 +17,7 @@
 		ORDER BY mS.regdate;
     </select>
 
-    <select id="findAllRequestedEtcSubitems" resultType="com.csee.swplus.mileage.etcSubitem.dto.RequestedEtcSubitemResponseDto">
+    <select id="findAllEtcSubitems" resultType="com.csee.swplus.mileage.etcSubitem.dto.EtcSubitemResponseDto">
         SELECT mR.subitem_id AS subitemId,
                mS.subitem_name AS subitemName,
                mR.semester AS semester,
@@ -38,6 +38,12 @@
           AND mR.category_id = '240'  -- subitem과 category 연결
           AND mS.student_input = 'Y'  -- student_input 조건
         ORDER BY mR.regdate;
+    </select>
+
+    <select id="getMPoint" resultType="int">
+        SELECT mS.weight AS weight
+        FROM _sw_mileage_subitem AS mS
+        WHERE mS.id = #{subitemId}
     </select>
 
 </mapper>
