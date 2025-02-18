@@ -45,7 +45,7 @@ public class EtcSubitemService {
     }
 
     @Transactional
-    public MessageResponseDto postEtcSubitems(int studentId, String semester, String description1, String description2, int subitemId, String snum, String sname, MultipartFile file) {
+    public MessageResponseDto postEtcSubitem(int studentId, String semester, String description1, String description2, int subitemId, String snum, String sname, MultipartFile file) {
         try {
 //            1. EtcSubitem 엔티티 생성 및 저장
             EtcSubitem etcSubitem = new EtcSubitem();
@@ -93,7 +93,45 @@ public class EtcSubitemService {
         }
     }
 
-//    update
+    @Transactional
+    public MessageResponseDto patchEtcSubitem(int studentId, int recordId, String description1, String description2, int subitemId, MultipartFile file) {
+        try {
+//            1. 기존 항목 조회
+            EtcSubitem etcSubitem = etcSubitemRepository.findById(recordId)
+                    .orElseThrow(() -> new RuntimeException("해당 항목을 찾을 수 없습니다."));
+
+//            2. 항목 정보 업데이트
+            etcSubitem.setDescription1(description1);
+            etcSubitem.setDescription2(description2);
+            etcSubitemRepository.save(etcSubitem);
+
+//            3. 파일 업데이트
+            if (file != null && !file.isEmpty()) {
+                // 기존 파일 삭제
+                List<EtcSubitemFile> existingFiles = fileRepository.findByRecordId(recordId);
+                for (EtcSubitemFile existingFile : existingFiles) {
+                    fileService.deleteFile(existingFile.getFilename());
+                }
+                fileRepository.deleteByRecordId(recordId);
+
+                // 새 파일 저장
+                String savedFileName = fileService.saveFile(file);
+                EtcSubitemFile newFile = new EtcSubitemFile();
+                newFile.setRecordId(recordId);
+                newFile.setOriginalFilename(file.getOriginalFilename());
+                newFile.setFilename(savedFileName);
+                newFile.setFilesize(fileService.formatFileSize(file.getSize()));
+                newFile.setSemester(etcSubitem.getSemester());
+
+                fileRepository.save(newFile);
+            }
+
+            return new MessageResponseDto("항목이 성공적으로 수정되었습니다.");
+        } catch (Exception e) {
+            log.error("⚠️ 항목 수정 중 오류 발생: ", e);
+            throw new RuntimeException("항목 수정 중 오류가 발생했습니다.");
+        }
+    }
 
 //    delete
 

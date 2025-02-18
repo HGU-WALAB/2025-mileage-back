@@ -46,21 +46,32 @@ public class EtcSubitemController {
             @RequestParam("subitemId") int subitemId,
             @RequestParam("snum") String snum,
             @RequestParam("sname") String sname,
-            @RequestParam(value = "file", required = false) MultipartFile file
+            @RequestPart(value = "file", required = false) MultipartFile file
             ) {
         log.info("Content Type: {}", file.getContentType());
         log.info("File Name: {}", file.getOriginalFilename());
         log.info("File Size: {}", file.getSize());
 
         return ResponseEntity.ok(
-                etcSubitemService.postEtcSubitems(studentId, semester, description1, description2, subitemId, snum, sname, file)
+                etcSubitemService.postEtcSubitem(studentId, semester, description1, description2, subitemId, snum, sname, file)
         );
     }
 
-//    @PatchMapping(value = "/{studentId}/{recordId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<MessageResponseDto> patchEtcSubitems (
-//            @PathVariable int studentId,
-//            @PathVariable int recordId,
-//            @RequestParam
-//    )
+    @PatchMapping(value = "/{studentId}/{recordId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<MessageResponseDto> patchEtcSubitems (
+            @PathVariable int studentId,
+            @PathVariable int recordId,
+            @RequestParam(value = "description1", required = false) String description1,
+            @RequestParam(value = "description2", required = false) String description2,
+            @RequestParam("subitemId") int subitemId,
+            @RequestPart(value = "file", required = false) MultipartFile file
+    ) {
+        log.info("Content Type: {}", file.getContentType());
+        log.info("File Name: {}", file.getOriginalFilename());
+        log.info("File Size: {}", file.getSize());
+
+        return ResponseEntity.ok(
+                etcSubitemService.patchEtcSubitem(studentId, recordId, description1, description2, subitemId, file)
+        );
+    }
 }
