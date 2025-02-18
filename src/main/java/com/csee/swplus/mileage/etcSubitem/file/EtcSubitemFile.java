@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "_sw_mileage_record_files")
-public class File {
+public class EtcSubitemFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,5 +25,6 @@ public class File {
 
     private String semester;
 
+    @Column(insertable = false)
     private LocalDateTime regdate;
 }
