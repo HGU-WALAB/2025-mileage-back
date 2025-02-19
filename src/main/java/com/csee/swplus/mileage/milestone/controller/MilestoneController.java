@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,24 @@ public class MilestoneController {
     public ResponseEntity<DataWrapper> getMilestoneCapabilities() {
         return ResponseEntity.ok(
                 milestoneService.getMilestoneCapabilities()
+        );
+    }
+
+    @GetMapping("/{studentId}")
+    public ResponseEntity<DataWrapper> getMilestonePoint(
+            @PathVariable String studentId
+    ) {
+        return ResponseEntity.ok(
+                milestoneService.getMilestonePoint(studentId)
+        );
+    }
+
+    @GetMapping("/semester/{studentId}")
+    public ResponseEntity<DataWrapper> getMilestoneSemester(
+            @PathVariable String studentId
+    ) {
+        return ResponseEntity.ok(
+                milestoneService.getMilestoneSemester(studentId)
         );
     }
 }

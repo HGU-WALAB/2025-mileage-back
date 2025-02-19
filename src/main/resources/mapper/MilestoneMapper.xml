@@ -11,4 +11,12 @@
         FROM _sw_milestone;
     </select>
 
+    <select id="findAllMilestonePoint" resultType="com.csee.swplus.mileage.milestone.dto.response.MilestonePointResponseDto">
+
+    </select>
+
+    <select id="findAllMilestoneBySemester" resultType="com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterResponseDto">
+
+    </select>
+
 </mapper>
