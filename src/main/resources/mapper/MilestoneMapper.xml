@@ -4,8 +4,11 @@
 
 <mapper namespace="com.csee.swplus.mileage.milestone.mapper.MilestoneMapper">
 
-    <select id="findAllMilestoneCapability" parameterType="map">
-
+    <select id="findAllMilestoneCapability" resultType="com.csee.swplus.mileage.milestone.dto.response.MilestoneResponseDto">
+        SELECT id AS capabilityId,
+               name AS capabilityName,
+               description AS description
+        FROM _sw_milestone;
     </select>
 
 </mapper>

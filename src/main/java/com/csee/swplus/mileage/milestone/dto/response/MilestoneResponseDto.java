@@ -8,7 +8,5 @@ import lombok.Data;
 public class MilestoneResponseDto {
     private int capabilityId;
     private String capabilityName;
-    private String subitemName1;        // 예시 항목명
-    private String subitemName2;        // 예시 항목명
     private String description;
 }

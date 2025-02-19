@@ -19,14 +19,18 @@ public class EtcSubitemController {
 
     @GetMapping("")
     public ResponseEntity<DataWrapper> getStudentInputSubitems () {
-        return ResponseEntity.ok(etcSubitemService.getStudentInputSubitems());
+        return ResponseEntity.ok(
+                etcSubitemService.getStudentInputSubitems()
+        );
     }
 
     @GetMapping("/{studentId}")
     public ResponseEntity<DataWrapper> getEtcSubitems (
             @PathVariable int studentId
     ) {
-        return ResponseEntity.ok(etcSubitemService.getEtcSubitems(studentId));
+        return ResponseEntity.ok(
+                etcSubitemService.getEtcSubitems(studentId)
+        );
     }
 
 //    @PostMapping(value = "/test/{studentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -34,7 +38,9 @@ public class EtcSubitemController {
 //            @PathVariable int studentId,
 //            @RequestPart MultipartFile file
 //    ) {
-//        return ResponseEntity.ok("File received: " + file.getOriginalFilename());
+//        return ResponseEntity.ok(
+//          "File received: " + file.getOriginalFilename()
+//        );
 //    }
 
     @PostMapping(value = "/{studentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
