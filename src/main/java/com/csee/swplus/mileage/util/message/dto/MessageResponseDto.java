@@ -1,4 +1,4 @@
-package com.csee.swplus.mileage.util.dto;
+package com.csee.swplus.mileage.util.message.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

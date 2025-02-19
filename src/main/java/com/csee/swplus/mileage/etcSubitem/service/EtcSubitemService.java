@@ -1,14 +1,22 @@
 package com.csee.swplus.mileage.etcSubitem.service;
 
-import com.csee.swplus.mileage.etcSubitem.dto.DataWrapper;
+import com.csee.swplus.mileage.etcSubitem.domain.EtcSubitem;
+import com.csee.swplus.mileage.etcSubitem.file.EtcSubitemFile;
+import com.csee.swplus.mileage.etcSubitem.file.EtcSubitemFileRepository;
+import com.csee.swplus.mileage.etcSubitem.file.EtcSubitemFileService;
+import com.csee.swplus.mileage.util.DataWrapper;
+import com.csee.swplus.mileage.etcSubitem.dto.StudentInputSubitemResponseDto;
 import com.csee.swplus.mileage.etcSubitem.dto.EtcSubitemResponseDto;
-import com.csee.swplus.mileage.etcSubitem.dto.RequestedEtcSubitemResponseDto;
 import com.csee.swplus.mileage.etcSubitem.mapper.EtcSubitemMapper;
+import com.csee.swplus.mileage.etcSubitem.repository.EtcSubitemRepository;
 import com.csee.swplus.mileage.util.SemesterUtil;
+import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,22 +25,132 @@ import java.util.List;
 @Slf4j
 public class EtcSubitemService {
     private final EtcSubitemMapper etcSubitemMapper;
+    private final EtcSubitemRepository etcSubitemRepository;
+    private final EtcSubitemFileRepository fileRepository;
+    private final EtcSubitemFileService fileService;
 
-    @Transactional
     public DataWrapper getStudentInputSubitems() {
         String currentSemester = SemesterUtil.getCurrentSemester();
         log.info("📝 getCurrentSemester 결과 - current semester: " + currentSemester);
-        List<EtcSubitemResponseDto> res = etcSubitemMapper.findAllStudentInputSubitems(currentSemester);
+        List<StudentInputSubitemResponseDto> res = etcSubitemMapper.findAllStudentInputSubitems(currentSemester);
         log.info("📝 findAllStudentInputSubitems 결과 - res: {}", res);
         return new DataWrapper(res);
     }
 
-    @Transactional
-    public DataWrapper getRequestedEtcSubitems(int studentId) {
+    public DataWrapper getEtcSubitems(int studentId) {
         String currentSemester = SemesterUtil.getCurrentSemester();
         log.info("📝 getCurrentSemester 결과 - current semester: " + currentSemester);
-        List<RequestedEtcSubitemResponseDto> res = etcSubitemMapper.findAllRequestedEtcSubitems(studentId, currentSemester);
+        List<EtcSubitemResponseDto> res = etcSubitemMapper.findAllEtcSubitems(studentId, currentSemester);
         log.info("📝 getRequestedEtcSubitems 결과 - res: {}", res);
         return new DataWrapper(res);
+    }
+
+    @Transactional
+    public MessageResponseDto postEtcSubitem(int studentId, String semester, String description1, String description2, int subitemId, String snum, String sname, MultipartFile file) {
+        try {
+//            1. EtcSubitem 엔티티 생성 및 저장
+            EtcSubitem etcSubitem = new EtcSubitem();
+//            앞단에서 전달 받는 값
+            etcSubitem.setSemester(semester);
+            etcSubitem.setSubitemId(subitemId);
+            etcSubitem.setSnum(snum);
+            etcSubitem.setSname(sname);
+            etcSubitem.setDescription1(description1);
+            etcSubitem.setDescription2(description2);
+
+//           고정적인 값
+            etcSubitem.setCategoryId(240);
+            etcSubitem.setValue(1);
+            etcSubitem.setExtraPoint(0);
+
+            EtcSubitem savedEtcSubitem = etcSubitemRepository.save(etcSubitem);
+
+//            마일리지 포인트
+            int mPoint = etcSubitemMapper.getMPoint(subitemId);
+            etcSubitem.setMPoint(mPoint);
+
+//            2. 파일 처리 및 저장
+            if (file != null && !file.isEmpty()) {
+//                실제 파일 저장
+                String savedFileName = fileService.saveFile(file);
+
+//                파일 관련 정보 DB에 저장
+                EtcSubitemFile newFile = new EtcSubitemFile();
+                newFile.setRecordId(savedEtcSubitem.getId());
+                newFile.setOriginalFilename(file.getOriginalFilename());
+                newFile.setFilename(savedFileName);
+//                filesize DB에서 varchar 타입임
+                newFile.setFilesize(fileService.formatFileSize(file.getSize()));
+                newFile.setSemester(semester);
+
+                fileRepository.save(newFile);
+            }
+
+//            3. 성공 메세지 반환
+            return new MessageResponseDto("기타 항목이 등록되었습니다.");
+        } catch (Exception e) {
+            log.error("⚠️ 기타 항목 등록 중 오류 발생: ", e);
+            throw new RuntimeException("기타 항목 등록 중 오류가 발생했습니다.");
+        }
+    }
+
+    @Transactional
+    public MessageResponseDto patchEtcSubitem(int studentId, int recordId, String description1, String description2, int subitemId, MultipartFile file) {
+        try {
+//            1. 기존 항목 조회
+            EtcSubitem etcSubitem = etcSubitemRepository.findById(recordId)
+                    .orElseThrow(() -> new RuntimeException("해당 항목을 찾을 수 없습니다."));
+
+//            2. 항목 정보 업데이트
+            etcSubitem.setDescription1(description1);
+            etcSubitem.setDescription2(description2);
+            etcSubitemRepository.save(etcSubitem);
+
+//            3. 파일 업데이트
+            if (file != null && !file.isEmpty()) {
+                // 기존 파일 삭제
+                List<EtcSubitemFile> existingFiles = fileRepository.findByRecordId(recordId);
+                for (EtcSubitemFile existingFile : existingFiles) {
+                    fileService.deleteFile(existingFile.getFilename());
+                }
+                fileRepository.deleteByRecordId(recordId);
+
+                // 새 파일 저장
+                String savedFileName = fileService.saveFile(file);
+                EtcSubitemFile newFile = new EtcSubitemFile();
+                newFile.setRecordId(recordId);
+                newFile.setOriginalFilename(file.getOriginalFilename());
+                newFile.setFilename(savedFileName);
+                newFile.setFilesize(fileService.formatFileSize(file.getSize()));
+                newFile.setSemester(etcSubitem.getSemester());
+
+                fileRepository.save(newFile);
+            }
+
+            return new MessageResponseDto("기타 항목이 수정되었습니다.");
+        } catch (Exception e) {
+            log.error("⚠️ 기타 항목 수정 중 오류 발생: ", e);
+            throw new RuntimeException("기타 항목 수정 중 오류가 발생했습니다.");
+        }
+    }
+
+    @Transactional
+    public MessageResponseDto deleteEtcSubitem(int studentId, int recordId) {
+        try {
+//            1. 파일 삭제
+            List<EtcSubitemFile> files = fileRepository.findByRecordId(recordId);
+            for (EtcSubitemFile file : files) {
+                fileService.deleteFile(file.getFilename());
+            }
+            fileRepository.deleteByRecordId(recordId);
+
+//            2. 항목 삭제
+            etcSubitemRepository.deleteById(recordId);
+
+            return new MessageResponseDto("기타 항목이 삭제되었습니다.");
+        } catch(Exception e) {
+            log.error("⚠️ 기타 항목 삭제 중 오류 발생: ", e);
+            throw new RuntimeException("기타 항목 삭제 중 오류가 발생했습니다.");
+        }
     }
 }
