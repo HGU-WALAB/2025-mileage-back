@@ -26,7 +26,7 @@ public class MilestoneController {
 
     @GetMapping("/{studentId}")
     public ResponseEntity<DataWrapper> getMilestonePoint(
-            @PathVariable String studentId
+            @PathVariable int studentId
     ) {
         return ResponseEntity.ok(
                 milestoneService.getMilestonePoint(studentId)
@@ -34,8 +34,17 @@ public class MilestoneController {
     }
 
     @GetMapping("/semester/{studentId}")
+    public ResponseEntity<DataWrapper> getTotalMilestoneSemester(
+            @PathVariable int studentId
+    ) {
+        return ResponseEntity.ok(
+                milestoneService.getTotalMilestoneSemester(studentId)
+        );
+    }
+
+    @GetMapping("/milestone/{studentId}")
     public ResponseEntity<DataWrapper> getMilestoneSemester(
-            @PathVariable String studentId
+            @PathVariable int studentId
     ) {
         return ResponseEntity.ok(
                 milestoneService.getMilestoneSemester(studentId)

@@ -3,6 +3,7 @@ package com.csee.swplus.mileage.milestone.service;
 import com.csee.swplus.mileage.milestone.dto.response.MilestonePointResponseDto;
 import com.csee.swplus.mileage.milestone.dto.response.MilestoneResponseDto;
 import com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterResponseDto;
+import com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterTotalPointResponseDto;
 import com.csee.swplus.mileage.milestone.mapper.MilestoneMapper;
 import com.csee.swplus.mileage.util.DataWrapper;
 import lombok.RequiredArgsConstructor;
@@ -23,14 +24,20 @@ public class MilestoneService {
         return new DataWrapper(res);
     }
 
-    public DataWrapper getMilestonePoint(String studentId) {
-        List<MilestonePointResponseDto> res = milestoneMapper.findAllMilestonePoint();
+    public DataWrapper getMilestonePoint(int studentId) {
+        List<MilestonePointResponseDto> res = milestoneMapper.findAllMilestonePoint(studentId);
         log.info("📝 findAllMilestonePoint 결과 - res: {}", res);
         return new DataWrapper(res);
     }
 
-    public DataWrapper getMilestoneSemester(String studentId) {
-        List<MilestoneSemesterResponseDto> res = milestoneMapper.findAllMilestoneBySemester();
+    public DataWrapper getMilestoneSemester(int studentId) {
+        List<MilestoneSemesterResponseDto> res = milestoneMapper.findEachMilestoneBySemester(studentId);
+        log.info("📝 findEachMilestoneBySemester 결과 - res: {}", res);
+        return new DataWrapper(res);
+    }
+
+    public DataWrapper getTotalMilestoneSemester(int studentId) {
+        List<MilestoneSemesterTotalPointResponseDto> res = milestoneMapper.findAllMilestoneBySemester(studentId);
         log.info("📝 findAllMilestoneBySemester 결과 - res: {}", res);
         return new DataWrapper(res);
     }

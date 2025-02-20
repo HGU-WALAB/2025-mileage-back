@@ -3,7 +3,9 @@ package com.csee.swplus.mileage.milestone.mapper;
 import com.csee.swplus.mileage.milestone.dto.response.MilestonePointResponseDto;
 import com.csee.swplus.mileage.milestone.dto.response.MilestoneResponseDto;
 import com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterResponseDto;
+import com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterTotalPointResponseDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,7 +13,9 @@ import java.util.List;
 public interface MilestoneMapper {
     List<MilestoneResponseDto> findAllMilestoneCapability();
 
-    List<MilestonePointResponseDto> findAllMilestonePoint();
+    List<MilestonePointResponseDto> findAllMilestonePoint(@Param("studentId") int studentId);
 
-    List<MilestoneSemesterResponseDto> findAllMilestoneBySemester();
+    List<MilestoneSemesterResponseDto> findEachMilestoneBySemester(@Param("studentId") int studentId);
+
+    List<MilestoneSemesterTotalPointResponseDto> findAllMilestoneBySemester(@Param("studentId") int studentId);
 }
