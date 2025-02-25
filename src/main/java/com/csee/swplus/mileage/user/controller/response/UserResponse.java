@@ -1,0 +1,33 @@
+package com.csee.swplus.mileage.user.controller.response;
+
+import lombok.*;
+import com.csee.swplus.mileage.user.entity.Users;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class UserResponse {
+    private String studentId;
+    private String studentName;
+    private String studentEmail;
+    private String department;
+    private String major1;
+    private String major2;
+    private Integer grade;
+    private Integer term;
+
+    public static UserResponse from(Users user) {
+        return UserResponse.builder()
+                .studentId(user.getUniqueId())
+                .studentName(user.getName())
+                .studentEmail(user.getEmail())
+                .department(user.getDepartment())
+                .major1(user.getMajor1())
+                .major2(user.getMajor2())
+                .grade(user.getGrade())
+                .term(user.getSemester())
+                .build();
+    }
+}
