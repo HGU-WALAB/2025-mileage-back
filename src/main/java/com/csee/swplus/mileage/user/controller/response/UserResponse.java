@@ -17,8 +17,9 @@ public class UserResponse {
     private String major2;
     private Integer grade;
     private Integer term;
+    private String studentType;
 
-    public static UserResponse from(Users user) {
+    public static UserResponse from(Users user, String stype) {
         return UserResponse.builder()
                 .studentId(user.getUniqueId())
                 .studentName(user.getName())
@@ -28,6 +29,7 @@ public class UserResponse {
                 .major2(user.getMajor2())
                 .grade(user.getGrade())
                 .term(user.getSemester())
+                .studentType(stype)
                 .build();
     }
 }

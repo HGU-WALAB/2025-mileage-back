@@ -16,7 +16,7 @@ import jakarta.servlet.http.Cookie;
 
 @RestController
 @RequestMapping("/api/mileage/auth")
-@CrossOrigin(origins = {"http://localhost:5173"})
+//@CrossOrigin(origins = {"http://localhost:5173"})
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
@@ -34,6 +34,7 @@ public class AuthController {
         // 2. AuthService를 통해 로그인 처리 및 LoginResponse 생성 (여기에는 토큰이 포함됨)
         LoginResponse loginResponse = LoginResponse.from(authService.login(authDto));
         log.info("Full LoginResponse: {}", loginResponse);
+        log.info("CurrentSemester value in LoginResponse: {}", loginResponse.getCurrentSemester());
 
         // 3. 쿠키에 JWT 토큰 저장 (프론트엔드로는 토큰 없이 전달)
         HttpHeaders headers = new HttpHeaders();

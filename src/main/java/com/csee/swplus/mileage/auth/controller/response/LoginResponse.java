@@ -16,6 +16,8 @@ public class LoginResponse {
     private String major2;
     private Integer grade;
     private Integer term;
+    private String currentSemester;
+    private String studentType;
 
     public static LoginResponse from(AuthDto authDto) {
         return LoginResponse.builder()
@@ -28,7 +30,14 @@ public class LoginResponse {
                 .major2(authDto.getMajor2())
                 .grade(authDto.getGrade())
                 .term(authDto.getTerm())
+                .currentSemester(authDto.getCurrentSemester())
+                .studentType(authDto.getStudentType())
                 .build();
+    }
+
+    public LoginResponse withCurrentSemester(String currentSemester) {
+        this.currentSemester = currentSemester;
+        return this;
     }
 
     @Override
@@ -43,6 +52,7 @@ public class LoginResponse {
                 ", major2='" + major2 + '\'' +
                 ", grade=" + grade +
                 ", term=" + term +
+                ", currentSemester=" + currentSemester +
                 '}';
     }
 }

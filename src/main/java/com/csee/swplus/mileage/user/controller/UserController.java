@@ -18,6 +18,7 @@ public class UserController {
     @GetMapping("/{studentId}")
     public ResponseEntity<UserResponse> getUserInfo(@PathVariable String studentId) {
         UserResponse userResponse = userService.getUserInfo(studentId);
+        //userService.saveUserSchoolInfo(studentId);
         return ResponseEntity.ok(userResponse);
     }
 

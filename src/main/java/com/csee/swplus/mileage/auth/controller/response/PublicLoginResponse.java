@@ -16,6 +16,8 @@ public class PublicLoginResponse {
     private String major2;
     private Integer grade;
     private Integer term;
+    private String currentSemester;
+    private String studentType;
 
     public static PublicLoginResponse from(LoginResponse loginResponse) {
         return PublicLoginResponse.builder()
@@ -27,6 +29,8 @@ public class PublicLoginResponse {
                 .major2(loginResponse.getMajor2())
                 .grade(loginResponse.getGrade())
                 .term(loginResponse.getTerm())
+                .currentSemester(loginResponse.getCurrentSemester())
+                .studentType(loginResponse.getStudentType())
                 .build();
     }
 }

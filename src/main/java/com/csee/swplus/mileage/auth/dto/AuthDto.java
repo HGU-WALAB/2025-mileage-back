@@ -19,6 +19,8 @@ public class AuthDto {
     private String major2;
     private Integer grade;
     private Integer term;
+    private String currentSemester;
+    private String studentType;
 
     // 기존에 있던 메서드와 다른 형태로 변경
     public static AuthDto from(LoginRequest request) {
@@ -41,6 +43,7 @@ public class AuthDto {
                 ", major2='" + major2 + '\'' +
                 ", grade=" + grade +
                 ", term=" + term +
+                ", currentSemester=" + currentSemester +
                 '}';
     }
 }
