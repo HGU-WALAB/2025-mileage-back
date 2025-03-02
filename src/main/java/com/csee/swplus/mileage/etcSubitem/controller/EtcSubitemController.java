@@ -1,6 +1,7 @@
 package com.csee.swplus.mileage.etcSubitem.controller;
 
-import com.csee.swplus.mileage.util.DataWrapper;
+import com.csee.swplus.mileage.etcSubitem.dto.EtcSubitemResponseDto;
+import com.csee.swplus.mileage.etcSubitem.dto.StudentInputSubitemResponseDto;
 import com.csee.swplus.mileage.etcSubitem.service.EtcSubitemService;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 
+import java.util.List;
+
 @RestController // 이 class 가 REST API 관련 class 라는 것을 스프링에게 명시
 @RequestMapping("/api/mileage/etc")
 @RequiredArgsConstructor
@@ -18,14 +21,14 @@ public class EtcSubitemController {
     private final EtcSubitemService etcSubitemService;
 
     @GetMapping("")
-    public ResponseEntity<DataWrapper> getStudentInputSubitems () {
+    public ResponseEntity<List<StudentInputSubitemResponseDto>> getStudentInputSubitems () {
         return ResponseEntity.ok(
                 etcSubitemService.getStudentInputSubitems()
         );
     }
 
     @GetMapping("/{studentId}")
-    public ResponseEntity<DataWrapper> getEtcSubitems (
+    public ResponseEntity<List<EtcSubitemResponseDto>> getEtcSubitems (
             @PathVariable int studentId
     ) {
         return ResponseEntity.ok(

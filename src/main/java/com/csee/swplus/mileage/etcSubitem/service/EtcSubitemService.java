@@ -4,7 +4,6 @@ import com.csee.swplus.mileage.etcSubitem.domain.EtcSubitem;
 import com.csee.swplus.mileage.etcSubitem.file.EtcSubitemFile;
 import com.csee.swplus.mileage.etcSubitem.file.EtcSubitemFileRepository;
 import com.csee.swplus.mileage.etcSubitem.file.EtcSubitemFileService;
-import com.csee.swplus.mileage.util.DataWrapper;
 import com.csee.swplus.mileage.etcSubitem.dto.StudentInputSubitemResponseDto;
 import com.csee.swplus.mileage.etcSubitem.dto.EtcSubitemResponseDto;
 import com.csee.swplus.mileage.etcSubitem.mapper.EtcSubitemMapper;
@@ -15,7 +14,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -29,20 +27,20 @@ public class EtcSubitemService {
     private final EtcSubitemFileRepository fileRepository;
     private final EtcSubitemFileService fileService;
 
-    public DataWrapper getStudentInputSubitems() {
+    public List<StudentInputSubitemResponseDto> getStudentInputSubitems() {
         String currentSemester = SemesterUtil.getCurrentSemester();
         log.info("📝 getCurrentSemester 결과 - current semester: " + currentSemester);
         List<StudentInputSubitemResponseDto> res = etcSubitemMapper.findAllStudentInputSubitems(currentSemester);
         log.info("📝 findAllStudentInputSubitems 결과 - res: {}", res);
-        return new DataWrapper(res);
+        return res;
     }
 
-    public DataWrapper getEtcSubitems(int studentId) {
+    public List<EtcSubitemResponseDto> getEtcSubitems(int studentId) {
         String currentSemester = SemesterUtil.getCurrentSemester();
         log.info("📝 getCurrentSemester 결과 - current semester: " + currentSemester);
         List<EtcSubitemResponseDto> res = etcSubitemMapper.findAllEtcSubitems(studentId, currentSemester);
         log.info("📝 getRequestedEtcSubitems 결과 - res: {}", res);
-        return new DataWrapper(res);
+        return res;
     }
 
     @Transactional
