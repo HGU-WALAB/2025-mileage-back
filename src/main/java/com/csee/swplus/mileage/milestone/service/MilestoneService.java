@@ -29,11 +29,11 @@ public class MilestoneService {
         return res;
     }
 
-    public List<MilestoneSemesterResponseDto> getMilestoneSemester(int studentId) {
-        List<MilestoneSemesterResponseDto> res = milestoneMapper.findEachMilestoneBySemester(studentId);
-        log.info("📝 findEachMilestoneBySemester 결과 - res: {}", res);
-        return res;
-    }
+//    public List<MilestoneSemesterResponseDto> getMilestoneSemester(int studentId) {
+//        List<MilestoneSemesterResponseDto> res = milestoneMapper.findEachMilestoneBySemester(studentId);
+//        log.info("📝 findEachMilestoneBySemester 결과 - res: {}", res);
+//        return res;
+//    }
 
     public List<MilestoneSemesterTotalPointResponseDto> getTotalMilestoneSemester(int studentId) {
         List<MilestoneSemesterTotalPointResponseDto> res = milestoneMapper.findAllMilestoneBySemester(studentId);

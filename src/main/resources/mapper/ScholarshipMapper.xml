@@ -28,7 +28,7 @@
             FROM _sw_mileage_scholarship
             WHERE snum = (SELECT snum FROM _sw_student WHERE id = #{studentId})
               AND semester = #{semester}
-        )
+        );
     </insert>
 
 </mapper>

@@ -43,7 +43,7 @@
     <select id="getMPoint" resultType="int">
         SELECT mS.weight AS weight
         FROM _sw_mileage_subitem AS mS
-        WHERE mS.id = #{subitemId}
+        WHERE mS.id = #{subitemId};
     </select>
 
 </mapper>

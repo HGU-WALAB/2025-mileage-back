@@ -2,7 +2,6 @@ package com.csee.swplus.mileage.milestone.controller;
 
 import com.csee.swplus.mileage.milestone.dto.response.MilestonePointResponseDto;
 import com.csee.swplus.mileage.milestone.dto.response.MilestoneResponseDto;
-import com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterResponseDto;
 import com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterTotalPointResponseDto;
 import com.csee.swplus.mileage.milestone.service.MilestoneService;
 import lombok.RequiredArgsConstructor;
@@ -47,12 +46,12 @@ public class MilestoneController {
         );
     }
 
-    @GetMapping("/milestone/{studentId}")
-    public ResponseEntity<List<MilestoneSemesterResponseDto>> getMilestoneSemester(
-            @PathVariable int studentId
-    ) {
-        return ResponseEntity.ok(
-                milestoneService.getMilestoneSemester(studentId)
-        );
-    }
+//    @GetMapping("/milestone/{studentId}")
+//    public ResponseEntity<List<MilestoneSemesterTotalPointResponseDto>> getMilestoneSemester(
+//            @PathVariable int studentId
+//    ) {
+//        return ResponseEntity.ok(
+//                milestoneService.getMilestoneSemester(studentId)
+//        );
+//    }
 }
