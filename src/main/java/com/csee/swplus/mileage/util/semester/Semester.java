@@ -10,5 +10,6 @@ public class Semester {
     @Id
     private int id;
 
+    @Column(name = "current_semester")
     private String currentSemester; // "2024-01" 형태
 }
