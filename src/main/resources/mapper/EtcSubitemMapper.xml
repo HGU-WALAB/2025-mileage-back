@@ -34,8 +34,8 @@
             INNER JOIN _sw_mileage_category AS mC
                 ON mS.category_id = mC.id
         WHERE mR.semester = #{currentSemester}  -- 학기 조건
-          AND mSt.id = #{studentId}  -- 특정 학생 조건
-          AND mR.category_id = '240'  -- subitem과 category 연결
+          AND mSt.snum = #{studentId}  -- 특정 학생 조건
+          AND mR.category_id = '240'  -- subitem과 기타 category 연결
           AND mS.student_input = 'Y'  -- student_input 조건
         ORDER BY mR.regdate;
     </select>
@@ -44,6 +44,12 @@
         SELECT mS.weight AS weight
         FROM _sw_mileage_subitem AS mS
         WHERE mS.id = #{subitemId};
+    </select>
+
+    <select id="getSname" resultType="String">
+        SELECT s.sname AS sname
+        FROM _sw_student AS s
+        WHERE s.snum = #{studentId};
     </select>
 
 </mapper>

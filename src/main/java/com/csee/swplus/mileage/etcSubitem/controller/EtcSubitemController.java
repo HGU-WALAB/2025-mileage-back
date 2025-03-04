@@ -29,7 +29,7 @@ public class EtcSubitemController {
 
     @GetMapping("/{studentId}")
     public ResponseEntity<List<EtcSubitemResponseDto>> getEtcSubitems (
-            @PathVariable int studentId
+            @PathVariable String studentId
     ) {
         return ResponseEntity.ok(
                 etcSubitemService.getEtcSubitems(studentId)
@@ -48,13 +48,11 @@ public class EtcSubitemController {
 
     @PostMapping(value = "/{studentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MessageResponseDto> postEtcSubitem (
-            @PathVariable int studentId,
+            @PathVariable String studentId,
             @RequestParam("semester") String semester,
             @RequestParam(value = "description1", required = false) String description1,
             @RequestParam(value = "description2", required = false) String description2,
             @RequestParam("subitemId") int subitemId,
-            @RequestParam("snum") String snum,
-            @RequestParam("sname") String sname,
             @RequestPart(value = "file", required = false) MultipartFile file
             ) {
         log.info("Content Type: {}", file.getContentType());
@@ -62,13 +60,13 @@ public class EtcSubitemController {
         log.info("File Size: {}", file.getSize());
 
         return ResponseEntity.ok(
-                etcSubitemService.postEtcSubitem(studentId, semester, description1, description2, subitemId, snum, sname, file)
+                etcSubitemService.postEtcSubitem(studentId, semester, description1, description2, subitemId, file)
         );
     }
 
     @PatchMapping(value = "/{studentId}/{recordId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MessageResponseDto> patchEtcSubitem (
-            @PathVariable int studentId,
+            @PathVariable String studentId,
             @PathVariable int recordId,
             @RequestParam(value = "description1", required = false) String description1,
             @RequestParam(value = "description2", required = false) String description2,
@@ -86,7 +84,7 @@ public class EtcSubitemController {
 
     @DeleteMapping("/{studentId}/{recordId}")
     public ResponseEntity<MessageResponseDto> deleteEtcSubitem(
-            @PathVariable int studentId,
+            @PathVariable String studentId,
             @PathVariable int recordId
     ) {
         return ResponseEntity.ok(

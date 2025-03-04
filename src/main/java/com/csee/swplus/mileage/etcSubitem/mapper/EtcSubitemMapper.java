@@ -12,7 +12,9 @@ import java.util.List;
 public interface EtcSubitemMapper {
     List<StudentInputSubitemResponseDto> findAllStudentInputSubitems(@Param("currentSemester") String currentSemester);
 
-    List<EtcSubitemResponseDto> findAllEtcSubitems(@Param("studentId") int studentId, @Param("currentSemester") String currentSemester);
+    List<EtcSubitemResponseDto> findAllEtcSubitems(@Param("studentId") String studentId, @Param("currentSemester") String currentSemester);
 
     int getMPoint(@Param("subitemId") int subitemId);
+
+    String getSname(@Param("studentId") String studentId);
 }

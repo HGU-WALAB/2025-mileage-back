@@ -36,7 +36,7 @@ public class EtcSubitemService {
         return res;
     }
 
-    public List<EtcSubitemResponseDto> getEtcSubitems(int studentId) {
+    public List<EtcSubitemResponseDto> getEtcSubitems(String studentId) {
         String currentSemester = semesterUtil.getCurrentSemester();
         log.info("📝 getCurrentSemester 결과 - current semester: " + currentSemester);
         List<EtcSubitemResponseDto> res = etcSubitemMapper.findAllEtcSubitems(studentId, currentSemester);
@@ -45,22 +45,27 @@ public class EtcSubitemService {
     }
 
     @Transactional
-    public MessageResponseDto postEtcSubitem(int studentId, String semester, String description1, String description2, int subitemId, String snum, String sname, MultipartFile file) {
+    public MessageResponseDto postEtcSubitem(String studentId, String semester, String description1, String description2, int subitemId, MultipartFile file) {
         try {
 //            1. EtcSubitem 엔티티 생성 및 저장
             EtcSubitem etcSubitem = new EtcSubitem();
 //            앞단에서 전달 받는 값
             etcSubitem.setSemester(semester);
             etcSubitem.setSubitemId(subitemId);
-            etcSubitem.setSnum(snum);
-            etcSubitem.setSname(sname);
             etcSubitem.setDescription1(description1);
             etcSubitem.setDescription2(description2);
+
+            String snum = studentId;
+            etcSubitem.setSnum(snum);
 
 //           고정적인 값
             etcSubitem.setCategoryId(240);
             etcSubitem.setValue(1);
             etcSubitem.setExtraPoint(0);
+
+//            db 로부터 가져오는 값
+            String sname = etcSubitemMapper.getSname(studentId);
+            etcSubitem.setSname(sname);
 
             EtcSubitem savedEtcSubitem = etcSubitemRepository.save(etcSubitem);
 
@@ -94,7 +99,7 @@ public class EtcSubitemService {
     }
 
     @Transactional
-    public MessageResponseDto patchEtcSubitem(int studentId, int recordId, String description1, String description2, int subitemId, MultipartFile file) {
+    public MessageResponseDto patchEtcSubitem(String studentId, int recordId, String description1, String description2, int subitemId, MultipartFile file) {
         try {
 //            1. 기존 항목 조회
             EtcSubitem etcSubitem = etcSubitemRepository.findById(recordId)
@@ -134,7 +139,7 @@ public class EtcSubitemService {
     }
 
     @Transactional
-    public MessageResponseDto deleteEtcSubitem(int studentId, int recordId) {
+    public MessageResponseDto deleteEtcSubitem(String studentId, int recordId) {
         try {
 //            1. 파일 삭제
             List<EtcSubitemFile> files = fileRepository.findByRecordId(recordId);
