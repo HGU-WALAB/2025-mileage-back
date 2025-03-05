@@ -15,7 +15,8 @@
         SELECT
             m.id AS capabilityId,
             m.name AS capabilityName,
-            IFNULL(COUNT(DISTINCT CASE WHEN s.id = #{studentId} THEN r.subitem_id END), 0) AS milestoneCount
+            IFNULL(COUNT(DISTINCT CASE WHEN s.snum = #{studentId} THEN r.subitem_id END), 0) AS milestoneCount,
+            IFNULL(COUNT(DISTINCT si.id), 0) AS totalMilestoneCount
         FROM _sw_milestone m
                  LEFT JOIN category_milestone cm
                            ON m.id = cm.milestone_id
@@ -80,7 +81,7 @@
                    ), 0) AS totalMilestoneCount
         FROM _sw_mileage_record r
                  LEFT JOIN _sw_student s ON r.snum = s.snum
-        WHERE s.id = #{studentId}
+        WHERE s.snum = #{studentId}
         GROUP BY
             r.semester
         ORDER BY
