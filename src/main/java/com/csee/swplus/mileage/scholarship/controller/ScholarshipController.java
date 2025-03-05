@@ -22,7 +22,7 @@ public class ScholarshipController {
         // 성공 시: 장학금 신청한 학생 ID (PK 를 말하는 것이며 학번 sNum 과 다름) 반환
         // 실패 시: 에러 메세지 반환
         try {
-            scholarshipService.applyScholarship(studentId, requestDto.isAgree());
+            scholarshipService.applyScholarship(studentId, requestDto.getIsAgree());
             return ResponseEntity.ok(new MessageResponseDto(Integer.toString(studentId)));
         } catch (IllegalStateException e) {
             return ResponseEntity.badRequest().body(new MessageResponseDto(e.getMessage()));

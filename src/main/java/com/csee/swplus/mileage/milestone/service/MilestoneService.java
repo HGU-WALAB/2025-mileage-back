@@ -5,7 +5,6 @@ import com.csee.swplus.mileage.milestone.dto.response.MilestoneResponseDto;
 import com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterResponseDto;
 import com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterTotalPointResponseDto;
 import com.csee.swplus.mileage.milestone.mapper.MilestoneMapper;
-import com.csee.swplus.mileage.util.DataWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,27 +17,27 @@ import java.util.List;
 public class MilestoneService {
     private final MilestoneMapper milestoneMapper;
 
-    public DataWrapper getMilestoneCapabilities() {
+    public List<MilestoneResponseDto> getMilestoneCapabilities() {
         List<MilestoneResponseDto> res = milestoneMapper.findAllMilestoneCapability();
         log.info("📝 findAllMilestoneCapability 결과 - res: {}", res);
-        return new DataWrapper(res);
+        return res;
     }
 
-    public DataWrapper getMilestonePoint(int studentId) {
+    public List<MilestonePointResponseDto> getMilestonePoint(int studentId) {
         List<MilestonePointResponseDto> res = milestoneMapper.findAllMilestonePoint(studentId);
         log.info("📝 findAllMilestonePoint 결과 - res: {}", res);
-        return new DataWrapper(res);
+        return res;
     }
 
-    public DataWrapper getMilestoneSemester(int studentId) {
-        List<MilestoneSemesterResponseDto> res = milestoneMapper.findEachMilestoneBySemester(studentId);
-        log.info("📝 findEachMilestoneBySemester 결과 - res: {}", res);
-        return new DataWrapper(res);
-    }
+//    public List<MilestoneSemesterResponseDto> getMilestoneSemester(int studentId) {
+//        List<MilestoneSemesterResponseDto> res = milestoneMapper.findEachMilestoneBySemester(studentId);
+//        log.info("📝 findEachMilestoneBySemester 결과 - res: {}", res);
+//        return res;
+//    }
 
-    public DataWrapper getTotalMilestoneSemester(int studentId) {
+    public List<MilestoneSemesterTotalPointResponseDto> getTotalMilestoneSemester(int studentId) {
         List<MilestoneSemesterTotalPointResponseDto> res = milestoneMapper.findAllMilestoneBySemester(studentId);
         log.info("📝 findAllMilestoneBySemester 결과 - res: {}", res);
-        return new DataWrapper(res);
+        return res;
     }
 }

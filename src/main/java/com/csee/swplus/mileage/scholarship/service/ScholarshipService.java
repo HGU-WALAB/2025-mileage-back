@@ -1,6 +1,7 @@
 package com.csee.swplus.mileage.scholarship.service;
 
 import com.csee.swplus.mileage.scholarship.mapper.ScholarshipMapper;
+import com.csee.swplus.mileage.util.semester.SemesterUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,16 +14,38 @@ import java.time.LocalDateTime;
 @Slf4j
 public class ScholarshipService {
     private final ScholarshipMapper scholarshipMapper;
+    private final SemesterUtil semesterUtil;
+
+    // [기존 코드] 장학금 신청 시 _sw_student 테이블의 is_apply 와 apply_date 컬럼 update
+//    @Transactional
+//    public void applyScholarship(int studentId, boolean isAgree) {
+//        LocalDateTime now = LocalDateTime.now();
+//        int isChecked = isAgree ? 1 : 0;
+//
+//        log.info("📌 applyScholarship 실행 - studentId: {}, isAgree: {}, isChecked: {}, applyDate: {}",
+//                studentId, isAgree, isChecked, now);
+//
+//        int updatedRows = scholarshipMapper.createApplication(studentId, now, isChecked);
+//
+//        log.info("📝 createApplication 결과 - updatedRows: {}", updatedRows);
+//
+//        if (updatedRows == 0) {
+//            log.warn("⚠️ 이미 신청된 학생이거나 존재하지 않는 학생 - studentId: {}", studentId);
+//            throw new IllegalStateException("이미 신청된 학생이거나 존재하지 않는 학생입니다.");
+//        }
+//    }
+
+    // [피드백 수용 후 코드] 장학금 신청 테이블 존재
 
     @Transactional
     public void applyScholarship(int studentId, boolean isAgree) {
-        LocalDateTime now = LocalDateTime.now();
         int isChecked = isAgree ? 1 : 0;
+        String semester = semesterUtil.getCurrentSemester();
 
-        log.info("📌 applyScholarship 실행 - studentId: {}, isAgree: {}, isChecked: {}, applyDate: {}",
-                studentId, isAgree, isChecked, now);
+        log.info("📌 applyScholarship 실행 - studentId: {}, isAgree: {}, isChecked: {}, semester: {}",
+                studentId, isAgree, isChecked, semester);
 
-        int updatedRows = scholarshipMapper.createApplication(studentId, now, isChecked);
+        int updatedRows = scholarshipMapper.createApplication(studentId, isChecked, semester);
 
         log.info("📝 createApplication 결과 - updatedRows: {}", updatedRows);
 

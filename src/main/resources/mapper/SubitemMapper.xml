@@ -4,23 +4,23 @@
 <mapper namespace="com.csee.swplus.mileage.subitem.mapper.SubitemMapper">
     <select id="findSubitems" resultType="com.csee.swplus.mileage.subitem.dto.SubitemResponseDto">
         SELECT
-        mS.id AS subitemId,
-        mS.subitem_name AS subitemName,
-        mC.id AS categoryId,
-        mC.cname AS categoryName,
-        mS.semester AS semester,
-        mR.id AS recordId,
-        mR.description1 AS description1,
-        -- If there's no record (mR.id IS NULL), mark done as false
+            mS.id AS subitemId,
+            mS.subitem_name AS subitemName,
+            mC.id AS categoryId,
+            mC.cname AS categoryName,
+            mS.semester AS semester,
+            mR.id AS recordId,
+            mR.description1 AS description1,
+            -- If there's no record (mR.id IS NULL), mark done as false
         CASE
         WHEN mR.id IS NOT NULL THEN TRUE
         ELSE FALSE
         END AS done
-        FROM _sw_mileage_subitem AS mS
+            FROM _sw_mileage_subitem AS mS
         INNER JOIN _sw_mileage_category AS mC
-        ON mS.category_id = mC.id
+            ON mS.category_id = mC.id
         LEFT JOIN _sw_mileage_record AS mR
-        ON mR.subitem_id = mS.id
+            ON mR.subitem_id = mS.id
         WHERE (#{semester} = 'all' OR mS.semester = #{semester})
 
         <if test="keyword != null">
@@ -33,15 +33,14 @@
 
         <if test="done != 'all'">
             AND (
-            (#{done} = 'Y' AND mR.id IS NOT NULL)
-            OR (#{done} = 'N' AND mR.id IS NULL)
+                (#{done} = 'Y' AND mR.id IS NOT NULL)
+                OR (#{done} = 'N' AND mR.id IS NULL)
             )
         </if>
 
         <if test="studentId != null">
             AND (mR.snum = #{studentId} OR mR.snum IS NULL)
         </if>
-
         ORDER BY mS.regdate;
     </select>
 </mapper>

@@ -15,7 +15,7 @@ public interface MilestoneMapper {
 
     List<MilestonePointResponseDto> findAllMilestonePoint(@Param("studentId") int studentId);
 
-    List<MilestoneSemesterResponseDto> findEachMilestoneBySemester(@Param("studentId") int studentId);
+//    List<MilestoneSemesterResponseDto> findEachMilestoneBySemester(@Param("studentId") int studentId);
 
     List<MilestoneSemesterTotalPointResponseDto> findAllMilestoneBySemester(@Param("studentId") int studentId);
 }

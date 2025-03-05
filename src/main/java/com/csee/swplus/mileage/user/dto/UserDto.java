@@ -2,6 +2,8 @@ package com.csee.swplus.mileage.user.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,4 +19,5 @@ public class UserDto {
     private Integer grade;
     private Integer term;
     private String isStudent;
+    private LocalDateTime modDate;
 }
