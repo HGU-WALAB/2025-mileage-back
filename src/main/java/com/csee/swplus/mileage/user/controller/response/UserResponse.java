@@ -3,6 +3,8 @@ package com.csee.swplus.mileage.user.controller.response;
 import lombok.*;
 import com.csee.swplus.mileage.user.entity.Users;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,6 +20,7 @@ public class UserResponse {
     private Integer grade;
     private Integer term;
     private String studentType;
+    private LocalDateTime modDate;
 
     public static UserResponse from(Users user, String stype) {
         return UserResponse.builder()
@@ -30,6 +33,7 @@ public class UserResponse {
                 .grade(user.getGrade())
                 .term(user.getSemester())
                 .studentType(stype)
+                .modDate(user.getModdate())
                 .build();
     }
 }
