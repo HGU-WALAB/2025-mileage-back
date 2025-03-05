@@ -2,7 +2,7 @@ package com.csee.swplus.mileage.scholarship.service;
 
 import com.csee.swplus.mileage.scholarship.mapper.ScholarshipMapper;
 import com.csee.swplus.mileage.util.semester.SemesterUtil;
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
