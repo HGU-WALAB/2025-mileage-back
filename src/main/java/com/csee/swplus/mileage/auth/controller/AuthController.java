@@ -16,7 +16,7 @@ import javax.servlet.http.Cookie;
 
 @RestController
 @RequestMapping("/api/mileage/auth")
-//@CrossOrigin(origins = {"http://localhost:5173"})
+//@CrossOrigin(origins = {"http://localhost:5173", "http://walab.handong.edu"})
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
@@ -38,7 +38,7 @@ public class AuthController {
 
         // 3. 쿠키에 JWT 토큰 저장 (프론트엔드로는 토큰 없이 전달)
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.SET_COOKIE, "authToken=" + loginResponse.getToken() + "; HttpOnly; Path=/; Max-Age=7200");
+        headers.add(HttpHeaders.SET_COOKIE, "authToken=" + loginResponse.getToken() + "; HttpOnly; Path=/; Max-Age=7200;");
 
         // 4. PublicLoginResponse 생성: 토큰을 제외한 사용자 정보만 포함
         PublicLoginResponse publicResponse = PublicLoginResponse.from(loginResponse);

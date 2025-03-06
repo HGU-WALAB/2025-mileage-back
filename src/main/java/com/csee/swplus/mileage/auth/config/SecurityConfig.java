@@ -21,6 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,10 +33,10 @@ public class SecurityConfig {
     private final AuthService authService;
 
     @Value("${custom.host.client-walab}")
-    private List<String> client_walab;
+    private String client_walab;
 
     @Value("${custom.host.client-local}")
-    private List<String> client_local;
+    private String client_local;
 
 
     @Value("${custom.jwt.secret}")
@@ -44,7 +45,7 @@ public class SecurityConfig {
     @PostConstruct
     public void init() {
         log.info("🚀 Allowed CORS Clients: {} {}", client_walab, client_local);
-        log.info("🔑 Loaded SECRET_KEY: {}", SECRET_KEY);
+//        log.info("🔑 Loaded SECRET_KEY: {}", SECRET_KEY);
     }
 
     @Bean
@@ -58,7 +59,7 @@ public class SecurityConfig {
                         .antMatchers("/api/mileage/auth/**").permitAll()
                         .antMatchers("/api/mileage/users/**", "/api/mileage/{studentId}/search", "/api/mileage/apply/{studentId}", "/api/mileage/capability/**", "/api/mileage/etc/**").authenticated()
                 )
-//                .addFilterBefore(new ExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new ExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtTokenFilter(authService, key), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -68,8 +69,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(client_walab);
-        config.setAllowedOrigins(client_local);
+        List<String> allowedOrigins = new ArrayList<>();
+        allowedOrigins.add(client_walab);
+        allowedOrigins.add(client_local);
+        config.setAllowedOrigins(allowedOrigins);
         config.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "DELETE", "PUT"));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowCredentials(true);
