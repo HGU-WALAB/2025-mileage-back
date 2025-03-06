@@ -1,6 +1,6 @@
 package com.csee.swplus.mileage.auth.config;
 
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import com.csee.swplus.mileage.auth.filter.ExceptionHandlerFilter;
 import com.csee.swplus.mileage.auth.filter.JwtTokenFilter;
@@ -50,9 +50,9 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/mileage/auth/**").permitAll()
-                        .requestMatchers("/api/mileage/users/**", "/api/mileage/{studentId}/search", "/api/mileage/apply/{studentId}", "/api/mileage/capability/**", "/api/mileage/etc/**").authenticated()
+                .authorizeRequests(auth -> auth
+                        .antMatchers("/api/mileage/auth/**").permitAll()
+                        .antMatchers("/api/mileage/users/**", "/api/mileage/{studentId}/search", "/api/mileage/apply/{studentId}", "/api/mileage/capability/**", "/api/mileage/etc/**").authenticated()
                 )
 //                .addFilterBefore(new ExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtTokenFilter(authService, key), UsernamePasswordAuthenticationFilter.class);
@@ -74,7 +74,8 @@ public class SecurityConfig {
         config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration(
+                "/**", config);
         return source;
     }
 }

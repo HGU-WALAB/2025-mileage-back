@@ -10,7 +10,7 @@ import com.csee.swplus.mileage.etcSubitem.mapper.EtcSubitemMapper;
 import com.csee.swplus.mileage.etcSubitem.repository.EtcSubitemRepository;
 import com.csee.swplus.mileage.util.semester.SemesterUtil;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

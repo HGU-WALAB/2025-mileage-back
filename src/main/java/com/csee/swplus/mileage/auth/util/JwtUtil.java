@@ -1,6 +1,6 @@
 package com.csee.swplus.mileage.auth.util;
 
-import io.jsonwebtoken.security.Keys;
+//import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import com.csee.swplus.mileage.auth.exception.WrongTokenException;
 import io.jsonwebtoken.Claims;
@@ -19,7 +19,8 @@ public class JwtUtil {
 
     // ✅ SECRET_KEY를 Key 타입으로 변환하는 메서드 추가
     public static Key getSigningKey(String secretKey) {
-        return Keys.hmacShaKeyFor(secretKey.getBytes());
+        byte[] keyBytes = secretKey.getBytes();
+        return new SecretKeySpec(keyBytes, 0, keyBytes.length, "HmacSHA256");
     }
 
     // JWT Token 발급
@@ -34,7 +35,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_TIME_MS))
-                .signWith(signingKey)
+                .signWith(SignatureAlgorithm.HS256, signingKey)
                 .compact();
     }
 

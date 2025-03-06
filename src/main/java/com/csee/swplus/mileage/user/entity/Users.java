@@ -1,6 +1,6 @@
 package com.csee.swplus.mileage.user.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import lombok.extern.slf4j.Slf4j;
 import com.csee.swplus.mileage.auth.dto.AuthDto;

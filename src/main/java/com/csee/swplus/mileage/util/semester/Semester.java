@@ -1,6 +1,6 @@
 package com.csee.swplus.mileage.util.semester;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 
 @Entity
