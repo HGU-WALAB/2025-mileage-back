@@ -16,40 +16,28 @@ public class ScholarshipService {
     private final ScholarshipMapper scholarshipMapper;
     private final SemesterUtil semesterUtil;
 
-    // [기존 코드] 장학금 신청 시 _sw_student 테이블의 is_apply 와 apply_date 컬럼 update
-//    @Transactional
-//    public void applyScholarship(int studentId, boolean isAgree) {
-//        LocalDateTime now = LocalDateTime.now();
-//        int isChecked = isAgree ? 1 : 0;
-//
-//        log.info("📌 applyScholarship 실행 - studentId: {}, isAgree: {}, isChecked: {}, applyDate: {}",
-//                studentId, isAgree, isChecked, now);
-//
-//        int updatedRows = scholarshipMapper.createApplication(studentId, now, isChecked);
-//
-//        log.info("📝 createApplication 결과 - updatedRows: {}", updatedRows);
-//
-//        if (updatedRows == 0) {
-//            log.warn("⚠️ 이미 신청된 학생이거나 존재하지 않는 학생 - studentId: {}", studentId);
-//            throw new IllegalStateException("이미 신청된 학생이거나 존재하지 않는 학생입니다.");
-//        }
-//    }
-
-    // [피드백 수용 후 코드] 장학금 신청 테이블 존재
-
     @Transactional
-    public void applyScholarship(int studentId, boolean isAgree) {
+    public void applyScholarship(String studentId, boolean isAgree) {
         int isChecked = isAgree ? 1 : 0;
         String semester = semesterUtil.getCurrentSemester();
 
-        log.info("📌 applyScholarship 실행 - studentId: {}, isAgree: {}, isChecked: {}, semester: {}",
+        log.info("📌 applyScholarship-createApplication 실행 - studentId: {}, isAgree: {}, isChecked: {}, semester: {}",
                 studentId, isAgree, isChecked, semester);
 
-        int updatedRows = scholarshipMapper.createApplication(studentId, isChecked, semester);
+        int scholarshipUpdatedRows = scholarshipMapper.createApplication(studentId, isChecked, semester);
 
-        log.info("📝 createApplication 결과 - updatedRows: {}", updatedRows);
+        log.info("📝 createApplication 결과 - updatedRows: {}", scholarshipUpdatedRows);
 
-        if (updatedRows == 0) {
+        LocalDateTime now = LocalDateTime.now();
+
+        log.info("📌 applyScholarship-updateStudentApplicationStatus 실행 - studentId: {}, isAgree: {}, isChecked: {}, applyDate: {}",
+                studentId, isAgree, isChecked, now);
+
+        int studentUpdatedRows = scholarshipMapper.updateStudentApplicationStatus(studentId, now, isChecked);
+
+        log.info("📝 updateStudentApplicationStatus 결과 - updatedRows: {}", studentUpdatedRows);
+
+        if (scholarshipUpdatedRows == 0 || studentUpdatedRows == 0) {
             log.warn("⚠️ 이미 신청된 학생이거나 존재하지 않는 학생 - studentId: {}", studentId);
             throw new IllegalStateException("이미 신청된 학생이거나 존재하지 않는 학생입니다.");
         }

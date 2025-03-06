@@ -31,15 +31,19 @@ import java.util.List;
 public class SecurityConfig {
     private final AuthService authService;
 
-    @Value("${custom.host.client}")
-    private List<String> client;
+    @Value("${custom.host.client-walab}")
+    private List<String> client_walab;
+
+    @Value("${custom.host.client-local}")
+    private List<String> client_local;
+
 
     @Value("${custom.jwt.secret}")
     private String SECRET_KEY;
 
     @PostConstruct
     public void init() {
-        log.info("🚀 Allowed CORS Clients: {}", client);
+        log.info("🚀 Allowed CORS Clients: {} {}", client_walab, client_local);
         log.info("🔑 Loaded SECRET_KEY: {}", SECRET_KEY);
     }
 
@@ -63,12 +67,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(client);
+
+        config.setAllowedOrigins(client_walab);
+        config.setAllowedOrigins(client_local);
         config.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "DELETE", "PUT"));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowCredentials(true);
 
-        log.info("🌍 CORS Allowed Origins: {}", client);
+        log.info("🌍 CORS Allowed Origins: {} {}", client_walab.toString(), client_local.toString());
         log.info("✅ CORS Allowed Methods: {}", config.getAllowedMethods());
 
         config.setMaxAge(3600L);

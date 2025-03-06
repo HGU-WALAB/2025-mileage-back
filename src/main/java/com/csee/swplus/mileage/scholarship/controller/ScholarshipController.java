@@ -17,13 +17,13 @@ public class ScholarshipController {
 
     @PostMapping("/{studentId}")
     public ResponseEntity<MessageResponseDto> applyScholarship (
-            @PathVariable int studentId,
+            @PathVariable String studentId,
             @RequestBody ScholarshipRequestDto requestDto) {
         // 성공 시: 장학금 신청한 학생 ID (PK 를 말하는 것이며 학번 sNum 과 다름) 반환
         // 실패 시: 에러 메세지 반환
         try {
             scholarshipService.applyScholarship(studentId, requestDto.getIsAgree());
-            return ResponseEntity.ok(new MessageResponseDto(Integer.toString(studentId)));
+            return ResponseEntity.ok(new MessageResponseDto(studentId));
         } catch (IllegalStateException e) {
             return ResponseEntity.badRequest().body(new MessageResponseDto(e.getMessage()));
         } catch (Exception e) {

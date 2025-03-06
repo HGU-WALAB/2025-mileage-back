@@ -4,17 +4,15 @@
 
 <mapper namespace="com.csee.swplus.mileage.scholarship.mapper.ScholarshipMapper">
 
-<!-- [기존 코드] 장학금 신청 시 _sw_student 테이블의 is_apply 와 apply_date 컬럼 update -->
-<!--    <update id="createApplication" parameterType="map">-->
-<!--        UPDATE _sw_student-->
-<!--        SET is_apply = 1,-->
-<!--            apply_date = #{applyDate},-->
-<!--            is_checked = #{isChecked}-->
-<!--        WHERE id = #{studentId}-->
-<!--          AND is_apply = 0-->
-<!--    </update>-->
+    <update id="updateStudentApplicationStatus" parameterType="map">
+        UPDATE _sw_student
+        SET is_apply = 1,
+            apply_date = #{applyDate},
+            isChecked = #{isChecked}
+        WHERE snum = #{studentId}
+            AND is_apply != 1
+    </update>
 
-<!-- [피드백 수용 코드] 장학금 신청 테이블 존재 -->
     <insert id="createApplication" parameterType="map">
         INSERT INTO _sw_mileage_scholarship (snum, is_apply, semester)
         SELECT

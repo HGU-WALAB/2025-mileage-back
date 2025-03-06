@@ -29,7 +29,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final Key SECRET_KEY;  // Key 타입으로 선언
 
     private static final List<String> EXCLUDED_PATHS = Arrays.asList(
-            "/api/mileage/auth/login$"
+            "/api/mileage/auth/login$",
+            "/mileage/api/mileage/auth/login$"
     );
 
     @Override
