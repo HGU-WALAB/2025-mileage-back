@@ -10,7 +10,6 @@
             apply_date = #{applyDate},
             isChecked = #{isChecked}
         WHERE snum = #{studentId}
-            AND is_apply != 1
     </update>
 
     <insert id="createApplication" parameterType="map">
