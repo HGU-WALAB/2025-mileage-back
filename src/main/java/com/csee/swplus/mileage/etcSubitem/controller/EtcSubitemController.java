@@ -39,6 +39,23 @@ public class EtcSubitemController {
         );
     }
 
+//    특정 기타 항목의 증빙 자료 다운로드
+    @GetMapping("/download/{fileId}")
+    public ResponseEntity<?> downloadEtcSubitemFile (@PathVariable int fileId) {
+        try {
+            return ResponseEntity.ok(
+                    etcSubitemService.downloadEtcSubitemFile(fileId)
+            );
+        } catch (Exception e) {
+            log.error("파일 다운로드 중 오류 발생: ", e);
+            return ResponseEntity.internalServerError().body(
+                    new MessageResponseDto("파일 다운로드 중 오류 발생: "
+                            + e.getMessage()
+                    )
+            );
+        }
+    }
+
 //    학생이 열려 있는 기타 항목 리스트 중 하나 선택 후 신청 POST
     @PostMapping(value = "/{studentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MessageResponseDto> postEtcSubitem (

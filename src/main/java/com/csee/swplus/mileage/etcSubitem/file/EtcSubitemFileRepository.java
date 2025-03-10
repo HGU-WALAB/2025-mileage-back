@@ -8,5 +8,6 @@ import java.util.List;
 @Repository
 public interface EtcSubitemFileRepository extends JpaRepository<EtcSubitemFile, Integer> {
     List<EtcSubitemFile> findByRecordId(int recordId);
+    EtcSubitemFile findById(int id);
     void deleteByRecordId(int recordId);
 }
