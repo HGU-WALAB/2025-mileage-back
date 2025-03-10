@@ -39,3 +39,6 @@ out/
 ### application properties
 src/main/resources/*.properties
 src/main/resources/*.yml
+
+### test data
+uploads/*

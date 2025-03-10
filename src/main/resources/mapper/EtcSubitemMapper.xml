@@ -25,7 +25,9 @@
                mR.description2 AS description2,
                mR.regdate AS regDate,
                mR.moddate AS modDate,
-               mR.id AS recordId
+               mR.id AS recordId,
+               mRF.original_filename AS file,
+               mRF.id AS fileId
         FROM _sw_mileage_record AS mR
             INNER JOIN _sw_student AS mSt
                 ON mR.snum = mSt.snum
@@ -33,6 +35,8 @@
                 ON mR.subitem_id = mS.id
             INNER JOIN _sw_mileage_category AS mC
                 ON mS.category_id = mC.id
+            INNER JOIN _sw_mileage_record_files AS mRF
+                ON mR.id = mRF.record_id
         WHERE mR.semester = #{currentSemester}  -- 학기 조건
           AND mSt.snum = #{studentId}  -- 특정 학생 조건
           AND mR.category_id = '240'  -- subitem과 기타 category 연결

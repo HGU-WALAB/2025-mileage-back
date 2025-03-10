@@ -57,7 +57,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests(auth -> auth
                         .antMatchers("/api/mileage/auth/**").permitAll()
-                        .antMatchers("/api/mileage/users/**", "/api/mileage/{studentId}/search", "/api/mileage/apply/{studentId}", "/api/mileage/capability/**", "/api/mileage/etc/**").authenticated()
+                        .antMatchers("/api/mileage/users/**",
+                                "/api/mileage/{studentId}/search",
+                                "/api/mileage/apply/{studentId}",
+                                "/api/mileage/capability/**", "/api/mileage/etc/**").authenticated()
                 )
                 .addFilterBefore(new ExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtTokenFilter(authService, key), UsernamePasswordAuthenticationFilter.class);
@@ -70,8 +73,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         List<String> allowedOrigins = new ArrayList<>();
-        allowedOrigins.add(client_walab);
         allowedOrigins.add(client_local);
+        allowedOrigins.add(client_walab);
         config.setAllowedOrigins(allowedOrigins);
         config.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "DELETE", "PUT"));
         config.setAllowedHeaders(Arrays.asList("*"));

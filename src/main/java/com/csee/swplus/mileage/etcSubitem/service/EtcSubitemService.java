@@ -15,8 +15,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 
+import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Optional;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 @RequiredArgsConstructor // not null 또는 final 인 필드를 받는 생성자
@@ -42,6 +48,26 @@ public class EtcSubitemService {
         List<EtcSubitemResponseDto> res = etcSubitemMapper.findAllEtcSubitems(studentId, currentSemester);
         log.info("📝 getRequestedEtcSubitems 결과 - res: {}", res);
         return res;
+    }
+
+    public Resource downloadEtcSubitemFile(int fileId) {
+        try {
+            Optional<EtcSubitemFile> fileEntity = Optional.ofNullable(fileRepository.findById(fileId));
+            if (!fileEntity.isPresent()) {
+                throw new RuntimeException("파일을 찾을 수 없습니다.");
+            }
+
+            Path filePath = Paths.get(fileService.getUploadDir()).resolve(fileEntity.get().getFilename());
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (!resource.exists() || !resource.isReadable()) {
+                throw new RuntimeException("파일을 읽을 수 없습니다.");
+            }
+
+            return resource;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Transactional
