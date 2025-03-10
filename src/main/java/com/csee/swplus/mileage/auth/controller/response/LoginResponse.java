@@ -40,6 +40,22 @@ public class LoginResponse {
         return this;
     }
 
+    public AuthDto toAuthDto() {
+        return AuthDto.builder()
+                .token(this.token)
+                .studentId(this.studentId)
+                .studentName(this.studentName)
+                .studentEmail(this.studentEmail)
+                .department(this.department)
+                .major1(this.major1)
+                .major2(this.major2)
+                .grade(this.grade)
+                .term(this.term)
+                .currentSemester(this.currentSemester)
+                .studentType(this.studentType)
+                .build();
+    }
+
     @Override
     public String toString() {
         return "LoginResponse{" +

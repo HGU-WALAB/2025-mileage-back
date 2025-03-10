@@ -15,26 +15,39 @@ import java.util.Date;
 
 @Slf4j
 public class JwtUtil {
-    private static final long EXPIRE_TIME_MS = 1000 * 60 * 60 * 2;
+    private static final long EXPIRE_TIME_MS = 1000 * 60 * 60 * 2;  // 2 hours
+    private static final long REFRESH_EXPIRE_TIME_MS = 1000 * 60 * 60 * 24 * 7;  // 7 days
 
-    // ✅ SECRET_KEY를 Key 타입으로 변환하는 메서드 추가
     public static Key getSigningKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes();
         return new SecretKeySpec(keyBytes, 0, keyBytes.length, "HmacSHA256");
     }
 
-    // JWT Token 발급
     public static String createToken(String uniqueId, String name, String email, Key signingKey) {
         Claims claims = Jwts.claims();
         claims.put("uniqueId", uniqueId);
         claims.put("name", name);
         claims.put("email", email);
-        log.info("Creating JWT token for user: {}", name);
+        log.info("Creating JWT access token for user: {}", name);
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_TIME_MS))
+                .signWith(SignatureAlgorithm.HS256, signingKey)
+                .compact();
+    }
+
+    public static String createRefreshToken(String uniqueId, String name, Key signingKey) {
+        Claims claims = Jwts.claims();
+        claims.put("uniqueId", uniqueId);
+        claims.put("name", name);
+        log.info("Creating JWT refresh token for user: {}", name);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + REFRESH_EXPIRE_TIME_MS))
                 .signWith(SignatureAlgorithm.HS256, signingKey)
                 .compact();
     }

@@ -26,7 +26,7 @@ import java.util.List;
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final AuthService authService;
-    private final Key SECRET_KEY;  // Key 타입으로 선언
+    private final Key SECRET_KEY;
 
     private static final List<String> EXCLUDED_PATHS = Arrays.asList(
             "/api/mileage/auth/login$",
@@ -34,11 +34,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     );
 
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain
-    ) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String requestURI = request.getRequestURI();
         log.debug("🚀 JwtTokenFilter: 요청 URI: {}", requestURI);
 
@@ -49,44 +46,37 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         Cookie[] cookies = request.getCookies();
-        String token = null;
+        String accessToken = null;
+        String refreshToken = null;
+
         if (cookies != null) {
-            log.debug("🍪 JwtTokenFilter: 쿠키 수집, 총 쿠키 개수: {}", cookies.length);
             for (Cookie cookie : cookies) {
-                log.debug("🍪 JwtTokenFilter: 쿠키 이름: {}, 값: {}", cookie.getName(), cookie.getValue());
-                if ("authToken".equals(cookie.getName())) {
-                    token = cookie.getValue();
-                    log.debug("🔑 JwtTokenFilter: authToken 쿠키 발견: {}", token);
+                if ("accessToken".equals(cookie.getName())) {
+                    accessToken = cookie.getValue();
+                }
+                if ("refreshToken".equals(cookie.getName())) {
+                    refreshToken = cookie.getValue();
                 }
             }
-        } else {
-            log.debug("⚠️ JwtTokenFilter: 요청에 쿠키가 없습니다.");
         }
 
-        if (token == null) {
-            log.error("❌ JwtTokenFilter: authToken 쿠키가 존재하지 않습니다. 로그인 필요.");
+        if (accessToken == null) {
+            log.error("❌ JwtTokenFilter: accessToken 쿠키가 존재하지 않습니다. 로그인 필요.");
             throw new DoNotLoginException();
         }
 
-        String userId = JwtUtil.getUserId(token, SECRET_KEY);
-        log.debug("🔍 JwtTokenFilter: 토큰으로부터 추출한 userId: {}", userId);
-
+        String userId = JwtUtil.getUserId(accessToken, SECRET_KEY);
         Users loginUser = authService.getLoginUser(userId);
-        log.debug("👤 JwtTokenFilter: 인증된 사용자: {}", loginUser);
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginUser.getUniqueId(), null, null);
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        log.debug("✅ JwtTokenFilter: SecurityContext에 인증 객체를 저장하였습니다.");
 
         filterChain.doFilter(request, response);
-        log.debug("🏁 JwtTokenFilter: 필터 체인 진행 완료.");
     }
 
     private boolean isExcludedPath(String requestURI) {
-        boolean excluded = EXCLUDED_PATHS.stream().anyMatch(requestURI::matches);
-        log.debug("🔎 JwtTokenFilter: {} 경로가 제외 대상인지 여부: {}", requestURI, excluded);
-        return excluded;
+        return EXCLUDED_PATHS.stream().anyMatch(requestURI::matches);
     }
 }

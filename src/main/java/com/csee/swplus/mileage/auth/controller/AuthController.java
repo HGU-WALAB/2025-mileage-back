@@ -27,20 +27,34 @@ public class AuthController {
     public ResponseEntity<PublicLoginResponse> login(@RequestBody LoginRequest request, HttpServletResponse response) {
         log.info("📩 LoginRequest received: hisnetToken = {}", request.getToken());
 
-        // 1. LoginRequest를 기반으로 AuthDto 생성 후 히즈넷 API 호출
+        // 🔥 프론트에서 받은 token 사용 ❌
+        // 🔹 AuthDto 객체를 프론트에서 받은 데이터를 기반으로 만들지 않음
         AuthDto authDto = hisnetLoginService.callHisnetLoginApi(AuthDto.from(request));
+
         log.info("AuthDto values: {}", authDto);
 
-        // 2. AuthService를 통해 로그인 처리 및 LoginResponse 생성 (여기에는 토큰이 포함됨)
+        // ✅ 새롭게 로그인 처리
         LoginResponse loginResponse = LoginResponse.from(authService.login(authDto));
+
         log.info("Full LoginResponse: {}", loginResponse);
-        log.info("CurrentSemester value in LoginResponse: {}", loginResponse.getCurrentSemester());
 
-        // 3. 쿠키에 JWT 토큰 저장 (프론트엔드로는 토큰 없이 전달)
+        // ✅ 새로운 AccessToken 및 RefreshToken 생성
+        String accessToken = authService.createAccessToken(
+                loginResponse.getStudentId(),
+                loginResponse.getStudentName(),
+                loginResponse.getStudentEmail()
+        );
+        String refreshToken = authService.createRefreshToken(
+                loginResponse.getStudentId(),
+                loginResponse.getStudentName()
+        );
+
+        // ✅ 쿠키 설정
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.SET_COOKIE, "authToken=" + loginResponse.getToken() + "; HttpOnly; Path=/; Max-Age=7200;");
+        headers.add(HttpHeaders.SET_COOKIE, "accessToken=" + accessToken + "; HttpOnly; Path=/; Max-Age=7200; SameSite=Lax;");
+        headers.add(HttpHeaders.SET_COOKIE, "refreshToken=" + refreshToken + "; HttpOnly; Path=/; Max-Age=604800; SameSite=Lax;");
 
-        // 4. PublicLoginResponse 생성: 토큰을 제외한 사용자 정보만 포함
+        // ✅ PublicLoginResponse 생성 (프론트에 전달)
         PublicLoginResponse publicResponse = PublicLoginResponse.from(loginResponse);
         log.info("PublicLoginResponse: {}", publicResponse);
 
@@ -51,13 +65,20 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletResponse response) {
-        Cookie jwtCookie = new Cookie("authToken", "");
-        jwtCookie.setHttpOnly(true);
-        jwtCookie.setSecure(false);
-        jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(0); // 쿠키 삭제
+        Cookie accessCookie = new Cookie("accessToken", "");
+        accessCookie.setHttpOnly(true);
+        accessCookie.setSecure(false);
+        accessCookie.setPath("/");
+        accessCookie.setMaxAge(0); // 쿠키 삭제
 
-        response.addCookie(jwtCookie);
+        Cookie refreshCookie = new Cookie("refreshToken", "");
+        refreshCookie.setHttpOnly(true);
+        refreshCookie.setSecure(false);
+        refreshCookie.setPath("/");
+        refreshCookie.setMaxAge(0); // 쿠키 삭제
+
+        response.addCookie(accessCookie);
+        response.addCookie(refreshCookie);
         return ResponseEntity.ok().build();
     }
 }
