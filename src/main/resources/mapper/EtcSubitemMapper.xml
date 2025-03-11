@@ -27,7 +27,8 @@
                mR.moddate AS modDate,
                mR.id AS recordId,
                mRF.original_filename AS file,
-               mRF.id AS fileId
+               mRF.id AS fileId,
+               mRF.filename AS uniqueFileName
         FROM _sw_mileage_record AS mR
             INNER JOIN _sw_student AS mSt
                 ON mR.snum = mSt.snum

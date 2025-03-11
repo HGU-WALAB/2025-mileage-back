@@ -6,13 +6,20 @@ import com.csee.swplus.mileage.etcSubitem.service.EtcSubitemService;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
+import org.springframework.core.io.Resource;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController // 이 class 가 REST API 관련 class 라는 것을 스프링에게 명시
 @RequestMapping("/api/mileage/etc")
@@ -39,21 +46,30 @@ public class EtcSubitemController {
         );
     }
 
-//    특정 기타 항목의 증빙 자료 다운로드
-    @GetMapping("/download/{fileId}")
-    public ResponseEntity<?> downloadEtcSubitemFile (@PathVariable int fileId) {
-        try {
-            return ResponseEntity.ok(
-                    etcSubitemService.downloadEtcSubitemFile(fileId)
-            );
-        } catch (Exception e) {
-            log.error("파일 다운로드 중 오류 발생: ", e);
-            return ResponseEntity.internalServerError().body(
-                    new MessageResponseDto("파일 다운로드 중 오류 발생: "
-                            + e.getMessage()
-                    )
-            );
+    @Value("${file.dir}")
+    private String FILE_DIRECTORY;
+
+    //    특정 기타 항목의 증빙 자료 다운로드
+    @GetMapping("/file/{uniqueFileName}")
+    public ResponseEntity<?> getEtcSubitemFile (@PathVariable String uniqueFileName) throws IOException {
+        log.info("📂 Requested File: {}", uniqueFileName);
+
+        Path path = Paths.get(FILE_DIRECTORY + uniqueFileName);
+        log.info("🔍 Full File Path: {}", path.toString());
+
+        Resource resource = new UrlResource(path.toUri());
+
+        if (!resource.exists() || !resource.isReadable()) {
+            log.error("❌ File not found or not readable: {}", path.toString());
+            return ResponseEntity.notFound().build();
         }
+
+        log.info("✅ File found: {}", path.toString());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + uniqueFileName + "\"")
+                .body(resource);
     }
 
 //    학생이 열려 있는 기타 항목 리스트 중 하나 선택 후 신청 POST
