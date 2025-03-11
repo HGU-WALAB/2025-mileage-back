@@ -1,6 +1,7 @@
 package com.csee.swplus.mileage.scholarship.controller;
 
 import com.csee.swplus.mileage.scholarship.dto.ScholarshipRequestDto;
+import com.csee.swplus.mileage.scholarship.dto.ScholarshipResponseDto;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import com.csee.swplus.mileage.scholarship.service.ScholarshipService;
 import lombok.RequiredArgsConstructor;
@@ -30,4 +31,12 @@ public class ScholarshipController {
             return ResponseEntity.internalServerError().body(new MessageResponseDto("서버 오류 발생"));
         }
     }
+    @GetMapping("/{studentId}")
+    public ResponseEntity<ScholarshipResponseDto> getScholarshipStatus(@PathVariable String studentId) {
+        Integer isApply = scholarshipService.getIsApplyStatus(studentId);
+        ScholarshipResponseDto responseDto = new ScholarshipResponseDto();
+        responseDto.setIsApply(isApply);
+        return ResponseEntity.ok(responseDto);
+    }
+
 }
