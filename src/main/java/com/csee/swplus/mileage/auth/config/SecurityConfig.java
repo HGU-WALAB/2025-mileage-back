@@ -38,7 +38,6 @@ public class SecurityConfig {
     @Value("${custom.host.client-local}")
     private String client_local;
 
-
     @Value("${custom.jwt.secret}")
     private String SECRET_KEY;
 

@@ -1,6 +1,8 @@
 package com.csee.swplus.mileage.auth.filter;
 
 import javax.servlet.http.Cookie;
+
+import com.csee.swplus.mileage.auth.exception.WrongTokenException;
 import lombok.extern.slf4j.Slf4j;
 import com.csee.swplus.mileage.auth.exception.DoNotLoginException;
 import com.csee.swplus.mileage.auth.service.AuthService;
@@ -65,13 +67,53 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             throw new DoNotLoginException();
         }
 
-        String userId = JwtUtil.getUserId(accessToken, SECRET_KEY);
-        Users loginUser = authService.getLoginUser(userId);
+        try {
+            String userId = JwtUtil.getUserId(accessToken, SECRET_KEY);
+            Users loginUser = authService.getLoginUser(userId);
 
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginUser.getUniqueId(), null, null);
-        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(loginUser.getUniqueId(), null, null);
+            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        } catch (WrongTokenException e) {
+            log.info("❗ {}", e.getMessage());
+
+            // accessToken이 만료된 경우, refreshToken으로 재발급 시도
+            if (refreshToken != null) {
+                try {
+                    String userId = JwtUtil.getUserId(refreshToken, SECRET_KEY);
+                    Users loginUser = authService.getLoginUser(userId);
+
+                    // 새 accessToken 발급
+                    String newAccessToken = JwtUtil.createToken(
+                            loginUser.getUniqueId(),
+                            loginUser.getName(),
+                            loginUser.getEmail(),
+                            SECRET_KEY
+                    );
+
+                    // 쿠키에 새 accessToken 설정
+                    Cookie newAccessTokenCookie = new Cookie("accessToken", newAccessToken);
+                    newAccessTokenCookie.setHttpOnly(true);
+                    newAccessTokenCookie.setPath("/");
+                    response.addCookie(newAccessTokenCookie);
+
+                    // 인증 정보 설정
+                    UsernamePasswordAuthenticationToken authenticationToken =
+                            new UsernamePasswordAuthenticationToken(loginUser.getUniqueId(), null, null);
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+                } catch (WrongTokenException refreshEx) {
+                    // refreshToken도 유효하지 않은 경우
+                    log.error("❌ refreshToken이 유효하지 않습니다. 로그인이 필요합니다.");
+                    throw new DoNotLoginException();
+                }
+            } else {
+                log.error("❌ refreshToken이 존재하지 않습니다. 로그인이 필요합니다.");
+                throw new DoNotLoginException();
+            }
+        }
 
         filterChain.doFilter(request, response);
     }
