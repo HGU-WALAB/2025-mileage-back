@@ -1,9 +1,10 @@
 package com.csee.swplus.mileage.scholarship.service;
 
+import com.csee.swplus.mileage.scholarship.dto.ScholarshipResponseDto;
 import com.csee.swplus.mileage.scholarship.mapper.ScholarshipMapper;
 import com.csee.swplus.mileage.scholarship.repository.ScholarshipRepository;
+import com.csee.swplus.mileage.user.entity.Users;
 import com.csee.swplus.mileage.util.semester.SemesterUtil;
-import com.csee.swplus.mileage.scholarship.domain.Scholarship;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,9 +59,9 @@ public class ScholarshipService {
         }
     }
 
-    public Integer getIsApplyStatus(String studentId) {
-        return scholarshipRepository.findByStudentId(studentId)
-                .map(Scholarship::getIsApply) // ✅ 올바른 getter 사용
-                .orElseThrow(() -> new RuntimeException("해당 학번을 가진 학생이 존재하지 않습니다."));
+    public ScholarshipResponseDto getIsApplyStatus(String studentId) {
+        Users user = scholarshipRepository.findByUniqueId(studentId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return ScholarshipResponseDto.from(user);
     }
 }

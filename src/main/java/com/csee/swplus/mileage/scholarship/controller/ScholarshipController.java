@@ -1,7 +1,9 @@
 package com.csee.swplus.mileage.scholarship.controller;
 
+import com.csee.swplus.mileage.scholarship.dto.ScholarshipRequest;
 import com.csee.swplus.mileage.scholarship.dto.ScholarshipRequestDto;
 import com.csee.swplus.mileage.scholarship.dto.ScholarshipResponseDto;
+import com.csee.swplus.mileage.user.controller.response.UserResponse;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import com.csee.swplus.mileage.scholarship.service.ScholarshipService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +22,6 @@ public class ScholarshipController {
     public ResponseEntity<MessageResponseDto> applyScholarship (
             @PathVariable String studentId,
             @RequestBody ScholarshipRequestDto requestDto) {
-        // 성공 시: 장학금 신청한 학생 ID (PK 를 말하는 것이며 학번 sNum 과 다름) 반환
-        // 실패 시: 에러 메세지 반환
         try {
             scholarshipService.applyScholarship(studentId, requestDto.getIsAgree());
             return ResponseEntity.ok(new MessageResponseDto(studentId));
@@ -31,12 +31,11 @@ public class ScholarshipController {
             return ResponseEntity.internalServerError().body(new MessageResponseDto("서버 오류 발생"));
         }
     }
+    //@CrossOrigin(origins = "http://walab.handong.edu", allowCredentials = "true")  // CORS 설정
     @GetMapping("/{studentId}")
     public ResponseEntity<ScholarshipResponseDto> getScholarshipStatus(@PathVariable String studentId) {
-        Integer isApply = scholarshipService.getIsApplyStatus(studentId);
-        ScholarshipResponseDto responseDto = new ScholarshipResponseDto();
-        responseDto.setIsApply(isApply);
-        return ResponseEntity.ok(responseDto);
+        ScholarshipResponseDto response = scholarshipService.getIsApplyStatus(studentId);
+        return ResponseEntity.ok(response);
     }
 
 }
