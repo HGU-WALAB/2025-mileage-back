@@ -17,7 +17,7 @@ public class EtcSubitemResponseDto {   // 학생이 신청한 기타 항목 reco
     private LocalDateTime modDate;  // 수정 일자
     private int recordId;
     private String file;            // 첨부 파일명
-    private int fileId;             // 첨부 파일 PK
+    private Integer fileId;             // 첨부 파일 PK
     private String uniqueFileName;  // 디비 및 uploads 디렉토리에 저장된 이름
 }
 

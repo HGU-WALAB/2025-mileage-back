@@ -30,16 +30,16 @@
                mRF.id AS fileId,
                mRF.filename AS uniqueFileName
         FROM _sw_mileage_record AS mR
-            INNER JOIN _sw_student AS mSt
-                ON mR.snum = mSt.snum
-            INNER JOIN _sw_mileage_subitem AS mS
-                ON mR.subitem_id = mS.id
-            INNER JOIN _sw_mileage_category AS mC
-                ON mS.category_id = mC.id
-            INNER JOIN _sw_mileage_record_files AS mRF
-                ON mR.id = mRF.record_id
+                 INNER JOIN _sw_student AS mSt
+                            ON mR.snum = mSt.snum
+                 INNER JOIN _sw_mileage_subitem AS mS
+                            ON mR.subitem_id = mS.id
+                 INNER JOIN _sw_mileage_category AS mC
+                            ON mS.category_id = mC.id
+                 LEFT JOIN _sw_mileage_record_files AS mRF
+                           ON mR.id = mRF.record_id
         WHERE mR.semester = #{currentSemester}  -- 학기 조건
-          AND mSt.snum = #{studentId}  -- 특정 학생 조건
+          AND mSt.snum = #{studentId} -- 특정 학생 조건
           AND mR.category_id = '240'  -- subitem과 기타 category 연결
           AND mS.student_input = 'Y'  -- student_input 조건
         ORDER BY mR.regdate;

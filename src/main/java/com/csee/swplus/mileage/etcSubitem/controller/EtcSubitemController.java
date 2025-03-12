@@ -82,21 +82,20 @@ public class EtcSubitemController {
             @RequestParam("subitemId") int subitemId,
             @RequestPart(value = "file", required = false) MultipartFile file
             ) {
-        log.info("Content Type: {}", file.getContentType());
-        log.info("File Name: {}", file.getOriginalFilename());
-        log.info("File Size: {}", file.getSize());
 
-        String originalFilename = file.getOriginalFilename();
+        if(file != null){
+            String originalFilename = file.getOriginalFilename();
 
-        String extension = "";
-        if(originalFilename != null && originalFilename.contains(".")) {
-            extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
-        }
+            String extension = "";
+            if (originalFilename != null && originalFilename.contains(".")) {
+                extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+            }
 
-        List<String> allowedExtenstions = Arrays.asList("jpg", "jpeg", "png", "pdf");
+            List<String> allowedExtenstions = Arrays.asList("jpg", "jpeg", "png", "pdf");
 
-        if(!allowedExtenstions.contains(extension)) {
-            return ResponseEntity.badRequest().body(new MessageResponseDto("지원하지 않는 파일 형식입니다."));
+            if (!allowedExtenstions.contains(extension)) {
+                return ResponseEntity.badRequest().body(new MessageResponseDto("지원하지 않는 파일 형식입니다."));
+            }
         }
 
         return ResponseEntity.ok(
@@ -114,21 +113,19 @@ public class EtcSubitemController {
             @RequestParam("subitemId") int subitemId,
             @RequestPart(value = "file", required = false) MultipartFile file
     ) {
-        log.info("Content Type: {}", file.getContentType());
-        log.info("File Name: {}", file.getOriginalFilename());
-        log.info("File Size: {}", file.getSize());
+        if(file != null){
+            String originalFilename = file.getOriginalFilename();
 
-        String originalFilename = file.getOriginalFilename();
+            String extension = "";
+            if (originalFilename != null && originalFilename.contains(".")) {
+                extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+            }
 
-        String extension = "";
-        if(originalFilename != null && originalFilename.contains(".")) {
-            extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
-        }
+            List<String> allowedExtenstions = Arrays.asList("pdf");
 
-        List<String> allowedExtenstions = Arrays.asList("jpg", "jpeg", "png", "pdf");
-
-        if(!allowedExtenstions.contains(extension)) {
-            return ResponseEntity.badRequest().body(new MessageResponseDto("지원하지 않는 파일 형식입니다."));
+            if (!allowedExtenstions.contains(extension)) {
+                return ResponseEntity.badRequest().body(new MessageResponseDto("지원하지 않는 파일 형식입니다."));
+            }
         }
 
         return ResponseEntity.ok(
