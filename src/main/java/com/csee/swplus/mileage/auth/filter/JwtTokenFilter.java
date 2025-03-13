@@ -79,34 +79,37 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             log.info("❗ {}", e.getMessage());
 
             // accessToken이 만료된 경우, refreshToken으로 재발급 시도
+            // JwtTokenFilter.java에서 리프레시 토큰 처리 부분 수정:
             if (refreshToken != null) {
                 try {
                     String userId = JwtUtil.getUserId(refreshToken, SECRET_KEY);
                     Users loginUser = authService.getLoginUser(userId);
 
-                    // 새 accessToken 발급
-                    String newAccessToken = JwtUtil.createToken(
+                    // 새로운 만료 시간으로 액세스 토큰 생성
+                    String newAccessToken = authService.createAccessToken(
                             loginUser.getUniqueId(),
                             loginUser.getName(),
-                            loginUser.getEmail(),
-                            SECRET_KEY
+                            loginUser.getEmail()
                     );
 
-                    // 쿠키에 새 accessToken 설정
+                    // 새 액세스 토큰을 쿠키로 설정
                     Cookie newAccessTokenCookie = new Cookie("accessToken", newAccessToken);
                     newAccessTokenCookie.setHttpOnly(true);
                     newAccessTokenCookie.setPath("/");
+                    newAccessTokenCookie.setMaxAge(7200); // 토큰 만료 시간과 일치 (2시간)
                     response.addCookie(newAccessTokenCookie);
 
-                    // 인증 정보 설정
+                    // 토큰 리프레시 확인용 로깅 추가
+                    log.info("🔄 사용자 {} 액세스 토큰 리프레시 성공", loginUser.getName());
+
+                    // 인증 설정
                     UsernamePasswordAuthenticationToken authenticationToken =
                             new UsernamePasswordAuthenticationToken(loginUser.getUniqueId(), null, null);
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-                } catch (WrongTokenException refreshEx) {
-                    // refreshToken도 유효하지 않은 경우
-                    log.error("❌ refreshToken이 유효하지 않습니다. 로그인이 필요합니다.");
+                } catch (Exception refreshEx) {
+                    // 더 상세한 로깅을 포함한 개선된 예외 처리
+                    log.error("❌ 토큰 리프레시 실패: {}", refreshEx.getMessage());
                     throw new DoNotLoginException();
                 }
             } else {

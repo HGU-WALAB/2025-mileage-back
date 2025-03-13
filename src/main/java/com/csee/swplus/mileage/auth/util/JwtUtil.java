@@ -54,8 +54,21 @@ public class JwtUtil {
     }
 
     public static String getUserId(String token, Key signingKey) {
-        log.info("Validating token: {}", token);
-        return extractClaims(token, signingKey).get("uniqueId", String.class);
+        if (token == null || token.isEmpty()) {
+            log.error("토큰이 null이거나 비어있습니다");
+            throw new WrongTokenException("토큰이 없습니다.");
+        }
+
+        log.debug("토큰 검증 시도: {}", token.substring(0, Math.min(10, token.length())) + "...");
+        try {
+            Claims claims = extractClaims(token, signingKey);
+            String userId = claims.get("uniqueId", String.class);
+            log.debug("사용자 {}의 토큰 검증 성공", userId);
+            return userId;
+        } catch (WrongTokenException e) {
+            log.error("토큰 검증 실패: {}", e.getMessage());
+            throw e;
+        }
     }
 
     private static Claims extractClaims(String token, Key signingKey) {
