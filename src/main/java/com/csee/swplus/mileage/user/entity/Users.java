@@ -70,13 +70,13 @@ public class Users extends BaseTime implements Serializable {
     @Column(name = "login_count", columnDefinition = "SMALLINT(6)")
     private Integer loginCount;
 
-    @Column(name = "is_approved",columnDefinition = "CHAR(1)" )
+    @Column(name = "is_approved" ,columnDefinition = "CHAR(1)")
     private String isApproved;
 
     @Column(name = "hash_key", length = 70)
     private String hashKey;
 
-    @Column
+    @Column(name = "isChecked")
     private Integer isChecked;
 
     public void increaseLoginCount() {
@@ -99,6 +99,8 @@ public class Users extends BaseTime implements Serializable {
                 .major2(dto.getMajor2())
                 .grade(dto.getGrade())
                 .semester(dto.getTerm())
+                .isApproved("Y")
+                .isChecked(0)
                 .build();
     }
 }
