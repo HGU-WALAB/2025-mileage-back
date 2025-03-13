@@ -6,8 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import com.csee.swplus.mileage.auth.dto.AuthDto;
 import com.csee.swplus.mileage.base.entity.BaseTime;
 import lombok.*;
-import com.csee.swplus.mileage.user.controller.request.UserRequest;
-import com.csee.swplus.mileage.user.dto.UserDto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
