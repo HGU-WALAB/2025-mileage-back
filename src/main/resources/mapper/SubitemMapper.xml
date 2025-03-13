@@ -23,7 +23,7 @@
             ON mR.subitem_id = mS.id
         WHERE (#{semester} = 'all' OR mS.semester = #{semester})
 
-        <if test="keyword != null">
+        <if test="keyword != null and keyword != ''">
             AND mS.subitem_name LIKE CONCAT('%', #{keyword}, '%')
         </if>
 
