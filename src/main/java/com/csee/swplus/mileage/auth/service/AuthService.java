@@ -41,8 +41,11 @@ public class AuthService {
     @Transactional
     public AuthDto login(AuthDto dto) {
         log.info("Login attempt with AuthDto: {}", dto);
+        log.info("dto getStudentId: {}", dto.getStudentId());
 
         Optional<Users> user = userRepository.findByUniqueId(dto.getStudentId());
+
+        log.info("user: {}", user);
 
         String currentSemester = swManagerSettingRepository.findById(2L)
                 .map(SwManagerSetting::getCurrentSemester)
@@ -55,7 +58,9 @@ public class AuthService {
         if (!user.isPresent()) {
             // 신규 유저 생성
             loggedInUser = Users.from(dto);
+            log.info("users.from loggedInUser uniqueId: {}", loggedInUser.getUniqueId());
             loggedInUser.increaseLoginCount();
+
             userRepository.save(loggedInUser);
         } else {
             // 기존 유저 정보 업데이트

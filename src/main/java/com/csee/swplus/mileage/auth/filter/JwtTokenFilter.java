@@ -62,10 +62,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
         }
 
-        if (accessToken == null) {
-            log.error("❌ JwtTokenFilter: accessToken 쿠키가 존재하지 않습니다. 로그인 필요.");
-            throw new DoNotLoginException();
-        }
+//        if (accessToken == null) {
+//            log.error("❌ JwtTokenFilter: accessToken 쿠키가 존재하지 않습니다. 로그인 필요.");
+//            throw new DoNotLoginException();
+//        }
 
         try {
             String userId = JwtUtil.getUserId(accessToken, SECRET_KEY);

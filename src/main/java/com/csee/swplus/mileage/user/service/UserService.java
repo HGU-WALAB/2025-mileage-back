@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,10 +32,17 @@ public class UserService {
         saveUserSchoolInfo(studentId);
 
         // 저장된 StudentSchool에서 stype 가져오기
-        StudentSchool studentSchool = studentSchoolRepository
-                .findBySchoolAndMajor1AndMajor2(user.getDepartment(), user.getMajor1(), user.getMajor2())
-                .orElseThrow(() -> new RuntimeException("StudentSchool not found after saving"));
+//        StudentSchool studentSchool = studentSchoolRepository
+//                .findBySchoolAndMajor1AndMajor2(user.getDepartment(), user.getMajor1(), user.getMajor2())
+//                .orElseThrow(() -> new RuntimeException("StudentSchool not found after saving"));
+        List<StudentSchool> studentSchools = studentSchoolRepository
+                .findBySchoolAndMajor1AndMajor2(user.getDepartment(), user.getMajor1(), user.getMajor2());
+        if (studentSchools.isEmpty()) {
+            throw new RuntimeException("StudentSchool not found after saving");
+        }
 
+        // 여러 개의 결과가 있을 경우 첫 번째 값 사용
+        StudentSchool studentSchool = studentSchools.get(0);
         return UserResponse.from(user, studentSchool.getStype());
     }
 
@@ -43,13 +51,22 @@ public class UserService {
         Users user = userRepository.findByUniqueId(studentId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Optional<StudentSchool> existingSchool = studentSchoolRepository
+//        Optional<StudentSchool> existingSchool = studentSchoolRepository
+//                .findBySchoolAndMajor1AndMajor2(user.getDepartment(), user.getMajor1(), user.getMajor2());
+//
+//        if (existingSchool.isPresent()) {
+//            log.info("StudentSchool already exists: {}", existingSchool.get());
+//            return;
+//        }
+
+        List<StudentSchool> existingSchools = studentSchoolRepository
                 .findBySchoolAndMajor1AndMajor2(user.getDepartment(), user.getMajor1(), user.getMajor2());
 
-        if (existingSchool.isPresent()) {
-            log.info("StudentSchool already exists: {}", existingSchool.get());
+        if (!existingSchools.isEmpty()) {
+            log.info("StudentSchool already exists: {}", existingSchools.get(0));
             return;
         }
+        
 
         // 새로 저장
         StudentSchool schoolInfo = StudentSchool.from(user);
