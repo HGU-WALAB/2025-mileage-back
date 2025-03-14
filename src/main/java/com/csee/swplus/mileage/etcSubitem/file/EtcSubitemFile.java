@@ -15,8 +15,10 @@ public class EtcSubitemFile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "record_id")
     private int recordId;
 
+    @Column(name = "original_filename")
     private String originalFilename;
 
     private String filename;

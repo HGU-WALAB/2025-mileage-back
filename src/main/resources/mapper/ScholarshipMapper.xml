@@ -9,15 +9,16 @@
         SET is_apply = 1,
             apply_date = #{applyDate},
             isChecked = #{isChecked}
-        WHERE snum = #{studentId}
+        WHERE snum = #{studentId};
     </update>
 
     <insert id="createApplication" parameterType="map">
-        INSERT INTO _sw_mileage_scholarship (snum, is_apply, semester)
+        INSERT INTO _sw_mileage_scholarship (snum, is_apply, semester, apply_date)
         SELECT
             snum,
             #{isChecked},
-            #{semester}
+            #{semester},
+            NOW()
         FROM _sw_student
         WHERE snum = #{studentId}
           AND NOT EXISTS (

@@ -77,6 +77,7 @@ public class EtcSubitemService {
             if (file != null && !file.isEmpty()) {
 //                실제 파일 저장
                 String savedFileName = fileService.saveFile(file);
+                log.info("savedFileName: {}", savedFileName);
 
 //                파일 관련 정보 DB에 저장
                 EtcSubitemFile newFile = new EtcSubitemFile();

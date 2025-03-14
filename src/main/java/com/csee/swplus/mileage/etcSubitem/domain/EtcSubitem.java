@@ -17,8 +17,10 @@ public class EtcSubitem {
 
     private String semester;
 
+    @Column(name = "category_id")
     private int categoryId;
 
+    @Column(name = "subitem_id")
     private int subitemId;
 
     private String snum;
@@ -27,8 +29,10 @@ public class EtcSubitem {
 
     private int value;
 
+    @Column(name = "m_point")
     private int mPoint;
 
+    @Column(name = "extra_point")
     private int extraPoint;
 
     private String description1;
