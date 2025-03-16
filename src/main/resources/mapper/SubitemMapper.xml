@@ -21,7 +21,7 @@
         ON mS.category_id = mC.id
         LEFT JOIN _sw_mileage_record AS mR
         ON mR.subitem_id = mS.id
-        WHERE (#{semester} = 'all' OR mS.semester >= #{semester})
+        WHERE (#{semester} = 'all' OR mS.semester = #{semester})
 
         <if test="keyword != null">
             AND mS.subitem_name LIKE CONCAT('%', #{keyword}, '%')
