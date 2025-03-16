@@ -21,9 +21,10 @@
         ON mS.category_id = mC.id
         LEFT JOIN _sw_mileage_record AS mR
         ON mR.subitem_id = mS.id
+        AND (mR.snum = #{studentId} OR mR.snum IS NULL)  -- Ensure studentId is considered in the join
         WHERE (#{semester} = 'all' OR mS.semester = #{semester})
 
-        <if test="keyword != null">
+        <if test="keyword != null and keyword != ''">
             AND mS.subitem_name LIKE CONCAT('%', #{keyword}, '%')
         </if>
 
@@ -39,12 +40,7 @@
         </if>
 
         <if test="studentId != null">
-            AND (mR.snum = #{studentId} OR mR.snum IS NULL)
-        </if>
-
-
-        <if test="studentId != null">
-            AND mS.semester >= CONCAT('20', SUBSTRING(#{studentId}, 2, 3), '-01')
+            AND mS.semester >= CONCAT('20', SUBSTRING(#{studentId}, 2, 2), '-01')
             AND mS.semester LIKE '20%'
             AND mS.semester REGEXP '^20\\d{2}-(01|02)$'
         </if>
