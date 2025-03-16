@@ -91,7 +91,7 @@ public class EtcSubitemController {
                 extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
             }
 
-            List<String> allowedExtenstions = Arrays.asList("jpg", "jpeg", "png", "pdf");
+            List<String> allowedExtenstions = Arrays.asList("pdf");
 
             if (!allowedExtenstions.contains(extension)) {
                 return ResponseEntity.badRequest().body(new MessageResponseDto("지원하지 않는 파일 형식입니다."));
