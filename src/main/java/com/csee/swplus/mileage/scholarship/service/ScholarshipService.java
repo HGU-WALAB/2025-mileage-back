@@ -4,6 +4,7 @@ import com.csee.swplus.mileage.scholarship.dto.ScholarshipResponseDto;
 import com.csee.swplus.mileage.scholarship.mapper.ScholarshipMapper;
 import com.csee.swplus.mileage.scholarship.repository.ScholarshipRepository;
 import com.csee.swplus.mileage.user.entity.Users;
+import com.csee.swplus.mileage.user.service.UserService;
 import com.csee.swplus.mileage.util.semester.SemesterUtil;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,14 @@ public class ScholarshipService {
     private final ScholarshipRepository scholarshipRepository;
 
     // [피드백 수용 후 코드] 장학금 신청 테이블 존재
-
     @Transactional
     public void applyScholarship(String studentId, boolean isAgree) {
+        boolean isAvailable = UserService.isScholarshipAvailable();
+        if(!isAvailable) {
+            log.warn("⚠️ 마일리지 장학금 신청 권한이 없는 학생 - studentId: {}", studentId);
+            throw new IllegalStateException("신청 대상자가 아닙니다.");
+        }
+
         int isChecked = isAgree ? 1 : 0;
         String semester = semesterUtil.getCurrentSemester();
         LocalDateTime now = LocalDateTime.now();

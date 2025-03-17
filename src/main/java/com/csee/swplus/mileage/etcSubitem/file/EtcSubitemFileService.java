@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,7 +42,9 @@ public class EtcSubitemFileService {
 
 //        file.getInputStream() 을 사용하여 업로드된 파일의 데이터를 읽음
 //        targetLocation 경로에 복사
-        Files.copy(file.getInputStream(), targetLocation);
+        try (InputStream inputStream = file.getInputStream()) {
+            Files.copy(inputStream, targetLocation);
+        }
 
 //        4. 저장된 파일명 (새로 만들어진 고유의 파일명) 반환
         return savedFilename;
