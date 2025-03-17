@@ -1,6 +1,7 @@
 package com.csee.swplus.mileage.user.service;
 
 import com.csee.swplus.mileage.user.entity.StudentSchool;
+import com.csee.swplus.mileage.user.mapper.StudentSchoolMapper;
 import com.csee.swplus.mileage.user.repository.StudentSchoolRepository;
 import lombok.extern.slf4j.Slf4j;
 import com.csee.swplus.mileage.user.controller.request.UserRequest;
@@ -21,7 +22,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
     private final StudentSchoolRepository studentSchoolRepository;
-
+    private final StudentSchoolMapper studentSchoolMapper;
 
     // 유저 정보 조회
     public UserResponse getUserInfo(String studentId) {
@@ -70,8 +71,15 @@ public class UserService {
 
         // 새로 저장
         StudentSchool schoolInfo = StudentSchool.from(user);
-        String stype = determineStype(schoolInfo);
-        schoolInfo.setStype(stype);
+        // ✅ MyBatis Mapper 사용하여 `stype` 조회
+        String stype = studentSchoolMapper.findStype(
+                schoolInfo.getSchool(),
+                schoolInfo.getMajor1(),
+                schoolInfo.getMajor2()
+        );
+
+        // `stype`이 null일 경우 "기타"로 설정
+        schoolInfo.setStype(stype != null ? stype : "기타");
 
         log.info("Saving new StudentSchool: school={}, major1={}, major2={}, stype={}",
                 schoolInfo.getSchool(), schoolInfo.getMajor1(), schoolInfo.getMajor2(), schoolInfo.getStype());
@@ -79,26 +87,57 @@ public class UserService {
         studentSchoolRepository.save(schoolInfo);
     }
 
-    private String determineStype(StudentSchool studentSchool) {
-        String school = studentSchool.getSchool();
-        String major2 = studentSchool.getMajor2();
+//    private String determineStype(StudentSchool studentSchool) {
+//        String school = studentSchool.getSchool();
+//        String major1 = studentSchool.getMajor1();
+//        String major2 = studentSchool.getMajor2();
+//
+//        if ("전산전자공학부".equals(school)) {
+//            if ("AI·컴퓨터공학심화(60)".equals(major1) ||
+//                    "전자공학심화(60)".equals(major1) ||
+//                    "컴퓨터공학(33)".equals(major1) ||
+//                    "컴퓨터공학(40)".equals(major1) ||
+//                    "컴퓨터공학(45)".equals(major1) ||
+//                    "전자공학(33)".equals(major1)
+//            ) {}
+//            return "전공";
+//        }
+//        if ("글로벌리더십학부".equals(school)) {
+//            if ("AI·컴퓨터공학심화(60)".equals(major1)) {
+//                return "1학년";
+//            }
+//        }
+//        if ("컴퓨터공학(33)".equals(major2) ||
+//                "컴퓨터공학(40)".equals(major2) ||
+//                "컴퓨터공학(45)".equals(major2) ||
+//                "IT(40)".equals(major2) ||
+//                "ICT(45)".equals(major2) ||
+//                "ACE(40)".equals(major2) ||
+//                "DS(45)".equals(major2)
+//        ) {
+//            return "융합";
+//        }
+//        if ("IT(40)".equals(major1) ||
+//                "ICT(45)".equals(major1) ||
+//                "AI Convergence & Entrepreneurship(45)".equals(major1)
+//        ) {
+//            return "융합";
+//        }
+//        if (("생명공학(33)".equals(major1)) || ("경영(40)".equals(major1)) ||
+//                ("경제(45)".equals(major1))){
+//            if ("AI융합".equals(major2)) {
+//                return "융합";
+//            }
+//        }
+//        return "기타";
+//    }
 
-        // 조건 1: 전산전자공학부
-        if ("전산전자공학부".equals(school)) {
-            return "전공";
-        }
-
-        // 조건 2: 글로벌리더십학부
-        if ("글로벌리더십학부".equals(school)) {
-            return "1학년";
-        }
-
-        // 조건 3: major_2가 특정 전공일 경우 "융합"
-        if ("컴퓨터공학".equals(major2) || "전자공학".equals(major2) || "IT".equals(major2)) {
-            return "융합";
-        }
-
-        // 조건에 맞지 않으면 기본값
-        return "기타";
-    }
+//    private static boolean isScholarsipAvailable() {
+//        String type = determineStype();
+//
+//        if(type == "기타")
+//            return false;
+//        else
+//            return true;
+//    }
 }
