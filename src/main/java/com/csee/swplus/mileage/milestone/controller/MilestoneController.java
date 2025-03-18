@@ -7,6 +7,7 @@ import com.csee.swplus.mileage.milestone.service.MilestoneService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,19 +29,19 @@ public class MilestoneController {
         );
     }
 
-    @GetMapping("/{studentId}")
-    public ResponseEntity<List<MilestonePointResponseDto>> getMilestonePoint(
-            @PathVariable int studentId
-    ) {
+    @GetMapping("/milestone")
+    public ResponseEntity<List<MilestonePointResponseDto>> getMilestonePoint() {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+        int studentId = Integer.parseInt(currentUserId);
         return ResponseEntity.ok(
                 milestoneService.getMilestonePoint(studentId)
         );
     }
 
-    @GetMapping("/semester/{studentId}")
-    public ResponseEntity<List<MilestoneSemesterTotalPointResponseDto>> getTotalMilestoneSemester(
-            @PathVariable int studentId
-    ) {
+    @GetMapping("/semester")
+    public ResponseEntity<List<MilestoneSemesterTotalPointResponseDto>> getTotalMilestoneSemester() {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+        int studentId = Integer.parseInt(currentUserId);
         return ResponseEntity.ok(
                 milestoneService.getTotalMilestoneSemester(studentId)
         );

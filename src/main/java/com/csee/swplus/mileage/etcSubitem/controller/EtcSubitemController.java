@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
@@ -37,12 +38,11 @@ public class EtcSubitemController {
     }
 
 //    학생이 신청한 기타 항목 리스트 GET
-    @GetMapping("/{studentId}")
-    public ResponseEntity<List<EtcSubitemResponseDto>> getEtcSubitems (
-            @PathVariable String studentId
-    ) {
+    @GetMapping("/get")
+    public ResponseEntity<List<EtcSubitemResponseDto>> getEtcSubitems () {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(
-                etcSubitemService.getEtcSubitems(studentId)
+                etcSubitemService.getEtcSubitems(currentUserId)
         );
     }
 
