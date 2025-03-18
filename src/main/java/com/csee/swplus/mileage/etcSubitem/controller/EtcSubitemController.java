@@ -81,7 +81,7 @@ public class EtcSubitemController {
             @RequestParam(value = "description2", required = false) String description2,
             @RequestParam("subitemId") int subitemId,
             @RequestPart(value = "file", required = false) MultipartFile file
-            ) {
+    ) {
 
         if(file != null){
             String originalFilename = file.getOriginalFilename();

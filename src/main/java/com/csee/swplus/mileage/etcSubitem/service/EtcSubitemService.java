@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -49,6 +50,7 @@ public class EtcSubitemService {
         try {
 //            1. EtcSubitem 엔티티 생성 및 저장
             EtcSubitem etcSubitem = new EtcSubitem();
+
 //            앞단에서 전달 받는 값
             etcSubitem.setSemester(semester);
             etcSubitem.setSubitemId(subitemId);
@@ -62,16 +64,18 @@ public class EtcSubitemService {
             etcSubitem.setCategoryId(240);
             etcSubitem.setValue(1);
             etcSubitem.setExtraPoint(0);
+            etcSubitem.setModdate(LocalDateTime.now());
+            etcSubitem.setRegdate(LocalDateTime.now());
 
 //            db 로부터 가져오는 값
             String sname = etcSubitemMapper.getSname(studentId);
             etcSubitem.setSname(sname);
 
-            EtcSubitem savedEtcSubitem = etcSubitemRepository.save(etcSubitem);
-
 //            마일리지 포인트
             int mPoint = etcSubitemMapper.getMPoint(subitemId);
             etcSubitem.setMPoint(mPoint);
+
+            EtcSubitem savedEtcSubitem = etcSubitemRepository.save(etcSubitem);
 
 //            2. 파일 처리 및 저장
             if (file != null && !file.isEmpty()) {
@@ -87,6 +91,8 @@ public class EtcSubitemService {
 //                filesize DB에서 varchar 타입임
                 newFile.setFilesize(fileService.formatFileSize(file.getSize()));
                 newFile.setSemester(semester);
+
+                newFile.setRegdate(LocalDateTime.now());
 
                 fileRepository.save(newFile);
             }
@@ -109,6 +115,7 @@ public class EtcSubitemService {
 //            2. 항목 정보 업데이트
             etcSubitem.setDescription1(description1);
             etcSubitem.setDescription2(description2);
+            etcSubitem.setModdate(LocalDateTime.now());
             etcSubitemRepository.save(etcSubitem);
 
 //            3. 파일 업데이트

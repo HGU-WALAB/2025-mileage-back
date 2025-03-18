@@ -27,6 +27,5 @@ public class EtcSubitemFile {
 
     private String semester;
 
-    @Column(insertable = false)
     private LocalDateTime regdate;
 }
