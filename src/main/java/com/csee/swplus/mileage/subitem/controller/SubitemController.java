@@ -5,6 +5,7 @@ import com.csee.swplus.mileage.subitem.dto.SubitemResponseDto;
 import com.csee.swplus.mileage.subitem.service.SubitemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -15,17 +16,17 @@ import java.util.List;
 public class SubitemController {
     private final SubitemService subitemService;
 
-    @GetMapping("/{studentId}/search")
+    @GetMapping("/search")
     public List<SubitemResponseDto> getSubitems(
-            @PathVariable String studentId,
             @RequestParam(required = false) String keyword,
             @RequestParam String category,
             @RequestParam String semester,
             @RequestParam String done) {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info("Received search request - studentId: {}, query: '{}', category: {}, semester: {}, done: {}",
-                studentId, keyword, category, semester, done);
+                currentUserId, keyword, category, semester, done);
         SubitemRequestDto requestDto = new SubitemRequestDto();
-        requestDto.setStudentId(studentId);
+        requestDto.setStudentId(currentUserId);
         requestDto.setKeyword(keyword);
         requestDto.setCategory(category);
         requestDto.setSemester(semester);
