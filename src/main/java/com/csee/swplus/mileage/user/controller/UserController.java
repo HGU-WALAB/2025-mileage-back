@@ -6,6 +6,7 @@ import com.csee.swplus.mileage.user.controller.request.UserRequest;
 import com.csee.swplus.mileage.user.controller.response.UserResponse;
 import com.csee.swplus.mileage.user.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,9 +16,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/{studentId}")
-    public ResponseEntity<UserResponse> getUserInfo(@PathVariable String studentId) {
-        UserResponse userResponse = userService.getUserInfo(studentId);
+    @GetMapping("")
+    public ResponseEntity<UserResponse> getUserInfo() {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserResponse userResponse = userService.getUserInfo(currentUserId);
         //userService.saveUserSchoolInfo(studentId);
         return ResponseEntity.ok(userResponse);
     }

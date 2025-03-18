@@ -9,6 +9,7 @@ import com.csee.swplus.mileage.scholarship.service.ScholarshipService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController // 이 class 가 REST API 관련 class 라는 것을 스프링에게 명시
@@ -32,9 +33,10 @@ public class ScholarshipController {
         }
     }
     //@CrossOrigin(origins = "http://walab.handong.edu", allowCredentials = "true")  // CORS 설정
-    @GetMapping("/{studentId}")
-    public ResponseEntity<ScholarshipResponseDto> getScholarshipStatus(@PathVariable String studentId) {
-        ScholarshipResponseDto response = scholarshipService.getIsApplyStatus(studentId);
+    @GetMapping("/status")
+    public ResponseEntity<ScholarshipResponseDto> getScholarshipStatus() {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+        ScholarshipResponseDto response = scholarshipService.getIsApplyStatus(currentUserId);
         return ResponseEntity.ok(response);
     }
 
