@@ -39,9 +39,7 @@ public class EtcSubitem {
 
     private String description2;
 
-    @Column(insertable = false, updatable = false)
     private LocalDateTime moddate;
 
-    @Column(insertable = false)
     private LocalDateTime regdate;
 }

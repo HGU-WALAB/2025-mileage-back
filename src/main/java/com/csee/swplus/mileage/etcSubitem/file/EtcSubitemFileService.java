@@ -13,6 +13,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 //import java.nio.file.StandardCopyOption; // 파일 복사 관련 설정 제공 e.g. REPLACE_EXISTING
+//import java.nio.file.attribute.PosixFilePermission;
+//import java.nio.file.attribute.PosixFilePermissions;
+//import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -30,15 +33,15 @@ public class EtcSubitemFileService {
             directory.mkdirs();
         }
 
-//        2. 파일명 중복 방지를 위한 고유 파일명 생성
+//        2. 파일명 중복 방지를 위한 고유 파일명 생성 X -> 파일명 저장 형식 전달 받음
         String originalFilename = file.getOriginalFilename();
-        String extension = originalFilename.substring(originalFilename.lastIndexOf(".")); // 파일 확장자 추출
-        String savedFilename = UUID.randomUUID().toString() + extension; // 고유한 파일명 생성 후 원본 확장자를 붙여 새로운 파일명 생성
+//        String extension = originalFilename.substring(originalFilename.lastIndexOf(".")); // 파일 확장자 추출
+//        String savedFilename = UUID.randomUUID().toString() + extension; // 고유한 파일명 생성 후 원본 확장자를 붙여 새로운 파일명 생성
 
 //        3. 파일 저장
 //        uploadDir 경로를 Path 객체로 변환
 //        새 파일명과 결합하여 최종 저장 위치를 설정
-        Path targetLocation = Paths.get(uploadDir).resolve(savedFilename);
+        Path targetLocation = Paths.get(uploadDir).resolve(originalFilename);
 
 //        file.getInputStream() 을 사용하여 업로드된 파일의 데이터를 읽음
 //        targetLocation 경로에 복사
@@ -46,8 +49,15 @@ public class EtcSubitemFileService {
             Files.copy(inputStream, targetLocation);
         }
 
+//        try {
+//            Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rw-r—r—");
+//            Files.setPosixFilePermissions(targetLocation, perms);
+//        } catch (UnsupportedOperationException e) {
+//            // Windows에서는 권한 변경을 무시하고 진행
+//        }
+
 //        4. 저장된 파일명 (새로 만들어진 고유의 파일명) 반환
-        return savedFilename;
+        return originalFilename;
     }
 
     public void deleteFile(String filename) {

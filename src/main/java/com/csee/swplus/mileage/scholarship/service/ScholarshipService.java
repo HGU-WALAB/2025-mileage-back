@@ -3,6 +3,7 @@ package com.csee.swplus.mileage.scholarship.service;
 import com.csee.swplus.mileage.scholarship.dto.ScholarshipResponseDto;
 import com.csee.swplus.mileage.scholarship.mapper.ScholarshipMapper;
 import com.csee.swplus.mileage.scholarship.repository.ScholarshipRepository;
+import com.csee.swplus.mileage.user.controller.response.UserResponse;
 import com.csee.swplus.mileage.user.entity.Users;
 import com.csee.swplus.mileage.user.service.UserService;
 import com.csee.swplus.mileage.util.semester.SemesterUtil;
@@ -20,12 +21,16 @@ public class ScholarshipService {
     private final ScholarshipMapper scholarshipMapper;
     private final SemesterUtil semesterUtil;
     private final ScholarshipRepository scholarshipRepository;
+    private final UserService userService;
 
     // [피드백 수용 후 코드] 장학금 신청 테이블 존재
     @Transactional
     public void applyScholarship(String studentId, boolean isAgree) {
-        boolean isAvailable = UserService.isScholarshipAvailable();
-        if(!isAvailable) {
+        UserResponse userResponse = userService.getUserInfo(studentId);
+        String stype = userResponse.getStudentType();
+        int term = userResponse.getTerm();
+
+        if(stype.equals("기타") || term > 9) {
             log.warn("⚠️ 마일리지 장학금 신청 권한이 없는 학생 - studentId: {}", studentId);
             throw new IllegalStateException("신청 대상자가 아닙니다.");
         }

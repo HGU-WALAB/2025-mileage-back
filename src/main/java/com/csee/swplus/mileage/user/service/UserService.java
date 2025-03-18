@@ -67,7 +67,6 @@ public class UserService {
             log.info("StudentSchool already exists: {}", existingSchools.get(0));
             return;
         }
-        
 
         // 새로 저장
         StudentSchool schoolInfo = StudentSchool.from(user);
@@ -86,58 +85,4 @@ public class UserService {
 
         studentSchoolRepository.save(schoolInfo);
     }
-
-//    private String determineStype(StudentSchool studentSchool) {
-//        String school = studentSchool.getSchool();
-//        String major1 = studentSchool.getMajor1();
-//        String major2 = studentSchool.getMajor2();
-//
-//        if ("전산전자공학부".equals(school)) {
-//            if ("AI·컴퓨터공학심화(60)".equals(major1) ||
-//                    "전자공학심화(60)".equals(major1) ||
-//                    "컴퓨터공학(33)".equals(major1) ||
-//                    "컴퓨터공학(40)".equals(major1) ||
-//                    "컴퓨터공학(45)".equals(major1) ||
-//                    "전자공학(33)".equals(major1)
-//            ) {}
-//            return "전공";
-//        }
-//        if ("글로벌리더십학부".equals(school)) {
-//            if ("AI·컴퓨터공학심화(60)".equals(major1)) {
-//                return "1학년";
-//            }
-//        }
-//        if ("컴퓨터공학(33)".equals(major2) ||
-//                "컴퓨터공학(40)".equals(major2) ||
-//                "컴퓨터공학(45)".equals(major2) ||
-//                "IT(40)".equals(major2) ||
-//                "ICT(45)".equals(major2) ||
-//                "ACE(40)".equals(major2) ||
-//                "DS(45)".equals(major2)
-//        ) {
-//            return "융합";
-//        }
-//        if ("IT(40)".equals(major1) ||
-//                "ICT(45)".equals(major1) ||
-//                "AI Convergence & Entrepreneurship(45)".equals(major1)
-//        ) {
-//            return "융합";
-//        }
-//        if (("생명공학(33)".equals(major1)) || ("경영(40)".equals(major1)) ||
-//                ("경제(45)".equals(major1))){
-//            if ("AI융합".equals(major2)) {
-//                return "융합";
-//            }
-//        }
-//        return "기타";
-//    }
-
-//    private static boolean isScholarsipAvailable() {
-//        String type = determineStype();
-//
-//        if(type == "기타")
-//            return false;
-//        else
-//            return true;
-//    }
 }
