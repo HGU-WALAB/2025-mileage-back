@@ -6,7 +6,7 @@ import com.csee.swplus.mileage.scholarship.repository.ScholarshipRepository;
 import com.csee.swplus.mileage.user.controller.response.UserResponse;
 import com.csee.swplus.mileage.user.entity.Users;
 import com.csee.swplus.mileage.user.service.UserService;
-import com.csee.swplus.mileage.util.semester.SemesterUtil;
+import com.csee.swplus.mileage.setting.service.ManagerService;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Slf4j
 public class ScholarshipService {
     private final ScholarshipMapper scholarshipMapper;
-    private final SemesterUtil semesterUtil;
+    private final ManagerService managerService;
     private final ScholarshipRepository scholarshipRepository;
     private final UserService userService;
 
@@ -36,7 +36,7 @@ public class ScholarshipService {
         }
 
         int isChecked = isAgree ? 1 : 0;
-        String semester = semesterUtil.getCurrentSemester();
+        String semester = managerService.getCurrentSemester();
         LocalDateTime now = LocalDateTime.now();
 
         log.info("📌 applyScholarship 실행 - studentId: {}, isAgree: {}, isChecked: {}, semester: {}",
