@@ -8,7 +8,7 @@ import com.csee.swplus.mileage.etcSubitem.dto.StudentInputSubitemResponseDto;
 import com.csee.swplus.mileage.etcSubitem.dto.EtcSubitemResponseDto;
 import com.csee.swplus.mileage.etcSubitem.mapper.EtcSubitemMapper;
 import com.csee.swplus.mileage.etcSubitem.repository.EtcSubitemRepository;
-import com.csee.swplus.mileage.util.semester.SemesterUtil;
+import com.csee.swplus.mileage.setting.service.ManagerService;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +27,10 @@ public class EtcSubitemService {
     private final EtcSubitemRepository etcSubitemRepository;
     private final EtcSubitemFileRepository fileRepository;
     private final EtcSubitemFileService fileService;
-    private final SemesterUtil semesterUtil;
+    private final ManagerService managerService;
 
     public List<StudentInputSubitemResponseDto> getStudentInputSubitems() {
-        String currentSemester = semesterUtil.getCurrentSemester();
+        String currentSemester = managerService.getCurrentSemester();
         log.info("📝 getCurrentSemester 결과 - current semester: " + currentSemester);
         List<StudentInputSubitemResponseDto> res = etcSubitemMapper.findAllStudentInputSubitems(currentSemester);
         log.info("📝 findAllStudentInputSubitems 결과 - res: {}", res);
@@ -38,7 +38,7 @@ public class EtcSubitemService {
     }
 
     public List<EtcSubitemResponseDto> getEtcSubitems(String studentId) {
-        String currentSemester = semesterUtil.getCurrentSemester();
+        String currentSemester = managerService.getCurrentSemester();
         log.info("📝 getCurrentSemester 결과 - current semester: " + currentSemester);
         List<EtcSubitemResponseDto> res = etcSubitemMapper.findAllEtcSubitems(studentId, currentSemester);
         log.info("📝 getRequestedEtcSubitems 결과 - res: {}", res);

@@ -1,10 +1,9 @@
 package com.csee.swplus.mileage.auth.service;
 
 import com.csee.swplus.mileage.setting.entity.SwManagerSetting;
-import com.csee.swplus.mileage.setting.repository.SwManagerSettingRepository;
+import com.csee.swplus.mileage.setting.service.ManagerService;
 import com.csee.swplus.mileage.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import com.csee.swplus.mileage.auth.controller.response.LoginResponse;
 import com.csee.swplus.mileage.auth.dto.AuthDto;
 import com.csee.swplus.mileage.auth.exception.DoNotExistException;
 import com.csee.swplus.mileage.auth.util.JwtUtil;
@@ -25,7 +24,7 @@ import java.util.Optional;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final SwManagerSettingRepository swManagerSettingRepository;
+    private final ManagerService managerService;
     private final UserService userService;
 
     @Value("${custom.jwt.secret}")
@@ -47,9 +46,7 @@ public class AuthService {
 
         log.info("user: {}", user);
 
-        String currentSemester = swManagerSettingRepository.findById(2L)
-                .map(SwManagerSetting::getCurrentSemester)
-                .orElse(null);
+        String currentSemester = managerService.getCurrentSemester();
 
         Key key = JwtUtil.getSigningKey(SECRET_KEY);
 
