@@ -73,19 +73,13 @@
     <select id="findAllMilestoneBySemester" resultType="com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterTotalPointResponseDto">
         SELECT
             r.semester,
-            IFNULL(COUNT(DISTINCT r.subitem_id), 0) AS userMilestoneCount,
-            IFNULL((
-                       SELECT COUNT(DISTINCT si.id)
-                       FROM _sw_mileage_subitem si
-                       WHERE si.semester = r.semester
-                   ), 0) AS totalMilestoneCount
+            IFNULL(COUNT(DISTINCT r2.subitem_id), 0) AS userMilestoneCount
         FROM _sw_mileage_record r
-                 LEFT JOIN _sw_student s ON r.snum = s.snum
+            LEFT JOIN _sw_mileage_record r2 ON r2.semester <= r.semester AND r2.snum = #{studentId}
+            LEFT JOIN _sw_student s ON r.snum = s.snum
         WHERE s.snum = #{studentId}
-        GROUP BY
-            r.semester
-        ORDER BY
-            r.semester;
+        GROUP BY r.semester
+        ORDER BY r.semester;
     </select>
 
 </mapper>
