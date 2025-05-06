@@ -4,6 +4,9 @@ import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -12,4 +15,22 @@ public class Award {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "award_date")
+    private LocalDate awardDate;
+
+    @Column(name = "award_year")
+    private String awardYear;
+
+    @Column(name = "contest_name")
+    private String contestName;
+
+    @Column(name = "award_name")
+    private String awardName;
+
+    @Column(name = "award_type")
+    private String awardType;
+
+    @Column(name = "organization")
+    private String organization;
 }
