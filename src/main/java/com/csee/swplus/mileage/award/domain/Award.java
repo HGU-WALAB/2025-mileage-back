@@ -15,6 +15,8 @@ public class Award {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String snum;
+
     @Column(name = "award_date")
     private LocalDate awardDate;
 
