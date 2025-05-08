@@ -33,7 +33,7 @@ public class AwardController {
             @RequestBody AwardRequestDto requestDto
     ) {
         return ResponseEntity.ok(
-                awardService.postAward(requestDto)
+                awardService.postAward(studentId, requestDto)
         );
     }
 }

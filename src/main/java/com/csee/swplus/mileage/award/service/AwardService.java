@@ -1,5 +1,6 @@
 package com.csee.swplus.mileage.award.service;
 
+import com.csee.swplus.mileage.award.domain.Award;
 import com.csee.swplus.mileage.award.dto.AwardRequestDto;
 import com.csee.swplus.mileage.award.dto.AwardResponseDto;
 import com.csee.swplus.mileage.award.mapper.AwardMapper;
@@ -22,7 +23,17 @@ public class AwardService {
         return awardMapper.findAllAwards(studentId);
     }
 
-    public MessageResponseDto postAward(AwardRequestDto awardRequestDto) {
-        return new MessageResponseDto("교외 수상 내역이 등록되었습니다.");
+    public MessageResponseDto postAward(String studentId, AwardRequestDto awardRequestDto) {
+        Award award = new Award(
+                studentId,
+                awardRequestDto.getAwardDate(),
+                awardRequestDto.getAwardYear(),
+                awardRequestDto.getContestName(),
+                awardRequestDto.getAwardName(),
+                awardRequestDto.getAwardType(),
+                awardRequestDto.getOrganization()
+        );
+        awardRepository.save(award);
+        return new MessageResponseDto("수상 내역이 등록되었습니다.");
     }
 }
