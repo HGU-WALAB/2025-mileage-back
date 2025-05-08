@@ -62,4 +62,15 @@ public class AwardService {
             throw new RuntimeException("수상 내역 수정 중 오류가 발생했습니다.");
         }
     }
+
+    public MessageResponseDto deleteAward(String studentId, int awardId) {
+        try {
+            awardRepository.deleteById(awardId);
+
+            return new MessageResponseDto("수상 내역이 삭제되었습니다.");
+        } catch (Exception e) {
+            log.error("⚠️ 수상 내역 삭제 중 오류 발생: ", e);
+            throw new RuntimeException("수상 내역 삭제 중 오류가 발생했습니다.");
+        }
+    }
 }

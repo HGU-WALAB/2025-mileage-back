@@ -47,4 +47,14 @@ public class AwardController {
                 awardService.patchAward(studentId, awardId, requestDto)
         );
     }
+
+    @DeleteMapping("/{studentId}/{awardId}")
+    public ResponseEntity<MessageResponseDto> deleteAward (
+            @PathVariable String studentId,
+            @PathVariable int awardId
+    ) {
+        return ResponseEntity.ok(
+                awardService.deleteAward(studentId, awardId)
+        );
+    }
 }
