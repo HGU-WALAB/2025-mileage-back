@@ -24,16 +24,42 @@ public class AwardService {
     }
 
     public MessageResponseDto postAward(String studentId, AwardRequestDto awardRequestDto) {
-        Award award = new Award(
-                studentId,
-                awardRequestDto.getAwardDate(),
-                awardRequestDto.getAwardYear(),
-                awardRequestDto.getContestName(),
-                awardRequestDto.getAwardName(),
-                awardRequestDto.getAwardType(),
-                awardRequestDto.getOrganization()
-        );
-        awardRepository.save(award);
-        return new MessageResponseDto("수상 내역이 등록되었습니다.");
+        try {
+            Award award = new Award(
+                    studentId,
+                    awardRequestDto.getAwardDate(),
+                    awardRequestDto.getAwardYear(),
+                    awardRequestDto.getContestName(),
+                    awardRequestDto.getAwardName(),
+                    awardRequestDto.getAwardType(),
+                    awardRequestDto.getOrganization()
+            );
+
+            awardRepository.save(award);
+            return new MessageResponseDto("수상 내역이 등록되었습니다.");
+        } catch (Exception e) {
+            log.error("⚠️ 수상 내역 등록 중 오류 발생: ", e);
+            throw new RuntimeException("수상 내역 등록 중 오류가 발생했습니다.");
+        }
+    }
+
+    public MessageResponseDto patchAward(String studentId, int awardId, AwardRequestDto awardRequestDto) {
+        try {
+            Award award = awardRepository.findById(awardId)
+                    .orElseThrow(() -> new RuntimeException("해당 수상 내역을 찾을 수 없습니다."));
+
+            award.setAwardDate(awardRequestDto.getAwardDate());
+            award.setAwardYear(awardRequestDto.getAwardYear());
+            award.setContestName(awardRequestDto.getContestName());
+            award.setAwardName(awardRequestDto.getAwardName());
+            award.setAwardType(awardRequestDto.getAwardType());
+            award.setOrganization(awardRequestDto.getOrganization());
+
+            awardRepository.save(award);
+            return new MessageResponseDto("수상 내역이 수정되었습니다.");
+        } catch (Exception e) {
+            log.error("⚠️ 수상 내역 수정 중 오류 발생: ", e);
+            throw new RuntimeException("수상 내역 수정 중 오류가 발생했습니다.");
+        }
     }
 }

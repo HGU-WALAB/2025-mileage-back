@@ -36,4 +36,15 @@ public class AwardController {
                 awardService.postAward(studentId, requestDto)
         );
     }
+
+    @PatchMapping("/{studentId}/{awardId}")
+    public ResponseEntity<MessageResponseDto> patchAward (
+            @PathVariable String studentId,
+            @PathVariable int awardId,
+            @RequestBody AwardRequestDto requestDto
+    ) {
+        return ResponseEntity.ok(
+                awardService.patchAward(studentId, awardId, requestDto)
+        );
+    }
 }
