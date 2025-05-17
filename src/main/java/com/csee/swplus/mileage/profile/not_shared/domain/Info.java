@@ -48,4 +48,6 @@ public class Info {
         this.linkedinLink = linkedinLink;
         this.blogLink = blogLink;
     }
+
+    protected Info() {}
 }
