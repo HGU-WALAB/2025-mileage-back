@@ -1,4 +1,4 @@
-package com.csee.swplus.mileage.profile.not_shared.dto;
+package com.csee.swplus.mileage.profile.dto;
 
 import lombok.Data;
 

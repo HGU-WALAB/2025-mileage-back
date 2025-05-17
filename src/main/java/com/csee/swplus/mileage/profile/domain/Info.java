@@ -1,4 +1,4 @@
-package com.csee.swplus.mileage.profile.not_shared.domain;
+package com.csee.swplus.mileage.profile.domain;
 
 import javax.persistence.*;
 import lombok.Getter;

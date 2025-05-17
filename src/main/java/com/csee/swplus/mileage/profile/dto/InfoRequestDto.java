@@ -1,13 +1,9 @@
-package com.csee.swplus.mileage.profile.not_shared.dto;
+package com.csee.swplus.mileage.profile.dto;
 
 import lombok.Data;
-import lombok.AllArgsConstructor;
-
-import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
-public class InfoResponseDto {
+public class InfoRequestDto {
     private String profileImageUrl;
     private String selfDescription;
     private String job;
