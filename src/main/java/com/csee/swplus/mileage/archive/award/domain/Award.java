@@ -1,4 +1,4 @@
-package com.csee.swplus.mileage.award.domain;
+package com.csee.swplus.mileage.archive.award.domain;
 
 import javax.persistence.*;
 import lombok.Getter;

@@ -1,6 +1,6 @@
-package com.csee.swplus.mileage.award.mapper;
+package com.csee.swplus.mileage.archive.award.mapper;
 
-import com.csee.swplus.mileage.award.dto.AwardResponseDto;
+import com.csee.swplus.mileage.archive.award.dto.AwardResponseDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
