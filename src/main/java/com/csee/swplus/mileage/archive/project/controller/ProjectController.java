@@ -2,6 +2,7 @@ package com.csee.swplus.mileage.archive.project.controller;
 
 import com.csee.swplus.mileage.archive.project.dto.AllProjectsResponseDto;
 import com.csee.swplus.mileage.archive.project.dto.ProjectEntityDto;
+import com.csee.swplus.mileage.archive.project.dto.ProjectResponseDto;
 import com.csee.swplus.mileage.archive.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,13 +28,22 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping("")
-    public ResponseEntity<List<AllProjectsResponseDto>> getStudentInputSubitems () {
+    public ResponseEntity<List<AllProjectsResponseDto>> getAllProjects() {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         return ResponseEntity.ok(
                 projectService.getAllProjects(currentUserId)
         );
     }
+
+//    @GetMapping("/{projectId}")
+//    private ResponseEntity<List<ProjectResponseDto>> getProjectDetail(@PathVariable int projectId) {
+//        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+//
+//        return ResponseEntity.ok(
+//                projectService.getProjectDetail(currentUserId, projectId)
+//        );
+//    }
 
     @Value("${file.project-dir}")
     private String FILE_DIRECTORY;

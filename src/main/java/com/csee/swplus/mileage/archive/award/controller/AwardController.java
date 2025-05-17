@@ -1,8 +1,8 @@
-package com.csee.swplus.mileage.award.controller;
+package com.csee.swplus.mileage.archive.award.controller;
 
-import com.csee.swplus.mileage.award.dto.AwardRequestDto;
-import com.csee.swplus.mileage.award.dto.AwardResponseDto;
-import com.csee.swplus.mileage.award.service.AwardService;
+import com.csee.swplus.mileage.archive.award.dto.AwardRequestDto;
+import com.csee.swplus.mileage.archive.award.service.AwardService;
+import com.csee.swplus.mileage.archive.award.dto.AwardResponseDto;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

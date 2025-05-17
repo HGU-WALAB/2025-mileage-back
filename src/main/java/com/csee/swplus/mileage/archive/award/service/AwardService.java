@@ -1,10 +1,10 @@
-package com.csee.swplus.mileage.award.service;
+package com.csee.swplus.mileage.archive.award.service;
 
-import com.csee.swplus.mileage.award.domain.Award;
-import com.csee.swplus.mileage.award.dto.AwardRequestDto;
-import com.csee.swplus.mileage.award.dto.AwardResponseDto;
-import com.csee.swplus.mileage.award.mapper.AwardMapper;
-import com.csee.swplus.mileage.award.repository.AwardRepository;
+import com.csee.swplus.mileage.archive.award.mapper.AwardMapper;
+import com.csee.swplus.mileage.archive.award.domain.Award;
+import com.csee.swplus.mileage.archive.award.dto.AwardRequestDto;
+import com.csee.swplus.mileage.archive.award.dto.AwardResponseDto;
+import com.csee.swplus.mileage.archive.award.repository.AwardRepository;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

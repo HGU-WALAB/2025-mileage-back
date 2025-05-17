@@ -2,6 +2,7 @@ package com.csee.swplus.mileage.archive.project.service;
 
 import com.csee.swplus.mileage.archive.project.dto.AllProjectsEntityDto;
 import com.csee.swplus.mileage.archive.project.dto.AllProjectsResponseDto;
+import com.csee.swplus.mileage.archive.project.dto.ProjectResponseDto;
 import com.csee.swplus.mileage.archive.project.mapper.ProjectMapper;
 import com.csee.swplus.mileage.archive.project.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,4 +42,8 @@ public class ProjectService {
                 ))
                 .collect(Collectors.toList());
     }
+
+//    public List<ProjectResponseDto> getProjectDetail(String studentId, int projectId) {
+//
+//    }
 }
