@@ -21,7 +21,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class EtcSubitemFileService {
-    @Value("${file.upload-dir}")
+    @Value("${file.etc-upload-dir}")
     @Getter
     private String uploadDir;
 

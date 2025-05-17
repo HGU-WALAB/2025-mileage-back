@@ -5,11 +5,10 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class ProjectResponseDto {
+public class ProjectEntityDto {
     private int projectId;
     private String name;
     private String role;
@@ -24,5 +23,5 @@ public class ProjectResponseDto {
     private LocalDateTime regDate;
     private LocalDateTime modDate;
     private String thumbnail;
-    private List<String> techStack;
+    private String techStack;   // raw comma-separated string
 }

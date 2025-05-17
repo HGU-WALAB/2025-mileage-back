@@ -3,4 +3,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.csee.swplus.mileage.archive.project.mapper.ProjectMapper">
+    <select id="findAllProjects" resultType="com.csee.swplus.mileage.archive.project.dto.AllProjectsEntityDto">
+        SELECT id AS projectId,
+               name,
+               role,
+               start_date AS startDate,
+               end_date AS endDate,
+               reg_date AS regDate,
+               mod_date AS modDate,
+               thumbnail,
+               tech_stack AS techStack
+        FROM _sw_mileage_project
+        WHERE snum = #{studentId};
+    </select>
 </mapper>
