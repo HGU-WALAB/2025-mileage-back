@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,8 +15,36 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private String snum;
+    private String name;
+    private String role;
+    private String description;
+    private String content;
+    private String achievement;
 
-    private LocalDateTime moddate;
+    @Column(name = "github_link")
+    private String githubLink;
 
-    private LocalDateTime regdate;
+    @Column(name = "blog_link")
+    private String blogLink;
+
+    @Column(name = "deployed_link")
+    private String deployedLink;
+
+    @Column(name = "start_date")
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
+
+    @Column(name = "reg_date")
+    private LocalDateTime regDate;
+
+    @Column(name = "mod_date")
+    private LocalDateTime modDate;
+
+    private String thumbnail;
+
+    @Column(name = "tech_stack")
+    private String techStack;
 }
