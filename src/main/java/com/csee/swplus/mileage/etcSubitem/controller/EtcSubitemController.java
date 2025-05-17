@@ -46,7 +46,7 @@ public class EtcSubitemController {
         );
     }
 
-    @Value("${file.dir}")
+    @Value("${file.etc-dir}")
     private String FILE_DIRECTORY;
 
     //    특정 기타 항목의 증빙 자료 다운로드

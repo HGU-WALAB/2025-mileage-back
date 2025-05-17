@@ -42,3 +42,4 @@ src/main/resources/*.yml
 
 ### test data
 uploads/*
+project-thumbnail/*

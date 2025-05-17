@@ -1,4 +1,4 @@
-package com.csee.swplus.mileage.award.dto;
+package com.csee.swplus.mileage.archive.award.dto;
 
 import lombok.Data;
 import lombok.AllArgsConstructor;
