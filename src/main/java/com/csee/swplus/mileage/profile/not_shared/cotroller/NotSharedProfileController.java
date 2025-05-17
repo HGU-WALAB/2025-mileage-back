@@ -1,10 +1,7 @@
 package com.csee.swplus.mileage.profile.not_shared.cotroller;
 
 import com.csee.swplus.mileage.award.dto.AwardResponseDto;
-import com.csee.swplus.mileage.profile.not_shared.dto.InfoRequestDto;
-import com.csee.swplus.mileage.profile.not_shared.dto.InfoResponseDto;
-import com.csee.swplus.mileage.profile.not_shared.dto.MessageResponse;
-import com.csee.swplus.mileage.profile.not_shared.dto.TeckStackResponseDto;
+import com.csee.swplus.mileage.profile.not_shared.dto.*;
 import com.csee.swplus.mileage.profile.not_shared.service.ProfileInfoService;
 import com.csee.swplus.mileage.profile.not_shared.service.ProfileTeckStackService;
 import com.csee.swplus.mileage.profile.not_shared.dto.MessageResponse;
@@ -46,5 +43,12 @@ public class NotSharedProfileController {
         return ResponseEntity.ok(
                 profileTeckStackService.getTeckStack(currentUserId) // ← 단일 객체 반환하도록 서비스도 수정
         );
+    }
+
+    @PatchMapping("/profile/teckStack")
+    public ResponseEntity<MessageResponse> patchTeckStack(@RequestBody TeckStackRequestDto requestdto) {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+        profileTeckStackService.patchTeckStack(currentUserId, requestdto);
+        return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
     }
 }

@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface InfoMapper {
     InfoResponseDto findInfoByUserId(@Param("studentId") String studentId);
+    int insertIfNotExists(@Param("studentId") String studentId);
 }

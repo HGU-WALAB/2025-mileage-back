@@ -9,5 +9,13 @@
         FROM _sw_mileage_profile_teckstack AS t
         WHERE t.snum = #{studentId}
     </select>
+    <insert id="insertIfNotExists" parameterType="string">
+        INSERT INTO _sw_mileage_profile_teckstack (snum)
+        SELECT #{studentId}
+        FROM DUAL
+        WHERE NOT EXISTS (
+            SELECT 1 FROM _sw_mileage_profile_teckstack WHERE snum = #{studentId}
+        )
+    </insert>
 
 </mapper>

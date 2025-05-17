@@ -19,6 +19,7 @@ public class ProfileInfoService {
     private final ProfileInfoRepository profileInfoRepository;
 
     public InfoResponseDto getInfo(String studentId) {
+        infoMapper.insertIfNotExists(studentId);
         return infoMapper.findInfoByUserId(studentId);
     }
 
