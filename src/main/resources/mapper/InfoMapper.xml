@@ -5,15 +5,9 @@
 <mapper namespace="com.csee.swplus.mileage.profile.not_shared.mapper.InfoMapper">
 
     <select id="findInfoByUserId" resultType="com.csee.swplus.mileage.profile.not_shared.dto.InfoResponseDto">
-        SELECT i.profile_image_url AS profileImageUrl,
-               i.self_description AS selfDescription,
-               i.job,
-               i.github_link AS githubLink,
-               i.instagram_link AS instagramLink,
-               i.blog_link AS blogLink,
-               i.linkedin_link AS linkedinLink
-        FROM _sw_mileage_profile_info AS i
-        WHERE i.snum = #{studentId}
+        SELECT t.stacks
+        FROM _sw_mileage_profile_teckstack AS t
+        WHERE t.snum = #{studentId}
     </select>
 
 </mapper>

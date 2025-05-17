@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.csee.swplus.mileage.profile.not_shared.mapper.TeckStackMapper">
+
+    <select id="findTeckStackByUserId" resultType="com.csee.swplus.mileage.profile.not_shared.dto.TeckStackResponseDto">
+        SELECT i.profile_image_url AS profileImageUrl,
+               i.self_description AS selfDescription,
+               i.job,
+               i.github_link AS githubLink,
+               i.instagram_link AS instagramLink,
+               i.blog_link AS blogLink,
+               i.linkedin_link AS linkedinLink
+        FROM _sw_mileage_profile_info AS i
+        WHERE i.snum = #{studentId}
+    </select>
+
+</mapper>
