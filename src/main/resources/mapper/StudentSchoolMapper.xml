@@ -9,40 +9,40 @@
         SELECT
             CASE
                 WHEN school = '전산전자공학부'
-                    AND (major_1 LIKE '컴퓨터공학(%)'
-                        OR major_1 LIKE 'AI·컴퓨터공학심화(%)'
-                        OR major_1 LIKE '전자공학심화(%)'
-                        OR major_1 LIKE '전자공학(%)')
+                    AND (major_1 LIKE '컴퓨터공학%'
+                        OR major_1 LIKE 'AI·컴퓨터공학심화%'
+                        OR major_1 LIKE '전자공학심화%'
+                        OR major_1 LIKE '전자공학%')
                     THEN '전공'
 
                 WHEN school = '글로벌리더십학부'
-                    AND major_1 LIKE 'AI·컴퓨터공학심화(%)'
+                    AND major_1 LIKE 'AI·컴퓨터공학심화%'
                     THEN '1학년'
 
-                WHEN major_2 LIKE '컴퓨터공학(%)'
-                    OR major_2 LIKE 'IT(%)'
-                    OR major_2 LIKE 'ICT융합(%)'
-                    OR major_2 LIKE 'AI Convergence &amp; Entrepreneurship(%)'
-                    OR major_2 LIKE '데이터사이언스(%)'
+                WHEN major_2 LIKE '컴퓨터공학%'
+                    OR major_2 LIKE 'IT%'
+                    OR major_2 LIKE 'ICT융합%'
+                    OR major_2 LIKE 'AI Convergence &amp; Entrepreneurship%'
+                    OR major_2 LIKE '데이터사이언스%'
                     THEN '융합'
 
-                WHEN major_1 LIKE 'IT(%)'
-                    OR major_1 LIKE 'ICT융합(%)'
-                    OR major_1 LIKE 'AI Convergence &amp; Entrepreneurship(%)'
+                WHEN major_1 LIKE 'IT%'
+                    OR major_1 LIKE 'ICT융합%'
+                    OR major_1 LIKE 'AI Convergence &amp; Entrepreneurship%'
                     THEN '융합'
 
-                WHEN (major_1 LIKE '생명과학(%)'
-                    OR major_1 LIKE '경영(%)'
-                    OR major_1 LIKE '경제(%)')
-                    AND major_2 = 'AI융합'
+                WHEN (major_1 LIKE '생명과학%'
+                    OR major_1 LIKE '경영%'
+                    OR major_1 LIKE '경제%')
+                    AND major_2 = 'AI융합%'
                     THEN '융합'
 
                 ELSE '기타'
                 END
-        FROM _sw_student
+        FROM _sw_mileage_student_school
         WHERE school = #{school}
-          AND major_1 = #{major1}
-          AND (major_2 = #{major2} OR major_2 IS NULL)
+          AND major_1 LIKE CONCAT(#{major1}, '%')
+          AND (major_2 = #{major2} OR major_2 IS NULL OR major_2 = '')
             LIMIT 1
     </select>
 

@@ -19,6 +19,7 @@ public class UserController {
     @GetMapping("")
     public ResponseEntity<UserResponse> getUserInfo() {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("❗Current user: {}", currentUserId);
         UserResponse userResponse = userService.getUserInfo(currentUserId);
         //userService.saveUserSchoolInfo(studentId);
         return ResponseEntity.ok(userResponse);
