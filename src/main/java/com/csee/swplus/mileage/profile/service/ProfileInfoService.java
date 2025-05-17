@@ -1,10 +1,10 @@
-package com.csee.swplus.mileage.profile.not_shared.service;
+package com.csee.swplus.mileage.profile.service;
 
-import com.csee.swplus.mileage.profile.not_shared.domain.Info;
-import com.csee.swplus.mileage.profile.not_shared.dto.InfoRequestDto;
-import com.csee.swplus.mileage.profile.not_shared.dto.InfoResponseDto;
-import com.csee.swplus.mileage.profile.not_shared.repository.ProfileInfoRepository;
-import com.csee.swplus.mileage.profile.not_shared.mapper.InfoMapper;
+import com.csee.swplus.mileage.profile.domain.Info;
+import com.csee.swplus.mileage.profile.dto.InfoRequestDto;
+import com.csee.swplus.mileage.profile.dto.InfoResponseDto;
+import com.csee.swplus.mileage.profile.mapper.InfoMapper;
+import com.csee.swplus.mileage.profile.repository.ProfileInfoRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,9 +1,9 @@
-package com.csee.swplus.mileage.profile.not_shared.cotroller;
+package com.csee.swplus.mileage.profile.cotroller;
 
-import com.csee.swplus.mileage.profile.not_shared.dto.*;
-import com.csee.swplus.mileage.profile.not_shared.service.ProfileInfoService;
-import com.csee.swplus.mileage.profile.not_shared.service.ProfileTeckStackService;
-import com.csee.swplus.mileage.profile.not_shared.dto.MessageResponse;
+import com.csee.swplus.mileage.profile.dto.*;
+import com.csee.swplus.mileage.profile.service.ProfileInfoService;
+import com.csee.swplus.mileage.profile.service.ProfileTeckStackService;
+import com.csee.swplus.mileage.profile.dto.MessageResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/mileage")
 @RequiredArgsConstructor
 @Slf4j
-public class NotSharedProfileController {
+public class ProfileController {
     private final ProfileInfoService profileInfoService;
     private final ProfileTeckStackService profileTeckStackService;
 
@@ -34,6 +34,11 @@ public class NotSharedProfileController {
         return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
     }
 
+    @PostMapping("/share_profile/myinfo")
+    public ResponseEntity<InfoResponseDto> getInfoById(@RequestBody StudentIdRequestDto request) {
+        return ResponseEntity.ok(profileInfoService.getInfo(request.getStudentId()));
+    }
+
     @GetMapping("/profile/teckStack")
     public ResponseEntity<TeckStackResponseDto> getTeckStack() {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -47,5 +52,10 @@ public class NotSharedProfileController {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         profileTeckStackService.patchTeckStack(currentUserId, requestdto);
         return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
+    }
+
+    @PostMapping("/share_profile/teckStack")
+    public ResponseEntity<TeckStackResponseDto> getTeckStack(@RequestBody StudentIdRequestDto request) {
+        return ResponseEntity.ok(profileTeckStackService.getTeckStack(request.getStudentId()));
     }
 }

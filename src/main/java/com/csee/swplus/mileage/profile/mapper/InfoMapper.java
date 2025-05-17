@@ -1,6 +1,6 @@
-package com.csee.swplus.mileage.profile.not_shared.mapper;
+package com.csee.swplus.mileage.profile.mapper;
 
-import com.csee.swplus.mileage.profile.not_shared.dto.InfoResponseDto;
+import com.csee.swplus.mileage.profile.dto.InfoResponseDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

@@ -1,11 +1,10 @@
-package com.csee.swplus.mileage.profile.not_shared.service;
+package com.csee.swplus.mileage.profile.service;
 
-import com.csee.swplus.mileage.profile.not_shared.domain.Info;
-import com.csee.swplus.mileage.profile.not_shared.domain.TechStack;
-import com.csee.swplus.mileage.profile.not_shared.dto.TeckStackRequestDto;
-import com.csee.swplus.mileage.profile.not_shared.dto.TeckStackResponseDto;
-import com.csee.swplus.mileage.profile.not_shared.mapper.TeckStackMapper;
-import com.csee.swplus.mileage.profile.not_shared.repository.ProfileTeckStackRepository;
+import com.csee.swplus.mileage.profile.domain.TechStack;
+import com.csee.swplus.mileage.profile.dto.TeckStackRequestDto;
+import com.csee.swplus.mileage.profile.dto.TeckStackResponseDto;
+import com.csee.swplus.mileage.profile.mapper.TeckStackMapper;
+import com.csee.swplus.mileage.profile.repository.ProfileTeckStackRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

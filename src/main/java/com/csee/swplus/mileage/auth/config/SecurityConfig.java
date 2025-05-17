@@ -55,7 +55,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests(auth -> auth
-                        .antMatchers("/api/mileage/auth/**").permitAll()
+                        .antMatchers("/api/mileage/auth/**", "/api/mileage/share_profile/**").permitAll()
                         .antMatchers("/api/mileage/users/**",
                                 "/api/mileage/{studentId}/search",
                                 "/api/mileage/apply/{studentId}",

@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.csee.swplus.mileage.profile.not_shared.mapper.TeckStackMapper">
+<mapper namespace="com.csee.swplus.mileage.profile.mapper.TeckStackMapper">
 
-    <select id="findTeckStackByUserId" resultType="com.csee.swplus.mileage.profile.not_shared.dto.TeckStackResponseDto">
+    <select id="findTeckStackByUserId" resultType="com.csee.swplus.mileage.profile.dto.TeckStackResponseDto">
         SELECT t.stacks
         FROM _sw_mileage_profile_teckstack AS t
         WHERE t.snum = #{studentId}
