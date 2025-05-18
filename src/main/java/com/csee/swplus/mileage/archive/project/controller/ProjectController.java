@@ -37,7 +37,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}")
-    private ResponseEntity<List<ProjectResponseDto>> getProjectDetail(@PathVariable int projectId) {
+    private ResponseEntity<ProjectResponseDto> getProjectDetail(@PathVariable int projectId) {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         return ResponseEntity.ok(
@@ -59,7 +59,7 @@ public class ProjectController {
         }
     }
 
-    @GetMapping("/{filename}")
+    @GetMapping("/image/{filename}")
     public ResponseEntity<Resource> getProjectThumbnail (@PathVariable String filename) {
         try {
             Path filePath = Paths.get(FILE_DIRECTORY).resolve(filename).normalize();

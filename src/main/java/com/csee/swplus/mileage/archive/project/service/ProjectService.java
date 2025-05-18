@@ -21,19 +21,19 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
 
+    private String baseUrl = "/api/mileage/project/image/";
+
     public List<AllProjectsResponseDto> getAllProjects(String studentId) {
         List<AllProjectsEntityDto> res = projectMapper.findAllProjects(studentId);
         log.info("📝 AllProjectsEntityDto 결과 - res: {}", res);
-
-        String baseUrl = "/api/mileage/project/";
 
         return res.stream()
                 .map(entity -> new AllProjectsResponseDto(
                         entity.getProjectId(),
                         entity.getName(),
                         entity.getRole(),
-                        entity.getStartDate(),
-                        entity.getEndDate(),
+                        entity.getStart_date(),
+                        entity.getEnd_date(),
                         entity.getRegDate(),
                         entity.getModDate(),
                         baseUrl + entity.getThumbnail(),
@@ -44,10 +44,28 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
-//    public List<ProjectResponseDto> getProjectDetail(String studentId, int projectId) {
-//        List<ProjectEntityDto> res = projectMapper.findProjectDetail(studentId, projectId);
-//        log.info("📝 ProjectEntityDto 결과 - res: {}", res);
-//
-//
-//    }
+    public ProjectResponseDto getProjectDetail(String studentId, int projectId) {
+        ProjectEntityDto res = projectMapper.findProjectDetail(studentId, projectId);
+        log.info("📝 ProjectEntityDto 결과 - res: {}", res);
+
+        return new ProjectResponseDto(
+                    res.getProjectId(),
+                    res.getName(),
+                    res.getRole(),
+                    res.getDescription(),
+                    res.getContent(),
+                    res.getAchievement(),
+                    res.getGithub_link(),
+                    res.getBlog_link(),
+                    res.getDeployed_link(),
+                    res.getStart_date(),
+                    res.getEnd_date(),
+                    res.getRegDate(),
+                    res.getModDate(),
+                    baseUrl + res.getThumbnail(),
+                    Arrays.stream(res.getTechStack().split(","))
+                            .map(String::trim)
+                            .collect(Collectors.toList())
+                );
+    }
 }

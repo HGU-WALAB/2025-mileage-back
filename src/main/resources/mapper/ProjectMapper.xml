@@ -7,13 +7,33 @@
         SELECT id AS projectId,
                name,
                role,
-               start_date AS startDate,
-               end_date AS endDate,
+               start_date,
+               end_date,
                reg_date AS regDate,
                mod_date AS modDate,
                thumbnail,
                tech_stack AS techStack
         FROM _sw_mileage_project
         WHERE snum = #{studentId};
+    </select>
+
+    <select id="findProjectDetail" resultType="com.csee.swplus.mileage.archive.project.dto.ProjectEntityDto">
+        SELECT id AS projectId,
+               name,
+               role,
+               description,
+               content,
+               achievement,
+               github_link,
+               blog_link,
+               deployed_link,
+               start_date,
+               end_date,
+               reg_date AS regDate,
+               mod_date AS modDate,
+               thumbnail,
+               tech_stack AS techStack
+        FROM _sw_mileage_project
+        WHERE snum = #{studentId} AND id = #{projectId};
     </select>
 </mapper>
