@@ -1,8 +1,6 @@
-package com.csee.swplus.mileage.etcSubitem.file;
+package com.csee.swplus.mileage.file;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,16 +14,12 @@ import java.nio.file.Paths;
 //import java.nio.file.attribute.PosixFilePermission;
 //import java.nio.file.attribute.PosixFilePermissions;
 //import java.util.Set;
-import java.util.UUID;
+
 
 @Service
 @Slf4j
-public class EtcSubitemFileService {
-    @Value("${file.etc-upload-dir}")
-    @Getter
-    private String uploadDir;
-
-    public String saveFile(MultipartFile file) throws IOException {
+public class FileService {
+    public String saveFile(MultipartFile file, String uploadDir, String filename) throws IOException {
 //        1. 업로드 디렉토리 생성
         File directory = new File(uploadDir);
         if (!directory.exists()) {
@@ -33,15 +27,10 @@ public class EtcSubitemFileService {
             directory.mkdirs();
         }
 
-//        2. 파일명 중복 방지를 위한 고유 파일명 생성 X -> 파일명 저장 형식 전달 받음
-        String originalFilename = file.getOriginalFilename();
-//        String extension = originalFilename.substring(originalFilename.lastIndexOf(".")); // 파일 확장자 추출
-//        String savedFilename = UUID.randomUUID().toString() + extension; // 고유한 파일명 생성 후 원본 확장자를 붙여 새로운 파일명 생성
-
-//        3. 파일 저장
+//        2. 파일 저장
 //        uploadDir 경로를 Path 객체로 변환
 //        새 파일명과 결합하여 최종 저장 위치를 설정
-        Path targetLocation = Paths.get(uploadDir).resolve(originalFilename);
+        Path targetLocation = Paths.get(uploadDir).resolve(filename);
 
 //        file.getInputStream() 을 사용하여 업로드된 파일의 데이터를 읽음
 //        targetLocation 경로에 복사
@@ -49,18 +38,11 @@ public class EtcSubitemFileService {
             Files.copy(inputStream, targetLocation);
         }
 
-//        try {
-//            Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rw-r—r—");
-//            Files.setPosixFilePermissions(targetLocation, perms);
-//        } catch (UnsupportedOperationException e) {
-//            // Windows에서는 권한 변경을 무시하고 진행
-//        }
-
-//        4. 저장된 파일명 (새로 만들어진 고유의 파일명) 반환
-        return originalFilename;
+//        3. 저장된 파일명 (새로 만들어진 고유의 파일명) 반환
+        return filename;
     }
 
-    public void deleteFile(String filename) {
+    public void deleteFile(String filename, String uploadDir) throws IOException {
         try {
             Path filePath = Paths.get(uploadDir).resolve(filename);
             Files.deleteIfExists(filePath);

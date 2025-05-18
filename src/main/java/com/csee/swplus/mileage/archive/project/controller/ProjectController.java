@@ -1,9 +1,10 @@
 package com.csee.swplus.mileage.archive.project.controller;
 
 import com.csee.swplus.mileage.archive.project.dto.AllProjectsResponseDto;
-import com.csee.swplus.mileage.archive.project.dto.ProjectEntityDto;
 import com.csee.swplus.mileage.archive.project.dto.ProjectResponseDto;
 import com.csee.swplus.mileage.archive.project.service.ProjectService;
+import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
+import com.sun.org.apache.xpath.internal.operations.Mult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,10 +15,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController // 이 class 가 REST API 관련 class 라는 것을 스프링에게 명시
@@ -79,5 +83,41 @@ public class ProjectController {
             log.error("❗️ project-dir 파일 경로 오류", e);
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @PostMapping(value = "/{studentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<MessageResponseDto> postProject (
+            @PathVariable String studentId,
+            @RequestParam("name") String name,
+            @RequestParam("role") String role,
+            @RequestParam("description") String description,
+            @RequestParam("content") String content,
+            @RequestParam("achievement") String achievement,
+            @RequestParam("github_link") String github_link,
+            @RequestParam("blog_link") String blog_link,
+            @RequestParam("deployed_link") String deployed_link,
+            @RequestParam("start_date") String start_date,
+            @RequestParam("end_date") String end_date,
+            @RequestParam("techStack") List<String> techStack,
+            @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail
+    ) {
+        if(thumbnail != null){
+            String originalFilename = thumbnail.getOriginalFilename();
+
+            String extension = "";
+            if (originalFilename != null && originalFilename.contains(".")) {
+                extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+            }
+
+            List<String> allowedExtenstions = Arrays.asList("png", "jpg", "jpeg");
+
+            if (!allowedExtenstions.contains(extension)) {
+                return ResponseEntity.badRequest().body(new MessageResponseDto("지원하지 않는 파일 형식입니다."));
+            }
+        }
+
+        return ResponseEntity.ok(
+                projectService.postProject(studentId, name, role, description, content, achievement, github_link, blog_link, deployed_link, LocalDate.parse(start_date), LocalDate.parse(end_date), thumbnail, techStack)
+        );
     }
 }
