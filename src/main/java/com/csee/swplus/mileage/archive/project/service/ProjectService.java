@@ -2,6 +2,7 @@ package com.csee.swplus.mileage.archive.project.service;
 
 import com.csee.swplus.mileage.archive.project.dto.AllProjectsEntityDto;
 import com.csee.swplus.mileage.archive.project.dto.AllProjectsResponseDto;
+import com.csee.swplus.mileage.archive.project.dto.ProjectEntityDto;
 import com.csee.swplus.mileage.archive.project.dto.ProjectResponseDto;
 import com.csee.swplus.mileage.archive.project.mapper.ProjectMapper;
 import com.csee.swplus.mileage.archive.project.repository.ProjectRepository;
@@ -44,6 +45,9 @@ public class ProjectService {
     }
 
 //    public List<ProjectResponseDto> getProjectDetail(String studentId, int projectId) {
+//        List<ProjectEntityDto> res = projectMapper.findProjectDetail(studentId, projectId);
+//        log.info("📝 ProjectEntityDto 결과 - res: {}", res);
+//
 //
 //    }
 }

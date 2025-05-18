@@ -36,14 +36,14 @@ public class ProjectController {
         );
     }
 
-//    @GetMapping("/{projectId}")
-//    private ResponseEntity<List<ProjectResponseDto>> getProjectDetail(@PathVariable int projectId) {
-//        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
-//
-//        return ResponseEntity.ok(
-//                projectService.getProjectDetail(currentUserId, projectId)
-//        );
-//    }
+    @GetMapping("/{projectId}")
+    private ResponseEntity<List<ProjectResponseDto>> getProjectDetail(@PathVariable int projectId) {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return ResponseEntity.ok(
+                projectService.getProjectDetail(currentUserId, projectId)
+        );
+    }
 
     @Value("${file.project-dir}")
     private String FILE_DIRECTORY;
