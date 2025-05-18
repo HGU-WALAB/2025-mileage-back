@@ -1,9 +1,6 @@
 package com.csee.swplus.mileage.milestone.service;
 
-import com.csee.swplus.mileage.milestone.dto.response.MilestonePointResponseDto;
-import com.csee.swplus.mileage.milestone.dto.response.MilestoneResponseDto;
-import com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterResponseDto;
-import com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterTotalPointResponseDto;
+import com.csee.swplus.mileage.milestone.dto.response.*;
 import com.csee.swplus.mileage.milestone.mapper.MilestoneMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +24,10 @@ public class MilestoneService {
         List<MilestonePointResponseDto> res = milestoneMapper.findAllMilestonePoint(studentId);
         log.info("📝 findAllMilestonePoint 결과 - res: {}", res);
         return res;
+    }
+
+    public List<MPResponseDto> getFilteredAverageMilestonePoint(String school, Integer semester, String snum) {
+        return milestoneMapper.findFilteredAverageMilestonePoint(school, semester, snum);
     }
 
 //    public List<MilestoneSemesterResponseDto> getMilestoneSemester(int studentId) {
