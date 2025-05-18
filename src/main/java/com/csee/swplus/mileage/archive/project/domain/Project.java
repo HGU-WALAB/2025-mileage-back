@@ -33,10 +33,10 @@ public class Project {
     private String deployedLink;
 
     @Column(name = "start_date")
-    private LocalDate startDate;
+    private String startDate;
 
     @Column(name = "end_date")
-    private LocalDate endDate;
+    private String endDate;
 
     private String thumbnail;
 
