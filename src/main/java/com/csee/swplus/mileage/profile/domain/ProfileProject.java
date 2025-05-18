@@ -1,6 +1,8 @@
 package com.csee.swplus.mileage.profile.domain;
 
 import javax.persistence.*;
+
+import com.csee.swplus.mileage.archive.project.domain.Project;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,20 +11,22 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProfileProject {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    /*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    private Project _sw_mileage_project;
+    @Column(name = "project_id")
+    private Integer projectId;
 
+    @Column(name = "snum")
     private String snum;
 
-    public ProfileProject(String snum, Project _sw_mileage_project) {
+    public ProfileProject(String snum, Integer projectId) {
         this.snum = snum;
-        this._sw_mileage_project = _sw_mileage_project;
+        this.projectId = projectId;
     }
-*/
-    protected ProfileProject() {}
+
+    protected ProfileProject() {
+    }
 }

@@ -2,6 +2,7 @@ package com.csee.swplus.mileage.profile.cotroller;
 
 import com.csee.swplus.mileage.profile.dto.*;
 import com.csee.swplus.mileage.profile.service.ProfileInfoService;
+import com.csee.swplus.mileage.profile.service.ProfileProjectService;
 import com.csee.swplus.mileage.profile.service.ProfileTeckStackService;
 import com.csee.swplus.mileage.profile.dto.MessageResponse;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProfileController {
     private final ProfileInfoService profileInfoService;
     private final ProfileTeckStackService profileTeckStackService;
+    private final ProfileProjectService profileProjectService;
 
     @GetMapping("/profile/myinfo")
     public ResponseEntity<InfoResponseDto> getInfo() {
@@ -57,5 +59,25 @@ public class ProfileController {
     @PostMapping("/share_profile/teckStack")
     public ResponseEntity<TeckStackResponseDto> getTeckStack(@RequestBody StudentIdRequestDto request) {
         return ResponseEntity.ok(profileTeckStackService.getTeckStack(request.getStudentId()));
+    }
+
+    @GetMapping("/project/top")
+    public ResponseEntity<ProfileProjectResponseDto> getProfileProject() {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ResponseEntity.ok(
+                profileProjectService.getProfileProject(currentUserId)
+        );
+    }
+
+    @PatchMapping("/project/top")
+    public ResponseEntity<MessageResponse> patchProfileProject(@RequestBody ProfileProjectRequestDto requestdto) {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+        profileProjectService.patchProfileProject(currentUserId, requestdto);
+        return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
+    }
+
+    @PostMapping("/share_profile/proejctTop")
+    public ResponseEntity<ProfileProjectResponseDto> getProfileProject(@RequestBody StudentIdRequestDto request) {
+        return ResponseEntity.ok(profileProjectService.getProfileProject(request.getStudentId()));
     }
 }
