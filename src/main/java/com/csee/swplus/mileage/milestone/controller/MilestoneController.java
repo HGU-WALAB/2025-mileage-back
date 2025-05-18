@@ -47,12 +47,12 @@ public class MilestoneController {
 
     @GetMapping("/milestone/compare")
     public ResponseEntity<List<MPResponseDto>> getAverageMilestonePointe(
-            @RequestParam(required = false) String school,
-            @RequestParam(required = false) Integer semester,
-            @RequestParam(required = false) String snum
+            @RequestParam(required = false) String term,
+            @RequestParam(required = false) String entryYear,
+            @RequestParam(required = false) String major
     ) {
-        List<MPResponseDto> result = milestoneService.getFilteredAverageMilestonePoint(school, semester, snum);
-        log.info("school={}, semester={}, snum={}", school, semester, snum);
+        List<MPResponseDto> result = milestoneService.getFilteredAverageMilestonePoint(term, entryYear, major);
+        log.info("term={}, entryYear={}, major={}", term, entryYear, major);
         return ResponseEntity.ok(result);
     }
 //    @GetMapping("/milestone/{studentId}")

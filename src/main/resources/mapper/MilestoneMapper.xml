@@ -42,14 +42,14 @@
         (SELECT COUNT(DISTINCT s.snum)
         FROM _sw_student s
         WHERE 1=1
-        <if test="school != null">
-            AND s.school = #{school}
+        <if test="major != null">
+            AND s.major_1 = #{major}
         </if>
-        <if test="semester != null">
-            AND s.semester_count = #{semester}
+        <if test="term != null">
+            AND s.semester_count = #{term}
         </if>
-        <if test="snum != null">
-            AND s.snum = #{snum}
+        <if test="entryYear != null">
+            AND SUBSTRING(s.snum, 2, 2) = #{entryYear}
         </if>
         ) AS groupSize
         FROM
@@ -66,14 +66,14 @@
         JOIN _sw_mileage_record r ON si.id = r.subitem_id
         JOIN _sw_student s ON r.snum = s.snum
         WHERE 1=1
-        <if test="school != null">
-            AND s.school = #{school}
+        <if test="major != null">
+            AND s.major_1 = #{major}
         </if>
-        <if test="semester != null">
-            AND s.semester_count = #{semester}
+        <if test="term != null">
+            AND s.semester_count = #{term}
         </if>
-        <if test="snum != null">
-            AND s.snum = #{snum}
+        <if test="entryYear != null">
+            AND SUBSTRING(s.snum, 2, 2) = #{entryYear}
         </if>
         GROUP BY m.id
         ) milestone_counts ON m.id = milestone_counts.milestone_id
