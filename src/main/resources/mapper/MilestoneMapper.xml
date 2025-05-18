@@ -33,7 +33,53 @@
         ORDER BY
             m.id;
     </select>
-
+    <select id="findFilteredAverageMilestonePoint"
+            resultType="com.csee.swplus.mileage.milestone.dto.response.MPResponseDto">
+        SELECT
+        m.id AS capabilityId,
+        m.name AS capabilityName,
+        COALESCE(SUM(CASE WHEN milestone_counts.milestone_id IS NOT NULL THEN milestone_counts.milestone_count ELSE 0 END), 0) AS totalMilestoneCount,
+        (SELECT COUNT(DISTINCT s.snum)
+        FROM _sw_student s
+        WHERE 1=1
+        <if test="school != null">
+            AND s.school = #{school}
+        </if>
+        <if test="semester != null">
+            AND s.semester_count = #{semester}
+        </if>
+        <if test="snum != null">
+            AND s.snum = #{snum}
+        </if>
+        ) AS groupSize
+        FROM
+        _sw_milestone m
+        LEFT JOIN (
+        SELECT
+        m.id AS milestone_id,
+        COUNT(DISTINCT r.subitem_id) AS milestone_count
+        FROM
+        _sw_milestone m
+        JOIN _sw_category_milestone cm ON m.id = cm.milestone_id
+        JOIN _sw_mileage_category c ON cm.category_id = c.id
+        JOIN _sw_mileage_subitem si ON c.id = si.category_id
+        JOIN _sw_mileage_record r ON si.id = r.subitem_id
+        JOIN _sw_student s ON r.snum = s.snum
+        WHERE 1=1
+        <if test="school != null">
+            AND s.school = #{school}
+        </if>
+        <if test="semester != null">
+            AND s.semester_count = #{semester}
+        </if>
+        <if test="snum != null">
+            AND s.snum = #{snum}
+        </if>
+        GROUP BY m.id
+        ) milestone_counts ON m.id = milestone_counts.milestone_id
+        GROUP BY m.id, m.name
+        ORDER BY m.id;
+    </select>
 <!-- [피드백 수용 전 코드] 마일스톤 역량 포인트를 마일리지 포인트로 계산함: 관리자 서비스 측 max_point 설정으로 인해 로직 상 문제 발생 -->
 <!--    <resultMap id="SemesterResultMap" type="com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterResponseDto">-->
 <!--        <id property="semester" column="semester"/>-->

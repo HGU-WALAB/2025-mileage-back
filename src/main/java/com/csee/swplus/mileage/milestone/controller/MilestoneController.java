@@ -1,5 +1,6 @@
 package com.csee.swplus.mileage.milestone.controller;
 
+import com.csee.swplus.mileage.milestone.dto.response.MPResponseDto;
 import com.csee.swplus.mileage.milestone.dto.response.MilestonePointResponseDto;
 import com.csee.swplus.mileage.milestone.dto.response.MilestoneResponseDto;
 import com.csee.swplus.mileage.milestone.dto.response.MilestoneSemesterTotalPointResponseDto;
@@ -8,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,6 +45,16 @@ public class MilestoneController {
         );
     }
 
+    @GetMapping("/milestone/compare")
+    public ResponseEntity<List<MPResponseDto>> getAverageMilestonePointe(
+            @RequestParam(required = false) String school,
+            @RequestParam(required = false) Integer semester,
+            @RequestParam(required = false) String snum
+    ) {
+        List<MPResponseDto> result = milestoneService.getFilteredAverageMilestonePoint(school, semester, snum);
+        log.info("school={}, semester={}, snum={}", school, semester, snum);
+        return ResponseEntity.ok(result);
+    }
 //    @GetMapping("/milestone/{studentId}")
 //    public ResponseEntity<List<MilestoneSemesterTotalPointResponseDto>> getMilestoneSemester(
 //            @PathVariable int studentId
