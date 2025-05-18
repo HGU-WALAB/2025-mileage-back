@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +30,7 @@ public class ProjectService {
     private final ProjectMapper projectMapper;
     private final FileService fileService;
 
-    private String baseUrl = "/api/mileage/project/image/";
+    private String baseUrl = "/image/";
 
     @Value("${file.project-upload-dir}")
     @Getter
@@ -107,8 +108,28 @@ public class ProjectService {
             project.setGithubLink(githubLink);
             project.setBlogLink(blogLink);
             project.setDeployedLink(deployedLink);
-            project.setStartDate(startDate);
-            project.setEndDate(endDate);
+
+            if (startDate != null && !startDate.isEmpty()) {
+                try {
+                    LocalDate parsedStartDate = LocalDate.parse(startDate);
+                    project.setStartDate(parsedStartDate);
+                } catch (DateTimeParseException e) {
+                    throw new IllegalArgumentException("날짜 형식이 올바르지 않습니다. (예: YYYY-MM-DD)");
+                }
+            } else {
+                project.setStartDate(null);
+            }
+
+            if (endDate != null && !endDate.isEmpty()) {
+                try {
+                    LocalDate parsedEndDate = LocalDate.parse(endDate);
+                    project.setEndDate(parsedEndDate);
+                } catch (DateTimeParseException e) {
+                    throw new IllegalArgumentException("날짜 형식이 올바르지 않습니다. (예: YYYY-MM-DD)");
+                }
+            } else {
+                project.setEndDate(null);
+            }
 
             // techStack
             project.setTechStack(String.join(",", techStack));
@@ -193,26 +214,36 @@ public class ProjectService {
             }
 
             if (startDate != null && !startDate.isEmpty()) {
-                project.setStartDate(startDate);
+                try {
+                    LocalDate parsedStartDate = LocalDate.parse(startDate);
+                    project.setStartDate(parsedStartDate);
+                } catch (DateTimeParseException e) {
+                    throw new IllegalArgumentException("날짜 형식이 올바르지 않습니다. (예: YYYY-MM-DD)");
+                }
+            } else {
+                project.setStartDate(null);
             }
 
             if (endDate != null && !endDate.isEmpty()) {
-                project.setEndDate(endDate);
+                try {
+                    LocalDate parsedEndDate = LocalDate.parse(endDate);
+                    project.setEndDate(parsedEndDate);
+                } catch (DateTimeParseException e) {
+                    throw new IllegalArgumentException("날짜 형식이 올바르지 않습니다. (예: YYYY-MM-DD)");
+                }
+            } else {
+                project.setEndDate(null);
             }
 
-            // Update tech stack if provided
             if (techStack != null && !techStack.isEmpty()) {
                 project.setTechStack(String.join(",", techStack));
             }
 
-            // Handle file upload if provided
             if (file != null && !file.isEmpty()) {
-                // Delete existing file if there is one
                 if (project.getThumbnail() != null && !project.getThumbnail().isEmpty()) {
                     fileService.deleteFile(project.getThumbnail(), uploadDir);
                 }
 
-                // Save new file
                 String originalFilename = file.getOriginalFilename();
                 String extension = originalFilename.substring(originalFilename.lastIndexOf(".")); // 파일 확장자 추출
                 String uniqueFilename = UUID.randomUUID().toString() + extension; // 고유한 파일명 생성
@@ -220,21 +251,6 @@ public class ProjectService {
                 String savedFilename = fileService.saveFile(file, uploadDir, uniqueFilename);
                 log.info("savedFilename: {}", savedFilename);
 
-                project.setThumbnail(savedFilename);
-            }
-            // file
-            if (file != null && !file.isEmpty()) {
-//                기존 파일 삭제
-                fileService.deleteFile(project.getThumbnail(), uploadDir);
-//                실제 파일 저장
-                String originalFilename = file.getOriginalFilename();
-                String extension = originalFilename.substring(originalFilename.lastIndexOf(".")); // 파일 확장자 추출
-                String uniqueFilename = UUID.randomUUID().toString() + extension; // 고유한 파일명 생성 후 원본 확장자를 붙여 새로운 파일명 생성
-
-                String savedFilename = fileService.saveFile(file, uploadDir, uniqueFilename);
-                log.info("savedFilename: {}", savedFilename);
-
-//                파일 관련 정보 DB에 저장
                 project.setThumbnail(savedFilename);
             }
 

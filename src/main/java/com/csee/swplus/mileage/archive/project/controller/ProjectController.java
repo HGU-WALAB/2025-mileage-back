@@ -100,7 +100,7 @@ public class ProjectController {
             @RequestParam("techStack") List<String> techStack,
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail
     ) {
-        if(thumbnail != null){
+        if(thumbnail != null && !thumbnail.isEmpty()){
             String originalFilename = thumbnail.getOriginalFilename();
 
             String extension = "";
@@ -150,38 +150,42 @@ public class ProjectController {
             @RequestParam("techStack") List<String> techStack,
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail
     ) {
-        if(thumbnail != null && !thumbnail.isEmpty()){
-            String originalFilename = thumbnail.getOriginalFilename();
+        try {
+            if (thumbnail != null && !thumbnail.isEmpty()) {
+                String originalFilename = thumbnail.getOriginalFilename();
 
-            String extension = "";
-            if (originalFilename != null && originalFilename.contains(".")) {
-                extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+                String extension = "";
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+                }
+
+                List<String> allowedExtenstions = Arrays.asList("png", "jpg", "jpeg");
+
+                if (!allowedExtenstions.contains(extension)) {
+                    return ResponseEntity.badRequest().body(new MessageResponseDto("지원하지 않는 파일 형식입니다."));
+                }
             }
 
-            List<String> allowedExtenstions = Arrays.asList("png", "jpg", "jpeg");
-
-            if (!allowedExtenstions.contains(extension)) {
-                return ResponseEntity.badRequest().body(new MessageResponseDto("지원하지 않는 파일 형식입니다."));
-            }
+            return ResponseEntity.ok(
+                    projectService.patchProject(studentId,
+                            projectId,
+                            name,
+                            role,
+                            description,
+                            content,
+                            achievement,
+                            github_link,
+                            blog_link,
+                            deployed_link,
+                            start_date,
+                            end_date,
+                            thumbnail,
+                            techStack
+                    )
+            );
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new MessageResponseDto(e.getMessage()));
         }
-
-        return ResponseEntity.ok(
-                projectService.patchProject(studentId,
-                        projectId,
-                        name,
-                        role,
-                        description,
-                        content,
-                        achievement,
-                        github_link,
-                        blog_link,
-                        deployed_link,
-                        start_date,
-                        end_date,
-                        thumbnail,
-                        techStack
-                )
-        );
     }
 
     @DeleteMapping("/{studentId}/{projectId}")
