@@ -32,7 +32,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private static final List<String> EXCLUDED_PATHS = Arrays.asList(
             "/api/mileage/auth/login$",
-            "/api/mileage/share_profile.*",
+            "/api/mileage/share.*",
             "/mileage/api/mileage/auth/login$",
             "/api/mileage/auth/logout$",
             "/mileage/api/mileage/auth/logout$"

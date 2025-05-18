@@ -21,7 +21,7 @@ public class ProfileController {
     private final ProfileTeckStackService profileTeckStackService;
     private final ProfileProjectService profileProjectService;
 
-    @GetMapping("/profile/myinfo")
+    @GetMapping("/profile")
     public ResponseEntity<InfoResponseDto> getInfo() {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(
@@ -29,14 +29,14 @@ public class ProfileController {
         );
     }
 
-    @PatchMapping("/profile/myinfo")
+    @PatchMapping("/profile")
     public ResponseEntity<MessageResponse> patchInfo(@RequestBody InfoRequestDto requestdto) {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         profileInfoService.patchInfo(currentUserId, requestdto);
         return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
     }
 
-    @PostMapping("/share_profile/myinfo")
+    @PostMapping("/share/myinfo")
     public ResponseEntity<InfoResponseDto> getInfoById(@RequestBody StudentIdRequestDto request) {
         return ResponseEntity.ok(profileInfoService.getInfo(request.getStudentId()));
     }
@@ -56,7 +56,7 @@ public class ProfileController {
         return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
     }
 
-    @PostMapping("/share_profile/teckStack")
+    @PostMapping("/share/teckStack")
     public ResponseEntity<TeckStackResponseDto> getTeckStack(@RequestBody StudentIdRequestDto request) {
         return ResponseEntity.ok(profileTeckStackService.getTeckStack(request.getStudentId()));
     }
@@ -76,7 +76,7 @@ public class ProfileController {
         return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
     }
 
-    @PostMapping("/share_profile/proejctTop")
+    @PostMapping("/share/proejctTop")
     public ResponseEntity<ProfileProjectResponseDto> getProfileProject(@RequestBody StudentIdRequestDto request) {
         return ResponseEntity.ok(profileProjectService.getProfileProject(request.getStudentId()));
     }
