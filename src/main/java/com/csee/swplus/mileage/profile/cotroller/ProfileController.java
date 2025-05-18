@@ -76,7 +76,7 @@ public class ProfileController {
         return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
     }
 
-    @PostMapping("/share/proejctTop")
+    @PostMapping("/share/projectTop")
     public ResponseEntity<ProfileProjectResponseDto> getProfileProject(@RequestBody StudentIdRequestDto request) {
         return ResponseEntity.ok(profileProjectService.getProfileProject(request.getStudentId()));
     }
