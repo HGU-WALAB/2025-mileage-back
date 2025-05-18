@@ -26,8 +26,8 @@ public class MilestoneService {
         return res;
     }
 
-    public List<MPResponseDto> getFilteredAverageMilestonePoint(String school, Integer semester, String snum) {
-        return milestoneMapper.findFilteredAverageMilestonePoint(school, semester, snum);
+    public List<MPResponseDto> getFilteredAverageMilestonePoint(String term, String entryYear, String major) {
+        return milestoneMapper.findFilteredAverageMilestonePoint(term, entryYear, major);
     }
 
 //    public List<MilestoneSemesterResponseDto> getMilestoneSemester(int studentId) {

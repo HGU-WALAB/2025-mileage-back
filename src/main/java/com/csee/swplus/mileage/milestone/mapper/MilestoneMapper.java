@@ -12,9 +12,9 @@ public interface MilestoneMapper {
 
     List<MilestonePointResponseDto> findAllMilestonePoint(@Param("studentId") int studentId);
     List<MPResponseDto> findFilteredAverageMilestonePoint(
-            @Param("school") String school,
-            @Param("semester") Integer semester,
-            @Param("snum") String snum
+            @Param("term") String term,
+            @Param("entryYear") String entryYear,
+            @Param("major") String major
     );
 
 //    List<MilestoneSemesterResponseDto> findEachMilestoneBySemester(@Param("studentId") int studentId);
