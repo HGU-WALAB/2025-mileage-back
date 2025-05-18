@@ -36,9 +36,9 @@ public class ProfileController {
         return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
     }
 
-    @PostMapping("/share/myinfo")
-    public ResponseEntity<InfoResponseDto> getInfoById(@RequestBody StudentIdRequestDto request) {
-        return ResponseEntity.ok(profileInfoService.getInfo(request.getStudentId()));
+    @GetMapping("/share/{studentId}")
+    public ResponseEntity<InfoResponseDto> getInfoById(@PathVariable String studentId) {
+        return ResponseEntity.ok(profileInfoService.getInfo(studentId));
     }
 
     @GetMapping("/profile/teckStack")
@@ -56,9 +56,9 @@ public class ProfileController {
         return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
     }
 
-    @PostMapping("/share/teckStack")
-    public ResponseEntity<TeckStackResponseDto> getTeckStack(@RequestBody StudentIdRequestDto request) {
-        return ResponseEntity.ok(profileTeckStackService.getTeckStack(request.getStudentId()));
+    @GetMapping("/share/{studentId}/teckStack")
+    public ResponseEntity<TeckStackResponseDto> getTeckStack(@PathVariable String studentId) {
+        return ResponseEntity.ok(profileTeckStackService.getTeckStack(studentId));
     }
 
     @GetMapping("/project/top")
@@ -76,8 +76,8 @@ public class ProfileController {
         return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
     }
 
-    @PostMapping("/share/projectTop")
-    public ResponseEntity<ProfileProjectResponseDto> getProfileProject(@RequestBody StudentIdRequestDto request) {
-        return ResponseEntity.ok(profileProjectService.getProfileProject(request.getStudentId()));
+    @GetMapping("/share/{studentId}/projectTop")
+    public ResponseEntity<ProfileProjectResponseDto> getProfileProject(@PathVariable String studentId) {
+        return ResponseEntity.ok(profileProjectService.getProfileProject(studentId));
     }
 }
