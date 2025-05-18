@@ -12,8 +12,8 @@ public class AllProjectsEntityDto {
     private int projectId;
     private String name;
     private String role;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDate start_date;
+    private LocalDate end_date;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
     private String thumbnail;

@@ -5,7 +5,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -36,12 +35,6 @@ public class Project {
 
     @Column(name = "end_date")
     private LocalDate endDate;
-
-    @Column(name = "reg_date")
-    private LocalDateTime regDate;
-
-    @Column(name = "mod_date")
-    private LocalDateTime modDate;
 
     private String thumbnail;
 
