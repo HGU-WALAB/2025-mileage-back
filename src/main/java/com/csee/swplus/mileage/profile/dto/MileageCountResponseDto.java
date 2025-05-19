@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class MileageCountResponseDto {
-    private int totalMileageCount;
+    private int mileageCount;
 }
