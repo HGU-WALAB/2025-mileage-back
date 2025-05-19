@@ -4,7 +4,9 @@
 
 <mapper namespace="com.csee.swplus.mileage.profile.mapper.InfoMapper">
     <select id="findInfoByUserId" resultType="com.csee.swplus.mileage.profile.dto.InfoResponseDto">
-    SELECT i.profile_image_url AS profileImageUrl,
+    SELECT s.snum AS studentId,
+           s.sname AS studentName,
+            i.profile_image_url AS profileImageUrl,
            i.self_description AS selfDescription,
            i.job,
            i.github_link AS githubLink,
@@ -12,6 +14,7 @@
            i.blog_link AS blogLink,
            i.linkedin_link AS linkedinLink
     FROM _sw_mileage_profile_info AS i
+    JOIN _sw_student AS s ON i.snum = s.snum
     WHERE i.snum = #{studentId}
     </select>
     <insert id="insertIfNotExists" parameterType="string">
