@@ -1,9 +1,8 @@
 package com.csee.swplus.mileage.profile.cotroller;
 
+import com.csee.swplus.mileage.archive.award.dto.AwardResponseDto;
 import com.csee.swplus.mileage.profile.dto.*;
-import com.csee.swplus.mileage.profile.service.ProfileInfoService;
-import com.csee.swplus.mileage.profile.service.ProfileProjectService;
-import com.csee.swplus.mileage.profile.service.ProfileTeckStackService;
+import com.csee.swplus.mileage.profile.service.*;
 import com.csee.swplus.mileage.profile.dto.MessageResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +19,8 @@ public class ProfileController {
     private final ProfileInfoService profileInfoService;
     private final ProfileTeckStackService profileTeckStackService;
     private final ProfileProjectService profileProjectService;
+    private final ProfileAwardService profileAwardService;
+    private final ProfileMileageService profileMileageService;
 
     @GetMapping("/profile")
     public ResponseEntity<InfoResponseDto> getInfo() {
@@ -79,5 +80,15 @@ public class ProfileController {
     @GetMapping("/share/{studentId}/projectTop")
     public ResponseEntity<ProfileProjectResponseDto> getProfileProject(@PathVariable String studentId) {
         return ResponseEntity.ok(profileProjectService.getProfileProject(studentId));
+    }
+
+    @GetMapping("/share/{studentId}/award")
+    public ResponseEntity<AwardCountResponseDto> getAwardCount(@PathVariable String studentId) {
+        return ResponseEntity.ok(profileAwardService.getAwardCount(studentId));
+    }
+
+    @GetMapping("/share/{studentId}/mileage")
+    public ResponseEntity<MileageCountResponseDto> getMileageCount(@PathVariable String studentId) {
+        return ResponseEntity.ok(profileMileageService.getMileageCount(studentId));
     }
 }
