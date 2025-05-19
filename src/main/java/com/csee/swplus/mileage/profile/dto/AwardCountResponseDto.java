@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AwardCountResponseDto {
-    private int totalAwardCount;
+    private int awardCount;
 }
