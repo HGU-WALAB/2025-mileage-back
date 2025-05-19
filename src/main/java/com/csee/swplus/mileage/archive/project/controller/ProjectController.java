@@ -84,9 +84,8 @@ public class ProjectController {
         }
     }
 
-    @PostMapping(value = "/{studentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MessageResponseDto> postProject (
-            @PathVariable String studentId,
             @RequestParam("name") String name,
             @RequestParam("role") String role,
             @RequestParam("description") String description,
@@ -100,6 +99,7 @@ public class ProjectController {
             @RequestParam("techStack") List<String> techStack,
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail
     ) {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         if(thumbnail != null && !thumbnail.isEmpty()){
             String originalFilename = thumbnail.getOriginalFilename();
 
@@ -116,7 +116,7 @@ public class ProjectController {
         }
 
         return ResponseEntity.ok(
-                projectService.postProject(studentId,
+                projectService.postProject(currentUserId,
                         name,
                         role,
                         description,
@@ -133,9 +133,8 @@ public class ProjectController {
         );
     }
 
-    @PatchMapping(value = "/{studentId}/{projectId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/{projectId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MessageResponseDto> patchProject (
-            @PathVariable String studentId,
             @PathVariable int projectId,
             @RequestParam("name") String name,
             @RequestParam("role") String role,
@@ -150,6 +149,7 @@ public class ProjectController {
             @RequestParam("techStack") List<String> techStack,
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail
     ) {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
             if (thumbnail != null && !thumbnail.isEmpty()) {
                 String originalFilename = thumbnail.getOriginalFilename();
@@ -167,7 +167,7 @@ public class ProjectController {
             }
 
             return ResponseEntity.ok(
-                    projectService.patchProject(studentId,
+                    projectService.patchProject(currentUserId,
                             projectId,
                             name,
                             role,
@@ -188,13 +188,14 @@ public class ProjectController {
         }
     }
 
-    @DeleteMapping("/{studentId}/{projectId}")
+    @DeleteMapping("/{projectId}")
     public ResponseEntity<MessageResponseDto> deleteProject(
             @PathVariable String studentId,
             @PathVariable int projectId
     ) {
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(
-                projectService.deleteProject(studentId, projectId)
+                projectService.deleteProject(currentUserId, projectId)
         );
     }
 }
