@@ -1,5 +1,6 @@
-package com.csee.swplus.mileage.etcSubitem.file;
+package com.csee.swplus.mileage.etcSubitem.repository;
 
+import com.csee.swplus.mileage.etcSubitem.domain.EtcSubitemFile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

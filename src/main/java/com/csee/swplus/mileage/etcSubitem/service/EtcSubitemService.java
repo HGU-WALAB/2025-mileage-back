@@ -1,9 +1,9 @@
 package com.csee.swplus.mileage.etcSubitem.service;
 
 import com.csee.swplus.mileage.etcSubitem.domain.EtcSubitem;
-import com.csee.swplus.mileage.etcSubitem.file.EtcSubitemFile;
-import com.csee.swplus.mileage.etcSubitem.file.EtcSubitemFileRepository;
-import com.csee.swplus.mileage.etcSubitem.file.EtcSubitemFileService;
+import com.csee.swplus.mileage.etcSubitem.domain.EtcSubitemFile;
+import com.csee.swplus.mileage.etcSubitem.repository.EtcSubitemFileRepository;
+import com.csee.swplus.mileage.file.FileService;
 import com.csee.swplus.mileage.etcSubitem.dto.StudentInputSubitemResponseDto;
 import com.csee.swplus.mileage.etcSubitem.dto.EtcSubitemResponseDto;
 import com.csee.swplus.mileage.etcSubitem.mapper.EtcSubitemMapper;
@@ -11,8 +11,11 @@ import com.csee.swplus.mileage.etcSubitem.repository.EtcSubitemRepository;
 import com.csee.swplus.mileage.setting.service.ManagerService;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import javax.transaction.Transactional;
+
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,8 +29,12 @@ public class EtcSubitemService {
     private final EtcSubitemMapper etcSubitemMapper;
     private final EtcSubitemRepository etcSubitemRepository;
     private final EtcSubitemFileRepository fileRepository;
-    private final EtcSubitemFileService fileService;
+    private final FileService fileService;
     private final ManagerService managerService;
+
+    @Value("${file.etc-upload-dir}")
+    @Getter
+    private String uploadDir;
 
     public List<StudentInputSubitemResponseDto> getStudentInputSubitems() {
         String currentSemester = managerService.getCurrentSemester();
@@ -80,7 +87,8 @@ public class EtcSubitemService {
 //            2. 파일 처리 및 저장
             if (file != null && !file.isEmpty()) {
 //                실제 파일 저장
-                String savedFileName = fileService.saveFile(file);
+//                파일명 형식이 있으므로 항상 unique 하다는 전제 하에 구현함
+                String savedFileName = fileService.saveFile(file, uploadDir, file.getOriginalFilename());
                 log.info("savedFileName: {}", savedFileName);
 
 //                파일 관련 정보 DB에 저장
@@ -123,12 +131,12 @@ public class EtcSubitemService {
                 // 기존 파일 삭제
                 List<EtcSubitemFile> existingFiles = fileRepository.findByRecordId(recordId);
                 for (EtcSubitemFile existingFile : existingFiles) {
-                    fileService.deleteFile(existingFile.getFilename());
+                    fileService.deleteFile(existingFile.getFilename(), uploadDir);
                 }
                 fileRepository.deleteByRecordId(recordId);
 
                 // 새 파일 저장
-                String savedFileName = fileService.saveFile(file);
+                String savedFileName = fileService.saveFile(file, uploadDir, file.getOriginalFilename());
                 EtcSubitemFile newFile = new EtcSubitemFile();
                 newFile.setRecordId(recordId);
                 newFile.setOriginalFilename(file.getOriginalFilename());
@@ -152,7 +160,7 @@ public class EtcSubitemService {
 //            1. 파일 삭제
             List<EtcSubitemFile> files = fileRepository.findByRecordId(recordId);
             for (EtcSubitemFile file : files) {
-                fileService.deleteFile(file.getFilename());
+                fileService.deleteFile(file.getFilename(), uploadDir);
             }
             fileRepository.deleteByRecordId(recordId);
 

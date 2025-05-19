@@ -1,4 +1,4 @@
-package com.csee.swplus.mileage.etcSubitem.file;
+package com.csee.swplus.mileage.etcSubitem.domain;
 
 import javax.persistence.*;
 import lombok.Getter;
