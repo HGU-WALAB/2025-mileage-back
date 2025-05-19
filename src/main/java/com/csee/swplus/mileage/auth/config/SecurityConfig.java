@@ -60,7 +60,9 @@ public class SecurityConfig {
                                 "/api/mileage/{studentId}/search",
                                 "/api/mileage/apply/{studentId}",
                                 "/api/mileage/capability/**",
-                                "/api/mileage/etc/**").authenticated()
+                                "/api/mileage/etc/**",
+                                "/api/mileage/profile/**",
+                                "/api/mileage/project/**").authenticated()
                 )
                 .addFilterBefore(new ExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtTokenFilter(authService, key), UsernamePasswordAuthenticationFilter.class);

@@ -6,11 +6,11 @@ import lombok.AllArgsConstructor;
 @Data
 @AllArgsConstructor
 public class InfoResponseDto {
-    private String profileImageUrl;
-    private String selfDescription;
+    private String profile_image_url;
+    private String self_description;
     private String job;
-    private String githubLink;
-    private String instagramLink;
-    private String blogLink;
-    private String linkedinLink;
+    private String github_link;
+    private String instagram_link;
+    private String blog_link;
+    private String linkedin_link;
 }

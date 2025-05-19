@@ -2,10 +2,8 @@ package com.csee.swplus.mileage.profile.service;
 
 import com.csee.swplus.mileage.archive.project.repository.ProjectRepository;
 import com.csee.swplus.mileage.profile.domain.ProfileProject;
-import com.csee.swplus.mileage.profile.domain.TechStack;
 import com.csee.swplus.mileage.profile.dto.ProfileProjectRequestDto;
 import com.csee.swplus.mileage.profile.dto.ProfileProjectResponseDto;
-import com.csee.swplus.mileage.profile.dto.TeckStackRequestDto;
 import com.csee.swplus.mileage.profile.mapper.ProfileProjectMapper;
 import com.csee.swplus.mileage.profile.repository.ProfileProjectRepository;
 import lombok.RequiredArgsConstructor;

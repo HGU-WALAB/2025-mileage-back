@@ -2,9 +2,10 @@ package com.csee.swplus.mileage.profile.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class TeckStackResponseDto {
-    private String stacks;
+public class TechStackResponseDto {
+    private List<String> techStack;
 }
