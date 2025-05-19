@@ -1,11 +1,10 @@
 package com.csee.swplus.mileage.profile.mapper;
 
-import com.csee.swplus.mileage.profile.dto.TeckStackResponseDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 @Mapper
-public interface TeckStackMapper {
-    TeckStackResponseDto findTeckStackByUserId(@Param("studentId") String studentId);
+public interface TechStackMapper {
+    String findTechStackByUserId(@Param("studentId") String studentId); // String 반환
     int insertIfNotExists(@Param("studentId") String studentId);
 }

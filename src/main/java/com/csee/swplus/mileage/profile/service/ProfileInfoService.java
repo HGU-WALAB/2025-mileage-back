@@ -27,12 +27,12 @@ public class ProfileInfoService {
     public void patchInfo(String studentId, InfoRequestDto infoRequestDto) {
         Info info = profileInfoRepository.findBySnum(studentId).orElseThrow(() -> new RuntimeException("Not found"));
 
-        if (infoRequestDto.getProfileImageUrl() != null) info.setProfileImageUrl(infoRequestDto.getProfileImageUrl());
-        if (infoRequestDto.getSelfDescription() != null) info.setSelfDescription(infoRequestDto.getSelfDescription());
+        if (infoRequestDto.getProfile_image_url() != null) info.setProfileImageUrl(infoRequestDto.getProfile_image_url());
+        if (infoRequestDto.getSelf_description() != null) info.setSelfDescription(infoRequestDto.getSelf_description());
         if (infoRequestDto.getJob() != null) info.setJob(infoRequestDto.getJob());
-        if (infoRequestDto.getGithubLink() != null) info.setGithubLink(infoRequestDto.getGithubLink());
-        if (infoRequestDto.getInstagramLink() != null) info.setInstagramLink(infoRequestDto.getInstagramLink());
-        if (infoRequestDto.getBlogLink() != null) info.setBlogLink(infoRequestDto.getBlogLink());
-        if (infoRequestDto.getLinkedinLink() != null) info.setLinkedinLink(infoRequestDto.getLinkedinLink());
+        if (infoRequestDto.getGithub_link() != null) info.setGithubLink(infoRequestDto.getGithub_link());
+        if (infoRequestDto.getInstagram_link() != null) info.setInstagramLink(infoRequestDto.getInstagram_link());
+        if (infoRequestDto.getBlog_link() != null) info.setBlogLink(infoRequestDto.getBlog_link());
+        if (infoRequestDto.getLinkedin_link() != null) info.setLinkedinLink(infoRequestDto.getLinkedin_link());
     }
 }

@@ -1,6 +1,5 @@
-package com.csee.swplus.mileage.profile.cotroller;
+package com.csee.swplus.mileage.profile.controller;
 
-import com.csee.swplus.mileage.archive.award.dto.AwardResponseDto;
 import com.csee.swplus.mileage.profile.dto.*;
 import com.csee.swplus.mileage.profile.service.*;
 import com.csee.swplus.mileage.profile.dto.MessageResponse;
@@ -21,12 +20,13 @@ public class ProfileController {
     private final ProfileProjectService profileProjectService;
     private final ProfileAwardService profileAwardService;
     private final ProfileMileageService profileMileageService;
+    //private final FileStorageService fileStorageService;
 
     @GetMapping("/profile")
     public ResponseEntity<InfoResponseDto> getInfo() {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(
-                profileInfoService.getInfo(currentUserId) // ← 단일 객체 반환하도록 서비스도 수정
+                profileInfoService.getInfo(currentUserId)
         );
     }
 
@@ -37,29 +37,49 @@ public class ProfileController {
         return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
     }
 
+//    @PostMapping("/profile/image")
+//    public ResponseEntity<ImageUploadResponseDto> uploadProfileImage(@RequestParam("file") MultipartFile file) {
+//        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+//
+//        // Save the file in the "profiles" subdirectory
+//        String fileName = fileStorageService.storeFile(file, "profiles");
+//
+//        // Create the download URL
+//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+//                .path("/api/files/")
+//                .path(fileName)
+//                .toUriString();
+//
+//        // Update the user's profile image URL
+//        profileInfoService.updateProfileImage(currentUserId, fileName);
+//
+//        return ResponseEntity.ok(new ImageUploadResponseDto(fileName, fileDownloadUri,
+//                file.getContentType(), file.getSize()));
+//    }
+
     @GetMapping("/share/{studentId}")
     public ResponseEntity<InfoResponseDto> getInfoById(@PathVariable String studentId) {
         return ResponseEntity.ok(profileInfoService.getInfo(studentId));
     }
 
-    @GetMapping("/profile/teckStack")
-    public ResponseEntity<TeckStackResponseDto> getTeckStack() {
+    @GetMapping("/profile/techStack")
+    public ResponseEntity<TechStackResponseDto> getTeckStack() {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(
-                profileTeckStackService.getTeckStack(currentUserId) // ← 단일 객체 반환하도록 서비스도 수정
+                profileTeckStackService.getTechStack(currentUserId)
         );
     }
 
-    @PatchMapping("/profile/teckStack")
-    public ResponseEntity<MessageResponse> patchTeckStack(@RequestBody TeckStackRequestDto requestdto) {
+    @PatchMapping("/profile/techStack")
+    public ResponseEntity<MessageResponse> patchTeckStack(@RequestBody TechStackRequestDto requestdto) {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         profileTeckStackService.patchTeckStack(currentUserId, requestdto);
         return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
     }
 
-    @GetMapping("/share/{studentId}/teckStack")
-    public ResponseEntity<TeckStackResponseDto> getTeckStack(@PathVariable String studentId) {
-        return ResponseEntity.ok(profileTeckStackService.getTeckStack(studentId));
+    @GetMapping("/share/{studentId}/techStack")
+    public ResponseEntity<TechStackResponseDto> getTeckStack(@PathVariable String studentId) {
+        return ResponseEntity.ok(profileTeckStackService.getTechStack(studentId));
     }
 
     @GetMapping("/project/top")
