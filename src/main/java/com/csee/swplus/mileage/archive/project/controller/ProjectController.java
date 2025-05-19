@@ -190,7 +190,6 @@ public class ProjectController {
 
     @DeleteMapping("/{projectId}")
     public ResponseEntity<MessageResponseDto> deleteProject(
-            @PathVariable String studentId,
             @PathVariable int projectId
     ) {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
