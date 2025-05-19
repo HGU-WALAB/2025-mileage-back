@@ -96,7 +96,7 @@ public class ProjectController {
             @RequestParam("deployed_link") String deployed_link,
             @RequestParam("start_date") String start_date,
             @RequestParam("end_date") String end_date,
-            @RequestParam("techStack") List<String> techStack,
+            @RequestParam("techStack") String[] techStack,
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail
     ) {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();

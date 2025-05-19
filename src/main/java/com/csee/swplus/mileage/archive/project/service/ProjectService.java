@@ -94,7 +94,7 @@ public class ProjectService {
                                           String startDate,
                                           String endDate,
                                           MultipartFile file,
-                                          List<String> techStack) {
+                                          String[] techStack) {
         try {
             Project project = new Project();
 
