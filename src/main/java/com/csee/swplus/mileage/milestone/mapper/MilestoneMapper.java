@@ -1,10 +1,13 @@
 package com.csee.swplus.mileage.milestone.mapper;
 
 import com.csee.swplus.mileage.milestone.dto.response.*;
+import com.csee.swplus.mileage.profile.dto.InfoResponseDto;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MilestoneMapper {
@@ -21,4 +24,6 @@ public interface MilestoneMapper {
 
     List<MilestoneSemesterTotalPointResponseDto> findAllMilestoneBySemester(@Param("studentId") int studentId);
 
+    @MapKey("subitemName")
+    List<Map<String, Object>> findSuggestItemByUserId(@Param("studentId") String studentId);
 }

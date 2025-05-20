@@ -1,6 +1,7 @@
 package com.csee.swplus.mileage.subitem.controller;
 
 import com.csee.swplus.mileage.profile.dto.InfoResponseDto;
+import com.csee.swplus.mileage.subitem.dto.DetailResponseDto;
 import com.csee.swplus.mileage.subitem.dto.SubitemRequestDto;
 import com.csee.swplus.mileage.subitem.dto.SubitemResponseDto;
 import com.csee.swplus.mileage.subitem.service.DetailService;
@@ -39,7 +40,7 @@ public class SubitemController {
     }
 
     @GetMapping("/detail")
-    public List<SubitemResponseDto> getAllDetailSubitems() {
+    public List<DetailResponseDto> getAllDetailSubitems() {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info("Received detail request for all subitems");
         return detailService.getAllDetailSubitems(currentUserId);
