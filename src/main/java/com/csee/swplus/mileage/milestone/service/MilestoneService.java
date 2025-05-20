@@ -30,9 +30,27 @@ public class MilestoneService {
     }
 
     public List<MPResponseDto> getFilteredAverageMilestonePoint(String term, String entryYear, String major) {
-        return milestoneMapper.findFilteredAverageMilestonePoint(term, entryYear, major);
-    }
+        // 빈 문자열을 null로 변환하여 처리
+        term = (term != null && !term.trim().isEmpty()) ? term : null;
+        entryYear = (entryYear != null && !entryYear.trim().isEmpty()) ? entryYear : null;
+        major = (major != null && !major.trim().isEmpty()) ? major : null;
 
+        List<MPResponseDto> results = milestoneMapper.findFilteredAverageMilestonePoint(term, entryYear, major);
+
+        // averageMilestoneCount 계산 처리
+        for (MPResponseDto dto : results) {
+            // 0으로 나누기 방지
+            if (dto.getGroupSize() > 0) {
+                // totalMilestoneCount/groupSize 계산 후 반올림하여 정수로 변환
+                double average = (double) dto.getTotalMilestoneCount() / dto.getGroupSize();
+                dto.setAverageMilestoneCount(Math.round((float) average));
+            } else {
+                dto.setAverageMilestoneCount(0);
+            }
+        }
+
+        return results;
+    }
 //    public List<MilestoneSemesterResponseDto> getMilestoneSemester(int studentId) {
 //        List<MilestoneSemesterResponseDto> res = milestoneMapper.findEachMilestoneBySemester(studentId);
 //        log.info("📝 findEachMilestoneBySemester 결과 - res: {}", res);

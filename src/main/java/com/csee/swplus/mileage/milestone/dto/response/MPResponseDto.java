@@ -11,5 +11,6 @@ public class MPResponseDto {
     private int capabilityId;
     private String capabilityName;
     private int totalMilestoneCount; // 필터링된 학생들의 총 마일스톤 수
-    private int groupSize;           // 필터링된 학생 수
+    private int groupSize;// 필터링된 학생 수
+    private int averageMilestoneCount;
 }
