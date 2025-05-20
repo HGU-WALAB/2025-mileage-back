@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "_sw_mileage_profile_teckstack")
+@Table(name = "_sw_mileage_profile_techstack")
 @Getter
 @Setter
 public class TechStack {

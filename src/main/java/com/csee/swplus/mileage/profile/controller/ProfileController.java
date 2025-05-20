@@ -127,7 +127,7 @@ public class ProfileController {
     }
 
     @GetMapping("/profile/techStack")
-    public ResponseEntity<TechStackResponseDto> getTeckStack() {
+    public ResponseEntity<TechStackResponseDto> getTechStack() {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(
                 profileTechStackService.getTechStack(currentUserId)
@@ -135,14 +135,14 @@ public class ProfileController {
     }
 
     @PatchMapping("/profile/techStack")
-    public ResponseEntity<MessageResponse> patchTeckStack(@RequestBody TechStackRequestDto requestdto) {
+    public ResponseEntity<MessageResponse> patchTechStack(@RequestBody TechStackRequestDto requestdto) {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         profileTechStackService.patchTechStack(currentUserId, requestdto);
         return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
     }
 
     @GetMapping("/share/{studentId}/techStack")
-    public ResponseEntity<TechStackResponseDto> getTeckStack(@PathVariable String studentId) {
+    public ResponseEntity<TechStackResponseDto> getTechStack(@PathVariable String studentId) {
         return ResponseEntity.ok(profileTechStackService.getTechStack(studentId));
     }
 

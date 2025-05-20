@@ -27,8 +27,6 @@ public class ProfileInfoService {
     private final ProfileInfoRepository profileInfoRepository;
     private final FileService fileService;
 
-    private String baseUrl = "/image/";
-
     @Value("${file.profile-upload-dir}")
     @Getter
     private String uploadDir;
@@ -40,7 +38,7 @@ public class ProfileInfoService {
         return new InfoResponseDto(
                 res.getStudentId(),
                 res.getStudentName(),
-                baseUrl + res.getProfile_image_url(),
+                res.getProfile_image_url(),
                 res.getSelf_description(),
                 res.getJob(),
                 res.getGithub_link(),
