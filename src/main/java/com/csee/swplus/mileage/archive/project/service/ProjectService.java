@@ -5,6 +5,9 @@ import com.csee.swplus.mileage.archive.project.dto.*;
 import com.csee.swplus.mileage.archive.project.mapper.ProjectMapper;
 import com.csee.swplus.mileage.archive.project.repository.ProjectRepository;
 import com.csee.swplus.mileage.file.FileService;
+import com.csee.swplus.mileage.profile.domain.TechStack;
+import com.csee.swplus.mileage.profile.dto.TechStackRequestDto;
+import com.csee.swplus.mileage.profile.dto.TechStackResponseDto;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -50,9 +54,12 @@ public class ProjectService {
                         entity.getRegDate(),
                         entity.getModDate(),
                         baseUrl + entity.getThumbnail(),
-                        Arrays.stream(entity.getTechStack().split(","))
+                        new TechStackResponseDto(
+                                (entity.getTechStack() == null || entity.getTechStack().isEmpty())
+                                        ? Collections.emptyList() :
+                                        Arrays.stream(entity.getTechStack().split(","))
                                 .map(String::trim)
-                                .collect(Collectors.toList())
+                                .collect(Collectors.toList()))
                 ))
                 .collect(Collectors.toList());
     }
@@ -76,9 +83,12 @@ public class ProjectService {
                     res.getRegDate(),
                     res.getModDate(),
                     baseUrl + res.getThumbnail(),
-                    Arrays.stream(res.getTechStack().split(","))
-                            .map(String::trim)
-                            .collect(Collectors.toList())
+                    new TechStackResponseDto(
+                            (res.getTechStack() == null || res.getTechStack().isEmpty())
+                                    ? Collections.emptyList() :
+                                    Arrays.stream(res.getTechStack().split(","))
+                        .map(String::trim)
+                        .collect(Collectors.toList()))
                 );
     }
 
@@ -94,7 +104,7 @@ public class ProjectService {
                                           String startDate,
                                           String endDate,
                                           MultipartFile file,
-                                          List<String> techStack) {
+                                          TechStackRequestDto techStack) {
         try {
             Project project = new Project();
 
@@ -132,7 +142,12 @@ public class ProjectService {
             }
 
             // techStack
-            project.setTechStack(String.join(",", techStack));
+            List<String> ts = techStack.getTechStack();
+            String joined = "";
+            if (ts != null) {
+                joined = String.join(",", ts);
+            }
+            project.setTechStack(joined);
 
             // file
             if (file != null && !file.isEmpty()) {
@@ -172,7 +187,7 @@ public class ProjectService {
                                           String startDate,
                                           String endDate,
                                           MultipartFile file,
-                                          List<String> techStack) {
+                                          TechStackRequestDto techStack) {
         try {
             Project project = projectRepository.findById(projectId)
                     .orElseThrow(() -> new RuntimeException("해당 프로젝트를 찾을 수 없습니다."));
@@ -235,9 +250,12 @@ public class ProjectService {
                 project.setEndDate(null);
             }
 
-            if (techStack != null && !techStack.isEmpty()) {
-                project.setTechStack(String.join(",", techStack));
+            List<String> ts = techStack.getTechStack();
+            String joined = "";
+            if (ts != null) {
+                joined = String.join(",", ts);
             }
+            project.setTechStack(joined);
 
             if (file != null && !file.isEmpty()) {
                 if (project.getThumbnail() != null && !project.getThumbnail().isEmpty()) {
@@ -274,10 +292,12 @@ public class ProjectService {
 
             Project project = projectRepository.findById(projectId)
                     .orElseThrow(() -> new RuntimeException("해당 프로젝트를 찾을 수 없습니다."));
-            fileService.deleteFile(project.getThumbnail(), uploadDir);
+
+            if (project.getThumbnail() != null) {
+                fileService.deleteFile(project.getThumbnail(), uploadDir);
+            }
 
             projectRepository.deleteById(projectId);
-
             return new MessageResponseDto("프로젝트가 삭제되었습니다.");
         } catch (Exception e) {
             log.error("⚠️ 프로젝트 삭제 중 오류 발생: ", e);

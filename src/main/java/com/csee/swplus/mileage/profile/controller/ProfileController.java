@@ -28,7 +28,7 @@ import java.util.List;
 @Slf4j
 public class ProfileController {
     private final ProfileInfoService profileInfoService;
-    private final ProfileTeckStackService profileTeckStackService;
+    private final ProfileTechStackService profileTechStackService;
     private final ProfileProjectService profileProjectService;
     private final ProfileAwardService profileAwardService;
     private final ProfileMileageService profileMileageService;
@@ -130,20 +130,20 @@ public class ProfileController {
     public ResponseEntity<TechStackResponseDto> getTeckStack() {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(
-                profileTeckStackService.getTechStack(currentUserId)
+                profileTechStackService.getTechStack(currentUserId)
         );
     }
 
     @PatchMapping("/profile/techStack")
     public ResponseEntity<MessageResponse> patchTeckStack(@RequestBody TechStackRequestDto requestdto) {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
-        profileTeckStackService.patchTeckStack(currentUserId, requestdto);
+        profileTechStackService.patchTechStack(currentUserId, requestdto);
         return ResponseEntity.ok(new MessageResponse("프로필 내용이 수정되었습니다."));
     }
 
     @GetMapping("/share/{studentId}/techStack")
     public ResponseEntity<TechStackResponseDto> getTeckStack(@PathVariable String studentId) {
-        return ResponseEntity.ok(profileTeckStackService.getTechStack(studentId));
+        return ResponseEntity.ok(profileTechStackService.getTechStack(studentId));
     }
 
     @GetMapping("/project/top")

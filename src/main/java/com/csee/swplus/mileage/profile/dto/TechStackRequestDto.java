@@ -2,7 +2,9 @@ package com.csee.swplus.mileage.profile.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class TechStackRequestDto {
-    private String teckStack;
+    private List<String> techStack;
 }
