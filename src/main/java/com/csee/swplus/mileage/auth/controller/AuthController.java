@@ -51,8 +51,8 @@ public class AuthController {
 
         // ✅ 쿠키 설정
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.SET_COOKIE, "accessToken=" + accessToken + "; HttpOnly; Path=/; Max-Age=7200; SameSite=Lax;");
-        headers.add(HttpHeaders.SET_COOKIE, "refreshToken=" + refreshToken + "; HttpOnly; Path=/; Max-Age=604800; SameSite=Lax;");
+        headers.add(HttpHeaders.SET_COOKIE, "accessToken=" + accessToken + "; HttpOnly; Secure; Path=/; Max-Age=7200; SameSite=Strict;");
+        headers.add(HttpHeaders.SET_COOKIE, "refreshToken=" + refreshToken + "; HttpOnly; Secure; Path=/; Max-Age=604800; SameSite=Strict;");
 
         // ✅ PublicLoginResponse 생성 (프론트에 전달)
         PublicLoginResponse publicResponse = PublicLoginResponse.from(loginResponse);
@@ -67,13 +67,13 @@ public class AuthController {
     public ResponseEntity<Void> logout(HttpServletResponse response) {
         Cookie accessCookie = new Cookie("accessToken", "");
         accessCookie.setHttpOnly(true);
-        accessCookie.setSecure(false);
+        accessCookie.setSecure(true);
         accessCookie.setPath("/");
         accessCookie.setMaxAge(0); // 쿠키 삭제
 
         Cookie refreshCookie = new Cookie("refreshToken", "");
         refreshCookie.setHttpOnly(true);
-        refreshCookie.setSecure(false);
+        refreshCookie.setSecure(true);
         refreshCookie.setPath("/");
         refreshCookie.setMaxAge(0); // 쿠키 삭제
 

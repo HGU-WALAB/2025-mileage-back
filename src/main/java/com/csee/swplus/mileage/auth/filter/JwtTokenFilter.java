@@ -98,6 +98,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     // 새 액세스 토큰을 쿠키로 설정
                     Cookie newAccessTokenCookie = new Cookie("accessToken", newAccessToken);
                     newAccessTokenCookie.setHttpOnly(true);
+                    newAccessTokenCookie.setSecure(true);
                     newAccessTokenCookie.setPath("/");
                     newAccessTokenCookie.setMaxAge(7200); // 토큰 만료 시간과 일치 (2시간)
                     response.addCookie(newAccessTokenCookie);

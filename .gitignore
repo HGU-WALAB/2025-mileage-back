@@ -43,3 +43,12 @@ src/main/resources/*.yml
 ### test data
 uploads/*
 project-thumbnail/*
+
+# SSL 인증서 관련 파일
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+*.crt
+*.key
