@@ -6,15 +6,15 @@
 
     <select id="findTechStackByUserId" resultType="string">
         SELECT t.stacks
-        FROM _sw_mileage_profile_teckstack AS t
+        FROM _sw_mileage_profile_techstack AS t
         WHERE t.snum = #{studentId}
     </select>
     <insert id="insertIfNotExists" parameterType="string">
-        INSERT INTO _sw_mileage_profile_teckstack (snum)
+        INSERT INTO _sw_mileage_profile_techstack (snum)
         SELECT #{studentId}
         FROM DUAL
         WHERE NOT EXISTS (
-            SELECT 1 FROM _sw_mileage_profile_teckstack WHERE snum = #{studentId}
+            SELECT 1 FROM _sw_mileage_profile_techstack WHERE snum = #{studentId}
         )
     </insert>
 

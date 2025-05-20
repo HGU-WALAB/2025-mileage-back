@@ -34,8 +34,6 @@ public class ProjectService {
     private final ProjectMapper projectMapper;
     private final FileService fileService;
 
-    private String baseUrl = "/image/";
-
     @Value("${file.project-upload-dir}")
     @Getter
     private String uploadDir;
@@ -53,7 +51,7 @@ public class ProjectService {
                         entity.getEnd_date(),
                         entity.getRegDate(),
                         entity.getModDate(),
-                        baseUrl + entity.getThumbnail(),
+                        entity.getThumbnail(),
                         new TechStackResponseDto(
                                 (entity.getTechStack() == null || entity.getTechStack().isEmpty())
                                         ? Collections.emptyList() :
@@ -82,7 +80,7 @@ public class ProjectService {
                     res.getEnd_date(),
                     res.getRegDate(),
                     res.getModDate(),
-                    baseUrl + res.getThumbnail(),
+                    res.getThumbnail(),
                     new TechStackResponseDto(
                             (res.getTechStack() == null || res.getTechStack().isEmpty())
                                     ? Collections.emptyList() :
