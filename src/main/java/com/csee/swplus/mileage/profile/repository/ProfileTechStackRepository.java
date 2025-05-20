@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ProfileTeckStackRepository extends  JpaRepository<TechStack, Integer> {
+public interface ProfileTechStackRepository extends  JpaRepository<TechStack, Integer> {
     Optional<TechStack> findBySnum(String snum);
 }

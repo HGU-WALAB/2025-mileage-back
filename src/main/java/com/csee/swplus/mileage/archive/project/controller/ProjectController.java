@@ -3,7 +3,10 @@ package com.csee.swplus.mileage.archive.project.controller;
 import com.csee.swplus.mileage.archive.project.dto.AllProjectsResponseDto;
 import com.csee.swplus.mileage.archive.project.dto.ProjectResponseDto;
 import com.csee.swplus.mileage.archive.project.service.ProjectService;
+import com.csee.swplus.mileage.profile.dto.TechStackRequestDto;
+import com.csee.swplus.mileage.profile.dto.TechStackResponseDto;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,10 +19,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -96,7 +99,7 @@ public class ProjectController {
             @RequestParam("deployed_link") String deployed_link,
             @RequestParam("start_date") String start_date,
             @RequestParam("end_date") String end_date,
-            @RequestParam("techStack") String[] techStack,
+            @RequestParam("techStack") String techStackJson,
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail
     ) {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -113,6 +116,14 @@ public class ProjectController {
             if (!allowedExtenstions.contains(extension)) {
                 return ResponseEntity.badRequest().body(new MessageResponseDto("지원하지 않는 파일 형식입니다."));
             }
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        TechStackRequestDto techStack;
+        try {
+            techStack = objectMapper.readValue(techStackJson, TechStackRequestDto.class);
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body(new MessageResponseDto("techStack 파싱 오류: " + e.getMessage()));
         }
 
         return ResponseEntity.ok(
@@ -133,7 +144,7 @@ public class ProjectController {
         );
     }
 
-    @PatchMapping(value = "/{projectId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/{projectId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MessageResponseDto> patchProject (
             @PathVariable int projectId,
             @RequestParam("name") String name,
@@ -146,7 +157,7 @@ public class ProjectController {
             @RequestParam("deployed_link") String deployed_link,
             @RequestParam("start_date") String start_date,
             @RequestParam("end_date") String end_date,
-            @RequestParam("techStack") List<String> techStack,
+            @RequestParam("techStack") String techStackJson,
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail
     ) {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -164,6 +175,15 @@ public class ProjectController {
                 if (!allowedExtenstions.contains(extension)) {
                     return ResponseEntity.badRequest().body(new MessageResponseDto("지원하지 않는 파일 형식입니다."));
                 }
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            TechStackRequestDto techStack;
+
+            try {
+                techStack = objectMapper.readValue(techStackJson, TechStackRequestDto.class);
+            } catch (IOException e) {
+                return ResponseEntity.badRequest().body(new MessageResponseDto("techStack 파싱 오류: " + e.getMessage()));
             }
 
             return ResponseEntity.ok(

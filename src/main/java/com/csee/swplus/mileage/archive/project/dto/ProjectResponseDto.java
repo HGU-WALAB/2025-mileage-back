@@ -1,5 +1,6 @@
 package com.csee.swplus.mileage.archive.project.dto;
 
+import com.csee.swplus.mileage.profile.dto.TechStackResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -24,5 +25,5 @@ public class ProjectResponseDto {
     private LocalDateTime regDate;
     private LocalDateTime modDate;
     private String thumbnail;
-    private List<String> techStack;
+    private TechStackResponseDto techStack;
 }
