@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.csee.swplus.mileage.subitem.mapper.DetailMapper">
-    <select id="findAllDetailSubitems" resultType="com.csee.swplus.mileage.subitem.dto.SubitemResponseDto">
+    <select id="findAllDetailSubitems" resultType="com.csee.swplus.mileage.subitem.dto.DetailResponseDto">
         SELECT
             mS.id AS subitemId,
             mS.subitem_name AS subitemName,
-            mC.id AS categoryId,
-            mC.cname AS categoryName,
+            mM.id AS capabilityId,
+            mM.name AS capabilityName,
             mS.semester AS semester,
             mR.id AS recordId,
             mR.description1 AS description1,
@@ -18,9 +18,13 @@
         FROM _sw_mileage_subitem AS mS
                  INNER JOIN _sw_mileage_category AS mC
                             ON mS.category_id = mC.id
+                 LEFT JOIN _sw_category_milestone AS mCM
+                           ON mC.id = mCM.category_id
+                 LEFT JOIN _sw_milestone AS mM
+                           ON mCM.milestone_id = mM.id
                  INNER JOIN _sw_mileage_record AS mR
                             ON mR.subitem_id = mS.id
         WHERE mR.snum = #{studentId}
-        ORDER BY mC.cname, mS.regdate
+        ORDER BY mM.name, mS.regdate
     </select>
 </mapper>
