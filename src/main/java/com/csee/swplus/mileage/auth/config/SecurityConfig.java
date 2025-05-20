@@ -38,6 +38,9 @@ public class SecurityConfig {
     @Value("${custom.host.client-local}")
     private String client_local;
 
+    @Value("${custom.host.client-walab-https}")
+    private String client_walab_https;
+
     @Value("${custom.jwt.secret}")
     private String SECRET_KEY;
 
@@ -54,6 +57,13 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                .headers(headers -> headers
+                        .httpStrictTransportSecurity(hsts -> hsts
+                                .includeSubDomains(true)
+                                .maxAgeInSeconds(31536000))
+                        .frameOptions(frame -> frame.deny()))
+
                 .authorizeRequests(auth -> auth
                         .antMatchers("/api/mileage/auth/**", "/api/mileage/share/**").permitAll()
                         .antMatchers("/api/mileage/users/**",
@@ -75,14 +85,21 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         List<String> allowedOrigins = new ArrayList<>();
+
         allowedOrigins.add(client_local);
         allowedOrigins.add(client_walab);
+        allowedOrigins.add(client_walab_https);
         config.setAllowedOrigins(allowedOrigins);
+
         config.setAllowedMethods(Arrays.asList("POST", "GET", "PATCH", "DELETE", "PUT"));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowCredentials(true);
 
-        log.info("🌍 CORS Allowed Origins: {} {}", client_walab.toString(), client_local.toString());
+        config.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie"));
+
+        log.info("🌍 CORS Allowed Origins: {} {}",
+                allowedOrigins.get(0),
+                allowedOrigins.get(1));
         log.info("✅ CORS Allowed Methods: {}", config.getAllowedMethods());
 
         config.setMaxAge(3600L);
