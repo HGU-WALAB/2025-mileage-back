@@ -43,6 +43,7 @@ src/main/resources/*.yml
 ### test data
 uploads/*
 project-thumbnail/*
+Users/*
 
 # SSL 인증서 관련 파일
 *.jks
