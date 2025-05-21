@@ -5,9 +5,10 @@ import com.csee.swplus.mileage.archive.project.dto.*;
 import com.csee.swplus.mileage.archive.project.mapper.ProjectMapper;
 import com.csee.swplus.mileage.archive.project.repository.ProjectRepository;
 import com.csee.swplus.mileage.file.FileService;
-import com.csee.swplus.mileage.profile.domain.TechStack;
 import com.csee.swplus.mileage.profile.dto.TechStackRequestDto;
 import com.csee.swplus.mileage.profile.dto.TechStackResponseDto;
+import com.csee.swplus.mileage.profile.mapper.ProfileProjectMapper;
+import com.csee.swplus.mileage.profile.repository.ProfileProjectRepository;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
     private final FileService fileService;
+    private final ProfileProjectMapper profileProjectMapper;
 
     @Value("${file.project-upload-dir}")
     @Getter
@@ -41,6 +43,8 @@ public class ProjectService {
     public List<AllProjectsResponseDto> getAllProjects(String studentId) {
         List<AllProjectsEntityDto> res = projectMapper.findAllProjects(studentId);
         log.info("📝 AllProjectsEntityDto 결과 - res: {}", res);
+
+        if (res == null || res.isEmpty()) return Collections.emptyList();
 
         return res.stream()
                 .map(entity -> new AllProjectsResponseDto(
@@ -65,6 +69,11 @@ public class ProjectService {
     public ProjectResponseDto getProjectDetail(String studentId, int projectId) {
         ProjectEntityDto res = projectMapper.findProjectDetail(studentId, projectId);
         log.info("📝 ProjectEntityDto 결과 - res: {}", res);
+
+        if (res == null) {
+            log.warn("⚠️ 해당 프로젝트가 존재하지 않습니다. studentId={}, projectId={}", studentId, projectId);
+            return null;
+        }
 
         return new ProjectResponseDto(
                     res.getProjectId(),
@@ -296,6 +305,12 @@ public class ProjectService {
             }
 
             projectRepository.deleteById(projectId);
+
+            Integer p = profileProjectMapper.findTopProjectIdByUserId(studentId);
+            if (p == null) {
+                profileProjectMapper.deleteProjectIdByUserId(studentId);
+            }
+
             return new MessageResponseDto("프로젝트가 삭제되었습니다.");
         } catch (Exception e) {
             log.error("⚠️ 프로젝트 삭제 중 오류 발생: ", e);

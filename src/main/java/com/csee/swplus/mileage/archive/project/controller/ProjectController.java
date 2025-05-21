@@ -4,7 +4,6 @@ import com.csee.swplus.mileage.archive.project.dto.AllProjectsResponseDto;
 import com.csee.swplus.mileage.archive.project.dto.ProjectResponseDto;
 import com.csee.swplus.mileage.archive.project.service.ProjectService;
 import com.csee.swplus.mileage.profile.dto.TechStackRequestDto;
-import com.csee.swplus.mileage.profile.dto.TechStackResponseDto;
 import com.csee.swplus.mileage.util.message.dto.MessageResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -90,16 +89,16 @@ public class ProjectController {
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MessageResponseDto> postProject (
             @RequestParam("name") String name,
-            @RequestParam("role") String role,
+            @RequestParam(value = "role", required = false) String role,
             @RequestParam("description") String description,
-            @RequestParam("content") String content,
-            @RequestParam("achievement") String achievement,
-            @RequestParam("github_link") String github_link,
-            @RequestParam("blog_link") String blog_link,
-            @RequestParam("deployed_link") String deployed_link,
-            @RequestParam("start_date") String start_date,
-            @RequestParam("end_date") String end_date,
-            @RequestParam("techStack") String techStackJson,
+            @RequestParam(value = "content", required = false) String content,
+            @RequestParam(value = "achievement", required = false) String achievement,
+            @RequestParam(value = "github_link", required = false) String github_link,
+            @RequestParam(value = "blog_link", required = false) String blog_link,
+            @RequestParam(value = "deployed_link", required = false) String deployed_link,
+            @RequestParam(value = "start_date", required = false) String start_date,
+            @RequestParam(value = "end_date", required = false) String end_date,
+            @RequestParam(value = "techStack", required = false) String techStackJson,
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail
     ) {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -148,16 +147,16 @@ public class ProjectController {
     public ResponseEntity<MessageResponseDto> patchProject (
             @PathVariable int projectId,
             @RequestParam("name") String name,
-            @RequestParam("role") String role,
+            @RequestParam(value = "role", required = false) String role,
             @RequestParam("description") String description,
-            @RequestParam("content") String content,
-            @RequestParam("achievement") String achievement,
-            @RequestParam("github_link") String github_link,
-            @RequestParam("blog_link") String blog_link,
-            @RequestParam("deployed_link") String deployed_link,
-            @RequestParam("start_date") String start_date,
-            @RequestParam("end_date") String end_date,
-            @RequestParam("techStack") String techStackJson,
+            @RequestParam(value = "content", required = false) String content,
+            @RequestParam(value = "achievement", required = false) String achievement,
+            @RequestParam(value = "github_link", required = false) String github_link,
+            @RequestParam(value = "blog_link", required = false) String blog_link,
+            @RequestParam(value = "deployed_link", required = false) String deployed_link,
+            @RequestParam(value = "start_date", required = false) String start_date,
+            @RequestParam(value = "end_date", required = false) String end_date,
+            @RequestParam(value = "techStack", required = false) String techStackJson,
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail
     ) {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();

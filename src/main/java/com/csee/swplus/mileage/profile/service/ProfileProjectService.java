@@ -1,9 +1,9 @@
 package com.csee.swplus.mileage.profile.service;
 
-import com.csee.swplus.mileage.archive.project.repository.ProjectRepository;
+import com.csee.swplus.mileage.archive.project.dto.ProjectResponseDto;
+import com.csee.swplus.mileage.archive.project.service.ProjectService;
 import com.csee.swplus.mileage.profile.domain.ProfileProject;
 import com.csee.swplus.mileage.profile.dto.ProfileProjectRequestDto;
-import com.csee.swplus.mileage.profile.dto.ProfileProjectResponseDto;
 import com.csee.swplus.mileage.profile.mapper.ProfileProjectMapper;
 import com.csee.swplus.mileage.profile.repository.ProfileProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,29 +16,39 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class ProfileProjectService {
+    private final ProjectService projectService;
     private final ProfileProjectMapper projectMapper;
     private final ProfileProjectRepository profileProjectRepository;
-    private final ProjectRepository projectRepository;
 
     @Transactional
-    public ProfileProjectResponseDto getProfileProject(String studentId) {
-        ProfileProjectResponseDto dto = projectMapper.findProjectByUserId(studentId);
+    public ProjectResponseDto getProfileProject(String studentId) {
+        Integer topProjectId = projectMapper.findTopProjectIdByUserId(studentId);
 
-        if (dto == null) {
-            projectMapper.insertIfNotExists(studentId, null);
-            return new ProfileProjectResponseDto(null, null);
+        if (topProjectId == null) {
+            return null;
         }
-        return dto;
+
+        ProjectResponseDto profileProjectResponseDto = projectService.getProjectDetail(studentId, topProjectId);
+        if (profileProjectResponseDto == null) {
+            projectMapper.insertIfNotExists(studentId, null);
+            return null;
+        }
+        
+        return profileProjectResponseDto;
     }
 
     @Transactional
     public void patchProfileProject(String studentId, ProfileProjectRequestDto profileProjectRequestDto) {
-        ProfileProject profileProject = profileProjectRepository.findBySnum(studentId)
-                .orElseThrow(() -> new RuntimeException("Not found"));
+        ProfileProject profileProject = profileProjectRepository.findBySnum(studentId);
+
+        if(profileProject == null) {
+            profileProject = new ProfileProject(studentId, profileProjectRequestDto.getProjectId());
+        }
 
         if (profileProjectRequestDto.getProjectId() != null) {
             profileProject.setProjectId(profileProjectRequestDto.getProjectId());
-            profileProjectRepository.save(profileProject);
         }
+
+        profileProjectRepository.save(profileProject);
     }
 }
