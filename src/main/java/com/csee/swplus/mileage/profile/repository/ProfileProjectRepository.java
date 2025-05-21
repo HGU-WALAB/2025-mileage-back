@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface ProfileProjectRepository extends JpaRepository<ProfileProject, Integer> {
-    Optional<ProfileProject> findBySnum(String snum);
+    ProfileProject findBySnum(String snum);
 
 }

@@ -1,5 +1,6 @@
 package com.csee.swplus.mileage.profile.controller;
 
+import com.csee.swplus.mileage.archive.project.dto.ProjectResponseDto;
 import com.csee.swplus.mileage.profile.dto.*;
 import com.csee.swplus.mileage.profile.service.*;
 import com.csee.swplus.mileage.profile.dto.MessageResponse;
@@ -147,7 +148,7 @@ public class ProfileController {
     }
 
     @GetMapping("/project/top")
-    public ResponseEntity<ProfileProjectResponseDto> getProfileProject() {
+    public ResponseEntity<ProjectResponseDto> getProfileProject() {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(
                 profileProjectService.getProfileProject(currentUserId)
@@ -162,7 +163,7 @@ public class ProfileController {
     }
 
     @GetMapping("/share/{studentId}/projectTop")
-    public ResponseEntity<ProfileProjectResponseDto> getProfileProject(@PathVariable String studentId) {
+    public ResponseEntity<ProjectResponseDto> getProfileProject(@PathVariable String studentId) {
         return ResponseEntity.ok(profileProjectService.getProfileProject(studentId));
     }
 

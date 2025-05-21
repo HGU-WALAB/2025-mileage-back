@@ -4,12 +4,10 @@
 
 <mapper namespace="com.csee.swplus.mileage.profile.mapper.ProfileProjectMapper">
 
-    <select id="findProjectByUserId" resultType="com.csee.swplus.mileage.profile.dto.ProfileProjectResponseDto">
-        SELECT p.name AS name,
-               p.thumbnail AS thumbnail
-        FROM _sw_mileage_profile_project AS mp
-        JOIN _sw_mileage_project AS p ON mp.project_id = p.id
-        WHERE mp.snum = #{studentId}
+    <select id="findTopProjectIdByUserId" resultType="Integer">
+        SELECT project_id
+        FROM _sw_mileage_profile_project
+        WHERE snum = #{studentId}
     </select>
     <insert id="insertIfNotExists" parameterType="string">
         INSERT INTO _sw_mileage_profile_project (snum, project_id)
@@ -20,5 +18,9 @@
             WHERE snum = #{studentId}
         )
     </insert>
-
+    <update id="deleteProjectIdByUserId" parameterType="string">
+        UPDATE profile
+        SET project_id = NULL
+        WHERE snum = #{studentId}
+    </update>
 </mapper>

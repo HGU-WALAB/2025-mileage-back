@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class AwardResponseDto {
     private int awardId;
-    private String awardYear;
+    private int awardYear;
     private LocalDate awardDate;
     private String contestName;
     private String awardName;
