@@ -6,7 +6,8 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface ProfileProjectMapper {
-    ProfileProjectResponseDto findProjectByUserId(@Param("studentId") String studentId);
+    Integer findTopProjectIdByUserId(@Param("studentId") String studentId);
+    int deleteProjectIdByUserId(@Param("studentId") String studentId);
     int insertIfNotExists(@Param("studentId") String studentId, @Param("projectId") Integer projectId);
 }
 

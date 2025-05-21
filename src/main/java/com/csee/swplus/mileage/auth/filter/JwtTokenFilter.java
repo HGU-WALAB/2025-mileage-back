@@ -35,7 +35,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             "/api/mileage/share.*",
             "/mileage/api/mileage/auth/login$",
             "/api/mileage/auth/logout$",
-            "/mileage/api/mileage/auth/logout$"
+            "/mileage/api/mileage/auth/logout$",
+            "/api/mileage/profile/image.*",
+            "/api/mileage/project/image.*"
     );
 
     @Override
