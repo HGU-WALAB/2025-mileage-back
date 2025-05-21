@@ -65,7 +65,7 @@ public class SecurityConfig {
                         .frameOptions(frame -> frame.deny()))
 
                 .authorizeRequests(auth -> auth
-                        .antMatchers("/api/mileage/auth/**", "/api/mileage/share/**").permitAll()
+                        .antMatchers("/api/mileage/auth/**", "/api/mileage/share/**", "/api/mileage/profile/image/**").permitAll()
                         .antMatchers("/api/mileage/users/**",
                                 "/api/mileage/{studentId}/search",
                                 "/api/mileage/apply/{studentId}",
