@@ -14,7 +14,8 @@
                thumbnail,
                tech_stack AS techStack
         FROM _sw_mileage_project
-        WHERE snum = #{studentId};
+        WHERE snum = #{studentId}
+        ORDER BY modDate DESC;
     </select>
 
     <select id="findProjectDetail" resultType="com.csee.swplus.mileage.archive.project.dto.ProjectEntityDto">
