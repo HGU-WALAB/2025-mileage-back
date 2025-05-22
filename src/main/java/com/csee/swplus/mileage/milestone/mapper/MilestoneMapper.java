@@ -13,16 +13,15 @@ import java.util.Map;
 public interface MilestoneMapper {
     List<MilestoneResponseDto> findAllMilestoneCapability();
 
-    List<MilestonePointResponseDto> findAllMilestonePoint(@Param("studentId") int studentId);
+    List<MilestonePointResponseDto> findAllMilestonePoint(@Param("studentId") String studentId, @Param("currentSemester") String current);
+    
     List<MPResponseDto> findFilteredAverageMilestonePoint(
             @Param("term") String term,
             @Param("entryYear") String entryYear,
             @Param("major") String major
     );
 
-//    List<MilestoneSemesterResponseDto> findEachMilestoneBySemester(@Param("studentId") int studentId);
-
-    List<MilestoneSemesterTotalPointResponseDto> findAllMilestoneBySemester(@Param("studentId") int studentId);
+    List<MilestoneSemesterTotalPointResponseDto> findAllMilestoneBySemester(@Param("studentId") String studentId);
 
     @MapKey("subitemName")
     List<Map<String, Object>> findSuggestItemByUserId(@Param("studentId") String studentId);

@@ -15,7 +15,7 @@
         SELECT
             m.id AS capabilityId,
             m.name AS capabilityName,
-            IFNULL(COUNT(DISTINCT CASE WHEN s.snum = #{studentId} THEN r.subitem_id END), 0) AS milestoneCount,
+            IFNULL(COUNT(DISTINCT CASE WHEN r.snum = #{studentId} THEN r.subitem_id END), 0) AS milestoneCount,
             IFNULL(COUNT(DISTINCT si.id), 0) AS totalMilestoneCount
         FROM _sw_milestone m
                  LEFT JOIN _sw_category_milestone cm
@@ -23,15 +23,14 @@
                  LEFT JOIN _sw_mileage_category c
                            ON cm.category_id = c.id
                  LEFT JOIN _sw_mileage_subitem si
-                           ON c.id = si.category_id
+                           ON c.id = si.category_id AND si.semester = #{currentSemester}
                  LEFT JOIN _sw_mileage_record r
-                           ON si.id = r.subitem_id
-                 LEFT JOIN _sw_student s ON r.snum = s.snum
+                           ON si.id = r.subitem_id AND r.semester = #{currentSemester}
         GROUP BY
-            m.id,
-            m.name
+            m.id, m.name
         ORDER BY
             m.id;
+
     </select>
     <select id="findFilteredAverageMilestonePoint"
             resultType="com.csee.swplus.mileage.milestone.dto.response.MPResponseDto">

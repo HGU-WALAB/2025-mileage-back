@@ -4,6 +4,7 @@ import com.csee.swplus.mileage.archive.project.mapper.ProjectMapper;
 import com.csee.swplus.mileage.milestone.dto.response.*;
 import com.csee.swplus.mileage.milestone.mapper.MilestoneMapper;
 import com.csee.swplus.mileage.profile.dto.MileageCountResponseDto;
+import com.csee.swplus.mileage.setting.service.ManagerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.*;
 public class MilestoneService {
     private final MilestoneMapper milestoneMapper;
     private final ProjectMapper projectMapper;
+    private final ManagerService managerService;
 
     public List<MilestoneResponseDto> getMilestoneCapabilities() {
         List<MilestoneResponseDto> res = milestoneMapper.findAllMilestoneCapability();
@@ -23,8 +25,9 @@ public class MilestoneService {
         return res;
     }
 
-    public List<MilestonePointResponseDto> getMilestonePoint(int studentId) {
-        List<MilestonePointResponseDto> res = milestoneMapper.findAllMilestonePoint(studentId);
+    public List<MilestonePointResponseDto> getMilestonePoint(String studentId) {
+        String currentSemester = managerService.getCurrentSemester();
+        List<MilestonePointResponseDto> res = milestoneMapper.findAllMilestonePoint(studentId, currentSemester);
         log.info("📝 findAllMilestonePoint 결과 - res: {}", res);
         return res;
     }
@@ -57,7 +60,7 @@ public class MilestoneService {
 //        return res;
 //    }
 
-    public List<MilestoneSemesterTotalPointResponseDto> getTotalMilestoneSemester(int studentId) {
+    public List<MilestoneSemesterTotalPointResponseDto> getTotalMilestoneSemester(String studentId) {
         List<MilestoneSemesterTotalPointResponseDto> res = milestoneMapper.findAllMilestoneBySemester(studentId);
         log.info("📝 findAllMilestoneBySemester 결과 - res: {}", res);
         return res;
@@ -89,7 +92,7 @@ public class MilestoneService {
                 log.warn("📝 getSuggestionsForStudent - 학생에 대한 추천 항목을 찾을 수 없습니다: {}", studentId);
 
                 // Get the lowest capability for this student - simplified approach
-                List<MilestonePointResponseDto> milestonePoints = getMilestonePoint(Integer.parseInt(studentId));
+                List<MilestonePointResponseDto> milestonePoints = getMilestonePoint(studentId);
 
                 // Sort by completion rate (milestoneCount/totalMilestoneCount)
                 milestonePoints.sort(Comparator.comparingDouble(point ->
