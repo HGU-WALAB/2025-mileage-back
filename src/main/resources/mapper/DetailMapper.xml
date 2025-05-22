@@ -24,7 +24,7 @@
                            ON mCM.milestone_id = mM.id
                  INNER JOIN _sw_mileage_record AS mR
                             ON mR.subitem_id = mS.id
-        WHERE mR.snum = #{studentId}
+        WHERE mR.snum = #{studentId} AND mR.semester = #{currentSemester}
         ORDER BY mM.name, mS.regdate
     </select>
 </mapper>

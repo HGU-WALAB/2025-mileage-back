@@ -1,5 +1,6 @@
 package com.csee.swplus.mileage.subitem.service;
 
+import com.csee.swplus.mileage.setting.service.ManagerService;
 import com.csee.swplus.mileage.subitem.dto.DetailResponseDto;
 import com.csee.swplus.mileage.subitem.dto.SubitemResponseDto;
 import com.csee.swplus.mileage.subitem.mapper.DetailMapper;
@@ -14,9 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class DetailService {
     private final DetailMapper detailMapper;
+    private final ManagerService managerService;
 
     public List<DetailResponseDto> getAllDetailSubitems(String studentId) {
         log.info("Fetching all detail subitems");
-        return detailMapper.findAllDetailSubitems(studentId);
+        String currentSemester = managerService.getCurrentSemester();
+        return detailMapper.findAllDetailSubitems(studentId, currentSemester);
     }
 }

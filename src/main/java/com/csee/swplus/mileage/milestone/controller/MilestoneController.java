@@ -27,18 +27,18 @@ public class MilestoneController {
     @GetMapping("/milestone")
     public ResponseEntity<List<MilestonePointResponseDto>> getMilestonePoint() {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
-        int studentId = Integer.parseInt(currentUserId);
+
         return ResponseEntity.ok(
-                milestoneService.getMilestonePoint(studentId)
+                milestoneService.getMilestonePoint(currentUserId)
         );
     }
 
     @GetMapping("/semester")
     public ResponseEntity<List<MilestoneSemesterTotalPointResponseDto>> getTotalMilestoneSemester() {
         String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
-        int studentId = Integer.parseInt(currentUserId);
+
         return ResponseEntity.ok(
-                milestoneService.getTotalMilestoneSemester(studentId)
+                milestoneService.getTotalMilestoneSemester(currentUserId)
         );
     }
 

@@ -35,6 +35,11 @@ public class ProfileInfoService {
         infoMapper.insertIfNotExists(studentId);
 
         InfoResponseDto res = infoMapper.findInfoByUserId(studentId);
+
+        if(res == null) {
+            return null;
+        }
+
         return new InfoResponseDto(
                 res.getStudentId(),
                 res.getStudentName(),
