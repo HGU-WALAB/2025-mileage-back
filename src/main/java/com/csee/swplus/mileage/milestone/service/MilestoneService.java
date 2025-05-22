@@ -37,8 +37,9 @@ public class MilestoneService {
         term = (term != null && !term.trim().isEmpty()) ? term : null;
         entryYear = (entryYear != null && !entryYear.trim().isEmpty()) ? entryYear : null;
         major = (major != null && !major.trim().isEmpty()) ? major : null;
+        String currentSemester = managerService.getCurrentSemester();
 
-        List<MPResponseDto> results = milestoneMapper.findFilteredAverageMilestonePoint(term, entryYear, major);
+        List<MPResponseDto> results = milestoneMapper.findFilteredAverageMilestonePoint(term, entryYear, major, currentSemester);
 
         // averageMilestoneCount 계산 처리
         for (MPResponseDto dto : results) {

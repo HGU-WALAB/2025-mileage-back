@@ -14,11 +14,12 @@ public interface MilestoneMapper {
     List<MilestoneResponseDto> findAllMilestoneCapability();
 
     List<MilestonePointResponseDto> findAllMilestonePoint(@Param("studentId") String studentId, @Param("currentSemester") String current);
-    
+
     List<MPResponseDto> findFilteredAverageMilestonePoint(
             @Param("term") String term,
             @Param("entryYear") String entryYear,
-            @Param("major") String major
+            @Param("major") String major,
+            @Param("currentSemester") String currentSemester
     );
 
     List<MilestoneSemesterTotalPointResponseDto> findAllMilestoneBySemester(@Param("studentId") String studentId);
