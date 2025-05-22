@@ -45,6 +45,6 @@
             AND mS.semester REGEXP '^20\\d{2}-(01|02)$'
         </if>
 
-        ORDER BY mS.regdate;
+        ORDER BY mS.semester DESC;
     </select>
 </mapper>

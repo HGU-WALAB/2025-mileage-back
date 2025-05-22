@@ -16,7 +16,7 @@
                a.moddate AS modDate
         FROM _sw_mileage_award AS a
         WHERE a.snum = #{studentId}
-        ORDER BY a.award_date DESC;
+        ORDER BY a.award_year, a.award_date DESC;
     </select>
 
 </mapper>

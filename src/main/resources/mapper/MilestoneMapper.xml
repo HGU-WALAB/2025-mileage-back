@@ -65,6 +65,7 @@
             JOIN _sw_mileage_category c ON cm.category_id = c.id
             JOIN _sw_mileage_subitem si ON c.id = si.category_id
             JOIN _sw_mileage_record r ON si.id = r.subitem_id
+            LEFT JOIN _sw_student s ON r.snum = s.snum
             WHERE si.semester = #{currentSemester}
                 <if test="major != null">
                     AND s.major_1 = #{major}
