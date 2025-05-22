@@ -8,5 +8,5 @@ import java.util.List;
 
 @Mapper
 public interface DetailMapper {
-    List<DetailResponseDto> findAllDetailSubitems(@Param("studentId") String studentId);
+    List<DetailResponseDto> findAllDetailSubitems(@Param("studentId") String studentId, @Param("currentSemester") String currentSemester);
 }

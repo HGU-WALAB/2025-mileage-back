@@ -16,7 +16,6 @@ import java.util.*;
 @Slf4j
 public class MilestoneService {
     private final MilestoneMapper milestoneMapper;
-    private final ProjectMapper projectMapper;
     private final ManagerService managerService;
 
     public List<MilestoneResponseDto> getMilestoneCapabilities() {
