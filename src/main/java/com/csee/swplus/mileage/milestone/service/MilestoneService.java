@@ -1,9 +1,7 @@
 package com.csee.swplus.mileage.milestone.service;
 
-import com.csee.swplus.mileage.archive.project.mapper.ProjectMapper;
 import com.csee.swplus.mileage.milestone.dto.response.*;
 import com.csee.swplus.mileage.milestone.mapper.MilestoneMapper;
-import com.csee.swplus.mileage.profile.dto.MileageCountResponseDto;
 import com.csee.swplus.mileage.setting.service.ManagerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +44,8 @@ public class MilestoneService {
             if (dto.getGroupSize() > 0) {
                 // totalMilestoneCount/groupSize 계산 후 반올림하여 정수로 변환
                 double average = (double) dto.getTotalMilestoneCount() / dto.getGroupSize();
-                dto.setAverageMilestoneCount(Math.round((float) average));
+
+                dto.setAverageMilestoneCount((int) Math.ceil(average));
             } else {
                 dto.setAverageMilestoneCount(0);
             }
