@@ -1,4 +1,4 @@
-# 2025 Milestone front
+# 2025 Milestone BE
 
 ### 한동대학교 전산전자공학부 마일리지 장학금 신청 서비스
 
