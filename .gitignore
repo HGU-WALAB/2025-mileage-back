@@ -53,3 +53,5 @@ Users/*
 *.pem
 *.crt
 *.key
+
+.DS_Store
